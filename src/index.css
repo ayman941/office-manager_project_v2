@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties ──────────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    --radius-sm:  0.375rem;  /* 6px */
+    --radius-md:  0.5rem;    /* 8px */
+    --radius-lg:  0.75rem;   /* 12px */
+    --radius-xl:  1rem;      /* 16px */
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-surface text-on-surface font-body min-h-[max(884px,100dvh)];
+  }
+
+  /* Mobile bottom-bar safe-area padding */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+}
+
+@layer utilities {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .bg-glass {
+    backdrop-filter: blur(20px);
+  }
+  .glass-panel {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* ── Smooth scrolling ────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+}
