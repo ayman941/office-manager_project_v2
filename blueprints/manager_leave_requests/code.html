@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Leave Requests | SmartOffice</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#81f3e5",
+                        "on-tertiary-fixed-variant": "#773200",
+                        "secondary-fixed-dim": "#66d9cc",
+                        "on-primary-fixed": "#001f28",
+                        "surface-container-highest": "#dfe3e8",
+                        "outline": "#6f787d",
+                        "on-tertiary-fixed": "#331200",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "surface": "#f7f9ff",
+                        "surface-dim": "#d7dae0",
+                        "background": "#f7f9ff",
+                        "surface-variant": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#181c20",
+                        "on-primary-fixed-variant": "#004d61",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary-fixed": "#00201d",
+                        "outline-variant": "#bfc8cd",
+                        "on-primary-container": "#a0e2fc",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006a62",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-background": "#181c20",
+                        "tertiary-container": "#9c4400",
+                        "surface-container-high": "#e5e8ee",
+                        "primary": "#004d61",
+                        "primary-fixed": "#b8eaff",
+                        "primary-fixed-dim": "#8ed0e9",
+                        "surface-bright": "#f7f9ff",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#1a667d",
+                        "secondary-fixed": "#84f5e8",
+                        "on-tertiary-container": "#ffceb5",
+                        "surface-container": "#ebeef4",
+                        "inverse-on-surface": "#eef1f7",
+                        "surface-container-low": "#f1f4fa",
+                        "inverse-primary": "#8ed0e9",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#773200",
+                        "primary-container": "#1a667d",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2d3135",
+                        "on-surface-variant": "#3f484c",
+                        "on-secondary-container": "#006f66",
+                        "tertiary-fixed-dim": "#ffb68f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm dark:shadow-none flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<img alt="Employee Profile Picture" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" data-alt="professional portrait of a man with short dark hair in a business casual environment, soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9BOiwKmMGN32y7V-NqgXGMAfIKNFfkkWv6QGmPChaNwzNpzKVmJEWOfssu9pP3DInMp5JUrTa3ilN0FUCLze_Kj5D3OSEZZoFjpO77Jg33V0UIxnGi87Sfb6rKG6TGFiNVhZBU2UC5h169l37HXVEHXfleV5GmBOfH_lSZ9kKzOL-XfxDdVCFlZ0sHr9bpoGLAlOipmvb0VOj_6pSDDcEW1llfuy4WswrVBJGpKeYJSGyBdz7oYf2F6h-At9I0bgbC5PKgsli0xM"/>
+<span class="text-xl font-black tracking-tighter text-cyan-800 dark:text-cyan-400 font-headline">SmartOffice</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-cyan-900 dark:text-cyan-100">notifications</span>
+</button>
+</div>
+</header>
+<div class="flex pt-16 pb-20 md:pb-0">
+<!-- NavigationDrawer (Desktop) -->
+<aside class="hidden md:flex flex-col gap-2 p-6 h-[calc(100vh-64px)] w-72 rounded-r-3xl bg-slate-50 dark:bg-slate-950 shadow-2xl sticky top-16">
+<div class="mb-8 flex flex-col items-start px-2">
+<div class="flex items-center gap-3 mb-2">
+<img alt="Manager Avatar" class="w-12 h-12 rounded-full object-cover" data-alt="professional middle-aged man in a suit, confident expression, blurred office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC69hws_5KQmiNFp03eW7LdCmS5Ge8R1utJgVtKC6o-mNd6OKAvQg1s_pIuKwgEUxbXn3P0g0NVLOb0Ptp7PnvpdsvSTsICvfXyN3EOhSUYzno9ucTBOGLlfgxSwLql15IZIgIYmuRQiXapF8tcFkUoxKb_T7TOwGroqEwakdYAyGCydbm9_xCcxLwsGrp15yGg33pRA5NiwfMIEJC7zCfAFmZ5OCJqCKCBm1GWimNkJ0h65Muo1g5aMMeN5k3vnLJkixua1xDMapc"/>
+<div>
+<h3 class="font-headline font-bold text-cyan-900 dark:text-cyan-50 leading-tight">Alex Rivera</h3>
+<p class="text-xs text-slate-500">Operations Manager</p>
+</div>
+</div>
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold bg-slate-200/50 px-2 py-0.5 rounded">HQ-Sector 4</span>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined">lunch_dining</span> Meal Planner
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Inventory
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold rounded-lg font-manrope text-sm hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">fact_check</span> Leave Approvals
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined">policy</span> HR Policy
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
+<header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface mb-2">Leave Requests</h1>
+<p class="text-on-surface-variant font-body">Review and manage pending leave applications from your team.</p>
+</div>
+<div class="flex gap-3">
+<div class="bg-surface-container-high px-4 py-2 rounded-xl flex items-center gap-3">
+<span class="text-primary font-bold text-2xl font-headline">12</span>
+<span class="text-xs font-semibold text-on-surface-variant leading-none">Pending<br/>Review</span>
+</div>
+</div>
+</header>
+<!-- Requests Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Request Card 1 -->
+<div class="bg-surface-container-low rounded-[2rem] overflow-hidden flex flex-col shadow-sm">
+<div class="bg-surface-container-lowest p-6 flex items-center gap-4">
+<img alt="Sarah Chen" class="w-14 h-14 rounded-2xl object-cover" data-alt="headshot of a young professional woman with dark hair, smiling warmly, bright natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtnTwyZjSwvXfN0MZkiXuei0_YzmmRqThiaPybjr5zhhxRg7BorKvLUG5aCv7Cg5gbC2Ny84hPPupj2KFM_rB-F9X96VIYHJcSaFRfKZ_bhFV8rWPum6jswkC2b59gqEtZ4NGMCAKZ0kJZwDJwspdK4c73CIrYsbnNMjdQCIU6Ww8XrapdOuCHeze3vH1Oin_SMsi5nviLUzQgv2xIzgFuJbe_TP4QxktU3zWW2RXHB7jxo01Q7qsWCsBjUy5WclPSUeV60ouh5Es"/>
+<div>
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Sarah Chen</h4>
+<p class="text-xs font-medium text-primary uppercase tracking-wider">Frontend Developer</p>
+</div>
+</div>
+<div class="p-6 space-y-5 flex-1">
+<div class="flex items-center justify-between">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Annual Leave</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-sm font-semibold">5 Days</span>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-2xl p-4">
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-1">Duration</p>
+<p class="text-sm font-bold text-on-surface font-headline">Oct 12 — Oct 16, 2023</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-2">Reason</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">Family wedding in Vancouver. Flights are already booked for these dates. Will ensure all sprint tickets are handed over.</p>
+</div>
+</div>
+<div class="p-6 pt-0 grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high text-primary font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition-colors active:scale-95 text-sm">Reject</button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold py-3 px-4 rounded-xl hover:opacity-90 transition-all active:scale-95 text-sm">Approve</button>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="bg-surface-container-low rounded-[2rem] overflow-hidden flex flex-col shadow-sm">
+<div class="bg-surface-container-lowest p-6 flex items-center gap-4">
+<img alt="Marcus Thorne" class="w-14 h-14 rounded-2xl object-cover" data-alt="close up portrait of a man with glasses and beard, friendly demeanor, urban interior setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKT6AZtcoSIb3xtpwwiylbEQcvLflAsRwATDVY9rgSYE-FdtcTizBsG6CM84pRGAZKbMPkzvIME7sJYQiu7HMo0Vm-PQ7aqe2UweFDec6k7atE74v_pa3JO_Q_HrXhEsm9zyGb4u5o7x2xsd7eBWCrj67z5z-zMhpAZ0WxEk244vtdyIeiSCEwNHTNxO4YP3VrHNTGOGwG7fOF9vSPDceQt7TBwK76h7-foHeLUzQqq74CLExAUfFRpxNt2qzkAPx_vayYnTQsHpQ"/>
+<div>
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Marcus Thorne</h4>
+<p class="text-xs font-medium text-primary uppercase tracking-wider">UX Designer</p>
+</div>
+</div>
+<div class="p-6 space-y-5 flex-1">
+<div class="flex items-center justify-between">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-bold uppercase tracking-widest rounded-full">Sick Leave</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-sm font-semibold">1 Day</span>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-2xl p-4">
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-1">Duration</p>
+<p class="text-sm font-bold text-on-surface font-headline">Oct 09, 2023</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-2">Reason</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">Medical appointment for a routine checkup. Will be available on Slack for emergencies during the morning.</p>
+</div>
+</div>
+<div class="p-6 pt-0 grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high text-primary font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition-colors active:scale-95 text-sm">Reject</button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold py-3 px-4 rounded-xl hover:opacity-90 transition-all active:scale-95 text-sm">Approve</button>
+</div>
+</div>
+<!-- Request Card 3 -->
+<div class="bg-surface-container-low rounded-[2rem] overflow-hidden flex flex-col shadow-sm">
+<div class="bg-surface-container-lowest p-6 flex items-center gap-4">
+<img alt="Jordan Smith" class="w-14 h-14 rounded-2xl object-cover" data-alt="portrait of a confident man with short hair, wearing a white t-shirt, clean minimalistic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2i5A9L9GAUIq5o9QnAeyJGydBDwCUSe-lrKewRLnFklhfVx9aR0r_l-NE7LPr64duYZOiaUFVU4A2NNm-hAc_rNfywrk58IpeTDrr_GtWI5Mk5Dx-2WcqYUqyC2RIknWdwI_odrrcAN8lYRUqtz4fYda_1NoAndWNs84YMU2KDOaiVyuGcEEV6bZAM9JsXYMOsbcPm1o5ez1w_2cfKGd8HPfmd_3bfmcjSzpPDym8_bcWNyjD83UoI6i4BIm2GhkXekqccB0M4Pc"/>
+<div>
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Jordan Smith</h4>
+<p class="text-xs font-medium text-primary uppercase tracking-wider">Product Lead</p>
+</div>
+</div>
+<div class="p-6 space-y-5 flex-1">
+<div class="flex items-center justify-between">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase tracking-widest rounded-full">Personal Leave</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-sm font-semibold">3 Days</span>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-2xl p-4">
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-1">Duration</p>
+<p class="text-sm font-bold text-on-surface font-headline">Oct 25 — Oct 27, 2023</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-2">Reason</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">Attending an industry conference in Seattle. I have arranged for Maya to cover the stakeholder meeting.</p>
+</div>
+</div>
+<div class="p-6 pt-0 grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high text-primary font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition-colors active:scale-95 text-sm">Reject</button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold py-3 px-4 rounded-xl hover:opacity-90 transition-all active:scale-95 text-sm">Approve</button>
+</div>
+</div>
+<!-- Request Card 4 -->
+<div class="bg-surface-container-low rounded-[2rem] overflow-hidden flex flex-col shadow-sm">
+<div class="bg-surface-container-lowest p-6 flex items-center gap-4">
+<img alt="Elena Rossi" class="w-14 h-14 rounded-2xl object-cover" data-alt="portrait of a woman with red hair, thoughtful expression, wearing a navy blue blouse, softly lit office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2n1-Lp9vVaOrxdabvgw0ja-FUnSI9jH8zs09CIKtUyRgatoGr4CIYRU4GGcpKCpxB_h1Z6s2XlFmKDPA5uWttnXOZCp07RdAqW7W2iprkktWr_GXhrQ52vmEWf1UYm1qdNg-xIzgpxaf2Qes6kRBnRMr6bHI2M8qUZFg29LI5LDFe-BtGdn6q1FFRHquAYt8s3KyCX8mzQCIOCNrAILolrfFFFXDxZcmRGaiPrGCyh1banIG9RTPjOsDcuRYZv6lMXUUAch2gA40"/>
+<div>
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Elena Rossi</h4>
+<p class="text-xs font-medium text-primary uppercase tracking-wider">QA Specialist</p>
+</div>
+</div>
+<div class="p-6 space-y-5 flex-1">
+<div class="flex items-center justify-between">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Annual Leave</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-sm font-semibold">10 Days</span>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-2xl p-4">
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-1">Duration</p>
+<p class="text-sm font-bold text-on-surface font-headline">Nov 01 — Nov 14, 2023</p>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter mb-2">Reason</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">Vacation trip. Plan was discussed in the last 1-on-1. The team has been briefed on the testing cycles.</p>
+</div>
+</div>
+<div class="p-6 pt-0 grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high text-primary font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition-colors active:scale-95 text-sm">Reject</button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold py-3 px-4 rounded-xl hover:opacity-90 transition-all active:scale-95 text-sm">Approve</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-[0_-1px_10px_rgba(0,0,0,0.05)] z-50 rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Food</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Leave</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Menu</span>
+</a>
+</nav>
+</body></html>
