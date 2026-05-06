@@ -48,10 +48,10 @@ export function CanteenLayout() {
             <ReceiptText size={20} />
             <span className="font-manrope text-sm">All Orders</span>
           </Link>
-          <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" to="/canteen/inventory">
             <Archive size={20} />
             <span className="font-manrope text-sm">Inventory</span>
-          </a>
+          </Link>
           <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
             <Settings size={20} />
             <span className="font-manrope text-sm">Settings</span>

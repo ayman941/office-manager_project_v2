@@ -23,6 +23,7 @@ import { TeamOverviewPage }        from '@/features/manager/pages/TeamOverviewPa
 import { CanteenDashboardPage }  from '@/features/canteen/pages/CanteenDashboardPage'
 import { OrderManagementPage }   from '@/features/canteen/pages/OrderManagementPage'
 import { MenuManagementPage }    from '@/features/canteen/pages/MenuManagementPage'
+import { InventoryManagementPage } from '@/features/canteen/pages/InventoryManagementPage'
 
 // HR pages
 import { HRLayout }              from '@/features/hr/layouts/HRLayout'
@@ -100,6 +101,7 @@ export function AppRouter() {
           <Route path="dashboard" element={<CanteenDashboardPage />} />
           <Route path="orders"    element={<OrderManagementPage />} />
           <Route path="menu"      element={<MenuManagementPage />} />
+          <Route path="inventory" element={<InventoryManagementPage />} />
         </Route>
 
         {/* HR Portal */}

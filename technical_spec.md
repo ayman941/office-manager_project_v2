@@ -156,7 +156,7 @@ export interface AttendanceOverride {
 
 ### 2.2 Portal Switcher Component
 
-A **`<PortalSwitcher />`** is rendered in the top navigation bar. It is visible **only** to users with the `manager` role (who can toggle between their own manager view and the employee view for context).
+A **`<PortalSwitcher />`** is rendered in the top navigation bar across **all** layouts (Employee, Manager, HR, and Canteen). It is visible **only** to users with privileged roles (`manager`, `hr_manager`, `canteen`), allowing them to instantly toggle between their administrative view and the employee view.
 
 ```tsx
 // src/components/navigation/PortalSwitcher.tsx
@@ -169,9 +169,11 @@ interface PortalSwitcherProps {
 }
 ```
 
-`hr_manager` users see a **three-segment** switcher: **HR View · Manager View · Employee View**, allowing them to navigate all portals as read-only context without changing their underlying role.
+`hr_manager` users see a **two-segment** switcher: **HR View · Employee View**.
+`manager` users see **Manager View · Employee View**.
+`canteen` users see **Canteen View · Employee View**.
 
-The switcher renders as a pill-style toggle (two segments) using Headless UI `RadioGroup` for keyboard accessibility. It does **not** change the authenticated user's `role`; it only adjusts the active route namespace.
+The switcher renders as a pill-style toggle using Headless UI `RadioGroup`. It handles its own internal routing via `useNavigate()`, allowing privileged users to easily switch contexts while maintaining their global session role.
 
 ### 2.3 Route Guard (`<RoleGuard />`)
 
@@ -203,9 +205,10 @@ interface RoleGuardProps {
   <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
   {/* Employee Portal */}
-  <Route path="/employee" element={<RoleGuard allowedRoles={['employee', 'manager']}><EmployeeLayout /></RoleGuard>}>
+  <Route path="/employee" element={<RoleGuard allowedRoles={['employee', 'manager', 'hr_manager', 'canteen']}><EmployeeLayout /></RoleGuard>}>
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard"   element={<EmployeeDashboard />} />
+    <Route path="attendance"  element={<MyAttendancePage />} />
     <Route path="leave"       element={<LeaveRequestList />} />
     <Route path="leave/new"   element={<NewLeaveRequest />} />
     <Route path="food"        element={<FoodOrderList />} />
@@ -399,7 +402,13 @@ Employee taps "Check Out"
 Rules:
 - Only **one open log** (no `checkOut`) is allowed per employee per calendar day.
 - Attempting to check in twice without checking out first returns a `409 Conflict`.
-- `durationMinutes` is always re-computed server-side; the client never sends it.
+- `durationMinutes` is computed automatically. A live elapsed timer is displayed on the Employee Dashboard while `isCheckedIn` is true.
+
+### 6.2 Employee Self-Service Attendance History
+
+Employees have access to a dedicated `/employee/attendance` view.
+- Displays a table of all personal `AttendanceLog` records.
+- Formats timestamps and aggregates the total `durationMinutes` worked per day.
 
 ### 6.2 HR Override
 
@@ -483,7 +492,12 @@ function auditLeave(
 ): Promise<LeaveRequest>
 ```
 
-### 7.3 Leave Audit Page (`/hr/leave-audit`)
+### 7.3 Global Leave Settings
+
+The HR Manager has access to global settings that affect leave calculations company-wide:
+- **Exclude Weekends Toggle**: When active, weekends (Saturdays and Sundays) are automatically subtracted from the `daysCount` calculation when an employee requests leave.
+
+### 7.4 Leave Audit Page (`/hr/leave-audit`)
 
 **Filters available:**
 - Date range (leave start/end)
