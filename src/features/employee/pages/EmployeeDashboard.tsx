@@ -37,10 +37,27 @@ export function EmployeeDashboard() {
   }
 
   const [time, setTime] = useState(new Date())
+  const [elapsedTime, setElapsedTime] = useState('00h 00m 00s')
+
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000)
+    const timer = setInterval(() => {
+      const now = new Date()
+      setTime(now)
+      
+      if (isCheckedIn && todayLog?.checkIn) {
+        const diffMs = now.getTime() - new Date(todayLog.checkIn).getTime()
+        const diffHrs = Math.floor(diffMs / 3600000)
+        const diffMins = Math.floor((diffMs % 3600000) / 60000)
+        const diffSecs = Math.floor((diffMs % 60000) / 1000)
+        setElapsedTime(
+          `${diffHrs.toString().padStart(2, '0')}h ${diffMins.toString().padStart(2, '0')}m ${diffSecs.toString().padStart(2, '0')}s`
+        )
+      } else {
+        setElapsedTime('00h 00m 00s')
+      }
+    }, 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [isCheckedIn, todayLog?.checkIn])
 
   return (
     <main className="pt-8 pb-32 px-6 max-w-7xl mx-auto">
@@ -78,9 +95,16 @@ export function EmployeeDashboard() {
 
         {/* Check-in Action Card */}
         <div className="lg:col-span-4 bg-primary-container rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-primary/20">
-          <div className="relative z-10">
-            <h3 className="text-on-primary-container text-xl font-bold font-headline mb-1">Office Presence</h3>
-            <p className="text-on-primary-container/70 text-sm">Tap to update your current status</p>
+          <div className="relative z-10 flex justify-between items-start">
+            <div>
+              <h3 className="text-on-primary-container text-xl font-bold font-headline mb-1">Office Presence</h3>
+              <p className="text-on-primary-container/70 text-sm">Tap to update your current status</p>
+            </div>
+            {isCheckedIn && (
+              <div className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-lg text-sm font-bold font-mono tracking-wider shadow-inner">
+                {elapsedTime}
+              </div>
+            )}
           </div>
           <button 
             onClick={handleAttendance}

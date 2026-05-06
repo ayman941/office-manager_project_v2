@@ -1,8 +1,9 @@
 import { Outlet, Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthContext'
+import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings } from 'lucide-react'
+import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings, Clock } from 'lucide-react'
 
 export function EmployeeLayout() {
   const { user } = useAuth()
@@ -16,6 +17,7 @@ export function EmployeeLayout() {
             <span className="text-xl font-black tracking-tighter text-primary font-headline">SmartOffice</span>
           </div>
           <div className="flex items-center gap-4">
+            <PortalSwitcher activePortal="employee" />
             <button className="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 text-primary">
               <Bell size={24} />
             </button>
@@ -31,6 +33,10 @@ export function EmployeeLayout() {
         <Link className="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" to="/employee/dashboard">
           <LayoutGrid size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Home</span>
+        </Link>
+        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" to="/employee/attendance">
+          <Clock size={24} />
+          <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Time</span>
         </Link>
         <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" to="/employee/food">
           <Utensils size={24} />
@@ -54,6 +60,9 @@ export function EmployeeLayout() {
         <div className="flex flex-col gap-8">
           <Link to="/employee/dashboard">
             <LayoutGrid className="text-primary" size={24} />
+          </Link>
+          <Link to="/employee/attendance">
+            <Clock className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
           </Link>
           <Link to="/employee/food">
             <Utensils className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />

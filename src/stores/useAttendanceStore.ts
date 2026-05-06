@@ -31,7 +31,7 @@ let _nextId = 1
 const MOCK_LOGS: AttendanceLog[] = [
   {
     id: 'log-seed-1',
-    employeeId: 'u1',
+    employeeId: 'u2',
     date: new Date().toISOString().split('T')[0],
     checkIn: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
     source: 'System',

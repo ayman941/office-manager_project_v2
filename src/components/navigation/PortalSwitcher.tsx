@@ -1,38 +1,49 @@
 import { RadioGroup } from '@headlessui/react'
 import { cn } from '@/utils/cn'
 import { useAuth } from '@/features/auth/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
-export type Portal = 'manager' | 'employee' | 'hr'
+export type Portal = 'manager' | 'employee' | 'hr' | 'canteen'
 
 export interface PortalSwitcherProps {
   activePortal: Portal
-  onSwitch: (portal: Portal) => void
 }
 
 const PORTALS: { value: Portal; label: string }[] = [
   { value: 'hr',       label: 'HR View' },
   { value: 'manager',  label: 'Manager View' },
+  { value: 'canteen',  label: 'Canteen View' },
   { value: 'employee', label: 'Employee View' },
 ]
 
-export function PortalSwitcher({ activePortal, onSwitch }: PortalSwitcherProps) {
+export function PortalSwitcher({ activePortal }: PortalSwitcherProps) {
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   // Filter portals based on role
   const visiblePortals = PORTALS.filter((p) => {
-    if (user?.role === 'hr_manager') return true
-    if (user?.role === 'manager') return p.value !== 'hr'
-    return p.value === 'employee' // default fallback
+    if (p.value === 'employee') return true // Everyone allowed here can see it
+    if (user?.role === 'hr_manager' && p.value === 'hr') return true
+    if (user?.role === 'manager' && p.value === 'manager') return true
+    if (user?.role === 'canteen' && p.value === 'canteen') return true
+    return false
   })
 
   // Only show if more than one option is available
   if (visiblePortals.length <= 1) return null;
 
+  const handleSwitch = (portal: Portal) => {
+    if (portal === 'hr') navigate('/hr/dashboard')
+    if (portal === 'manager') navigate('/manager/dashboard')
+    if (portal === 'canteen') navigate('/canteen/dashboard')
+    if (portal === 'employee') navigate('/employee/dashboard')
+  }
+
   return (
     <RadioGroup
       value={activePortal}
-      onChange={onSwitch}
-      className="inline-flex rounded-lg bg-gray-100 p-0.5 gap-0.5"
+      onChange={handleSwitch}
+      className="inline-flex rounded-lg bg-surface-container-high p-1 gap-1 items-center shadow-inner"
     >
       <RadioGroup.Label className="sr-only">Switch portal view</RadioGroup.Label>
       {visiblePortals.map((portal) => (
@@ -41,10 +52,10 @@ export function PortalSwitcher({ activePortal, onSwitch }: PortalSwitcherProps) 
           value={portal.value}
           className={({ checked }) =>
             cn(
-              'cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1',
+              'cursor-pointer rounded-md px-4 py-1.5 text-xs font-bold transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
               checked
-                ? 'bg-white text-brand-700 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-white text-primary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface hover:bg-white/50'
             )
           }
         >

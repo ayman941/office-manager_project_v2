@@ -56,14 +56,7 @@ export function HRLayout() {
             </div>
           </div>
           <div className="flex items-center gap-6">
-            <PortalSwitcher 
-              activePortal="hr" 
-              onSwitch={(portal) => {
-                if (portal === 'hr') navigate('/hr/dashboard')
-                if (portal === 'manager') navigate('/manager/dashboard')
-                if (portal === 'employee') navigate('/employee/dashboard')
-              }} 
-            />
+            <PortalSwitcher activePortal="hr" />
             <div className="flex items-center gap-2">
               <button className="p-2 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-colors">
                 <Bell size={24} />

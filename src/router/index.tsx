@@ -12,6 +12,7 @@ import { NewFoodOrderPage }      from '@/features/food/pages/NewFoodOrderPage'
 import { FoodOrderTrackingPage } from '@/features/food/pages/FoodOrderTrackingPage'
 import { LeaveRequestListPage }  from '@/features/leave/pages/LeaveRequestListPage'
 import { NewLeaveRequestPage }   from '@/features/leave/pages/NewLeaveRequestPage'
+import { MyAttendancePage }      from '@/features/employee/pages/MyAttendancePage'
 
 // Manager pages
 import { ManagerDashboardPage }    from '@/features/manager/pages/ManagerDashboardPage'
@@ -56,13 +57,14 @@ export function AppRouter() {
         <Route
           path="/employee"
           element={
-            <RoleGuard allowedRoles={['employee', 'manager']}>
+            <RoleGuard allowedRoles={['employee', 'manager', 'hr_manager', 'canteen']}>
               <EmployeeLayout />
             </RoleGuard>
           }
         >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<EmployeeDashboard />} />
+          <Route path="attendance" element={<MyAttendancePage />} />
           <Route path="leave"     element={<LeaveRequestListPage />} />
           <Route path="leave/new" element={<NewLeaveRequestPage />} />
           <Route path="food"      element={<FoodOrderList />} />

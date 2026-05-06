@@ -54,10 +54,7 @@ export function ManagerLayout() {
             <span className="text-xl font-black tracking-tighter text-cyan-800 dark:text-cyan-400 font-headline">SmartOffice</span>
           </div>
           <div className="flex items-center gap-4">
-            <PortalSwitcher 
-              activePortal={activePortal} 
-              onSwitch={(portal) => navigate(portal === 'employee' ? '/employee/dashboard' : '/manager/dashboard')}
-            />
+            <PortalSwitcher activePortal={activePortal as any} />
             <button className="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200">
               <Bell className="text-cyan-900 dark:text-cyan-100" size={24} />
             </button>

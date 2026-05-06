@@ -1,6 +1,7 @@
 import { Outlet, Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
+import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { UserMenu } from '@/shared/ui/UserMenu'
 import { LayoutDashboard, UtensilsCrossed, ReceiptText, Archive, Settings, Search, Bell, LayoutGrid, Utensils, Plus } from 'lucide-react'
 
@@ -78,6 +79,7 @@ export function CanteenLayout() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <PortalSwitcher activePortal="canteen" />
             <button className="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors active:scale-95 duration-200">
               <Search size={24} />
             </button>
