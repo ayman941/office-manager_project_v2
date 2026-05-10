@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Hub - SmartOffice</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#81f3e5",
+                        "on-tertiary-fixed-variant": "#773200",
+                        "secondary-fixed-dim": "#66d9cc",
+                        "on-primary-fixed": "#001f28",
+                        "surface-container-highest": "#dfe3e8",
+                        "outline": "#6f787d",
+                        "on-tertiary-fixed": "#331200",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "surface": "#f7f9ff",
+                        "surface-dim": "#d7dae0",
+                        "background": "#f7f9ff",
+                        "surface-variant": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#181c20",
+                        "on-primary-fixed-variant": "#004d61",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary-fixed": "#00201d",
+                        "outline-variant": "#bfc8cd",
+                        "on-primary-container": "#a0e2fc",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006a62",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-background": "#181c20",
+                        "tertiary-container": "#9c4400",
+                        "surface-container-high": "#e5e8ee",
+                        "primary": "#004d61",
+                        "primary-fixed": "#b8eaff",
+                        "primary-fixed-dim": "#8ed0e9",
+                        "surface-bright": "#f7f9ff",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#1a667d",
+                        "secondary-fixed": "#84f5e8",
+                        "on-tertiary-container": "#ffceb5",
+                        "surface-container": "#ebeef4",
+                        "inverse-on-surface": "#eef1f7",
+                        "surface-container-low": "#f1f4fa",
+                        "inverse-primary": "#8ed0e9",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#773200",
+                        "primary-container": "#1a667d",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2d3135",
+                        "on-surface-variant": "#3f484c",
+                        "on-secondary-container": "#006f66",
+                        "tertiary-fixed-dim": "#ffb68f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-glass {
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen selection:bg-secondary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm dark:shadow-none h-16 flex justify-between items-center px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-primary-fixed ring-2 ring-surface-container-high">
+<img alt="Employee Profile Picture" class="w-full h-full object-cover" data-alt="portrait of a professional young man in a clean office environment with soft natural lighting and modern aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVzxrsp0S8jDfmy7D6pj1RnJmD-TKwwVNM7y_Hz5ZvZan7YKKCCN_La8kzNl8vE-zjyd9MSPsBEsNgpYew_5nNS8vyvYgFjq42v7EF-BLrYukhqiDoL5VFkq8irEb6rG39Txt4f97sNE2m0gcXR7s0qSab5JD7XgbWV-r6mdJHXSK_z5MCf4TeAPICoZNxRvN07J8ct-etszgPmt_KTd_CRSMgbdvspfzoSwi9Ecf4rjFWla-ZDAM6B-40ASUj1-wK2e4L3E2qe-A"/>
+</div>
+<span class="text-xl font-black tracking-tighter text-cyan-800 dark:text-cyan-400 font-headline">SmartOffice</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 text-cyan-900 dark:text-cyan-100">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Hero Personal Greeting -->
+<section class="mb-10 grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-8 flex flex-col justify-center">
+<div class="mb-2 text-primary font-bold tracking-wider uppercase text-xs font-label">Good Morning, Alex</div>
+<h1 class="text-4xl lg:text-5xl font-headline font-extrabold tracking-tight text-on-surface leading-tight">
+                    Welcome to your <br/>
+<span class="text-surface-tint">Architectural Flow.</span>
+</h1>
+<div class="mt-4 flex items-center gap-4">
+<div class="flex flex-col">
+<span class="text-3xl font-headline font-bold text-on-surface">09:42 AM</span>
+<span class="text-sm text-on-surface-variant">Monday, Oct 23rd</span>
+</div>
+<div class="h-10 w-px bg-outline-variant/30"></div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-secondary-container/30 text-on-secondary-container rounded-full text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        Checked in at 9:00 AM
+                    </div>
+</div>
+</div>
+<!-- Check-in Action Card -->
+<div class="lg:col-span-4 bg-primary-container rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-primary/20">
+<div class="relative z-10">
+<h3 class="text-on-primary-container text-xl font-bold font-headline mb-1">Office Presence</h3>
+<p class="text-on-primary-container/70 text-sm">Tap to update your current status</p>
+</div>
+<button class="relative z-10 mt-8 w-full bg-surface-container-lowest text-primary py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-transform active:scale-95 hover:bg-white shadow-lg">
+<span class="material-symbols-outlined">logout</span>
+                    Check Out
+                </button>
+<!-- Decorative element -->
+<div class="absolute -right-4 -bottom-4 w-32 h-32 bg-on-primary-container/10 rounded-full blur-3xl"></div>
+</div>
+</section>
+<!-- Bento Grid Features -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Quick Link: Order Food -->
+<div class="md:col-span-1 bg-surface-container-low rounded-3xl p-6 transition-all hover:translate-y-[-4px] group">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-container flex items-center justify-center text-on-tertiary-container mb-12 shadow-inner">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<h4 class="text-xl font-headline font-bold mb-2">Order Food</h4>
+<p class="text-on-surface-variant text-sm mb-6">Explore the chef's specials for today's lunch.</p>
+<div class="flex items-center text-primary font-bold text-sm group-hover:gap-2 transition-all">
+                    Go to Buffet <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Quick Link: Request Leave -->
+<div class="md:col-span-1 bg-surface-container-low rounded-3xl p-6 transition-all hover:translate-y-[-4px] group">
+<div class="w-12 h-12 rounded-2xl bg-secondary-container flex items-center justify-center text-on-secondary-container mb-12 shadow-inner">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<h4 class="text-xl font-headline font-bold mb-2">Request Leave</h4>
+<p class="text-on-surface-variant text-sm mb-6">Planning a getaway? Submit your request here.</p>
+<div class="flex items-center text-primary font-bold text-sm group-hover:gap-2 transition-all">
+                    Book Time <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Summary Card: Leave Balance -->
+<div class="md:col-span-1 lg:col-span-2 bg-surface-container-lowest rounded-3xl p-6 shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-start mb-8">
+<h4 class="text-lg font-headline font-bold">Leave Balance</h4>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full">Annual Cycle</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-low rounded-2xl">
+<div class="text-3xl font-headline font-extrabold text-primary">12</div>
+<div class="text-xs text-on-surface-variant uppercase tracking-widest font-bold mt-1">Paid Days Left</div>
+</div>
+<div class="p-4 bg-tertiary-fixed rounded-2xl">
+<div class="text-3xl font-headline font-extrabold text-on-tertiary-fixed">04</div>
+<div class="text-xs text-on-tertiary-fixed-variant uppercase tracking-widest font-bold mt-1">Sick Days</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-surface-dim"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-surface-dim"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-surface-dim flex items-center justify-center text-[10px] font-bold">+2</div>
+</div>
+<span class="text-xs text-on-surface-variant italic">Next holiday: Nov 1st</span>
+</div>
+</div>
+<!-- Active Food Order -->
+<div class="md:col-span-2 lg:col-span-2 bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/10 relative">
+<div class="flex h-full flex-col md:flex-row">
+<div class="w-full md:w-1/2 h-48 md:h-auto relative">
+<img alt="Lunch Order" class="w-full h-full object-cover" data-alt="gourmet healthy salad bowl with vibrant vegetables and proteins on a marble table with bright daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3ECEq6bZkXPtJV7dIBOJW2kEHkVAmY_UK9KgobTbK65_YaT6McSxSQQovjqvC-pmLmVvV8M0Z7xV6wfhd8d_Eu4y1CyjR3ZxGNnRyPbovbtlGzNFWm77MP2wF-cu-k_YGxJywRYOn79Q4GPnb5GHTorUX53mu6BFfNJVTxHT0K-IhiBHJPcG2H4uVli5zmgiQub_yaqnKXKUKNOCbqe4-50c1HGidgdWWYT-8EXpUQa0oB5oGiFkoRSMo6n4nO7maEHpLb5zdxPc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest md:hidden"></div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-xs font-bold text-secondary uppercase tracking-widest">Active Order</span>
+</div>
+<h4 class="text-xl font-headline font-bold mb-1">Miso-Glazed Salmon</h4>
+<p class="text-on-surface-variant text-sm mb-auto">Order #4429 • Est. 12:30 PM</p>
+<div class="mt-6">
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-2/3 h-full bg-secondary-container"></div>
+</div>
+<div class="flex justify-between mt-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Kitchen</span>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Ready</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Corporate Policy Snippet -->
+<div class="md:col-span-1 lg:col-span-2 bg-primary/5 rounded-3xl p-6 border-2 border-dashed border-primary/10 flex items-center gap-6">
+<div class="w-16 h-16 shrink-0 rounded-2xl bg-white flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-3xl">policy</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Updated Remote Policy</h4>
+<p class="text-sm text-on-surface-variant mt-1">Review the new flexible working guidelines effective from next month.</p>
+<button class="mt-3 text-primary text-xs font-bold underline underline-offset-4">Read Document</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl z-50 shadow-[0_-1px_10px_rgba(0,0,0,0.05)] rounded-t-2xl md:hidden">
+<a class="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Food</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Leave</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Menu</span>
+</a>
+</nav>
+<!-- Desktop Sidebar Suggestion (Responsive Context) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-20 flex-col items-center py-8 bg-surface-container-low z-40 border-r border-outline-variant/10">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary mb-12">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<div class="flex flex-col gap-8">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">restaurant</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">receipt_long</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">calendar_today</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">policy</span>
+</div>
+<div class="mt-auto">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">settings</span>
+</div>
+</aside>
+</body></html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus Canteen - Meal Planner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#181c20",
+                        "surface": "#f7f9ff",
+                        "surface-variant": "#dfe3e8",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef1f7",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#66d9cc",
+                        "primary": "#004d61",
+                        "on-surface-variant": "#3f484c",
+                        "tertiary-container": "#9c4400",
+                        "surface-bright": "#f7f9ff",
+                        "on-secondary-fixed": "#00201d",
+                        "surface-container-high": "#e5e8ee",
+                        "on-primary-container": "#a0e2fc",
+                        "tertiary-fixed": "#ffdbca",
+                        "surface-container": "#ebeef4",
+                        "on-secondary-container": "#006f66",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001f28",
+                        "inverse-surface": "#2d3135",
+                        "primary-fixed-dim": "#8ed0e9",
+                        "primary-fixed": "#b8eaff",
+                        "surface-container-highest": "#dfe3e8",
+                        "tertiary-fixed-dim": "#ffb68f",
+                        "on-tertiary-container": "#ffceb5",
+                        "outline-variant": "#bfc8cd",
+                        "on-background": "#181c20",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-dim": "#d7dae0",
+                        "secondary-container": "#81f3e5",
+                        "surface-tint": "#1a667d",
+                        "secondary-fixed": "#84f5e8",
+                        "primary-container": "#1a667d",
+                        "on-primary-fixed-variant": "#004d61",
+                        "on-tertiary-fixed": "#331200",
+                        "secondary": "#006a62",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#773200",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#8ed0e9",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#773200",
+                        "background": "#f7f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f1f4fa",
+                        "outline": "#6f787d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(247, 249, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="fixed left-0 top-0 h-full p-4 flex flex-col gap-2 z-50 bg-surface-container-low dark:bg-surface-container h-screen w-64 md:flex hidden">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-lg text-on-surface dark:text-inverse-on-surface leading-tight">Canteen Ops</h2>
+<p class="font-body text-xs text-on-surface-variant">Staff Portal</p>
+</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- ACTIVE TAB: Meal Planner -->
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 text-primary dark:text-primary-fixed-dim font-bold bg-surface-container-high dark:bg-surface-container-highest rounded-lg font-body text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span>Meal Planner</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>All Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-body text-label-lg hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-body text-label-lg hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 min-h-screen">
+<!-- TopNavBar (Authority Source: JSON) -->
+<header class="flex items-center justify-between px-6 w-full h-16 sticky top-0 z-40 bg-surface dark:bg-on-surface">
+<div class="flex items-center gap-8">
+<h1 class="font-headline font-extrabold text-xl tracking-tight text-primary dark:text-primary-fixed">Nexus Canteen</h1>
+<div class="hidden lg:flex items-center gap-6">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary font-bold font-body text-label-md py-5" href="#">Meal Planner</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-body text-label-md" href="#">Analytics</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-body text-label-md" href="#">Help Center</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary hover:bg-primary-container text-on-primary px-5 py-2 rounded-lg font-bold text-sm active:scale-95 transition-transform">
+                    Create Order
+                </button>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+</div>
+<img alt="Canteen Staff Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container" data-alt="A professional headshot of a canteen manager wearing a clean, modern hospitality uniform. The lighting is soft and natural, emphasizing a friendly and competent expression. Behind them is a blurred, high-end corporate canteen environment with sleek surfaces and warm, inviting tones consistent with a premium office workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATHcFPhBYNfsnBs29jDZgtblSsNpmwLpWcfualHQErSON7U5GhLL6xOmAvtVkw8WjPO0f6JbfAJtgKgWEazrCYvlraSlw7ayHyiw4gLZDOAwwpCr8t7dGpRwC1Uu-_t-BIi6evou_Mc6A8H5tK_i1drU3q8zcxI9sQ6UtCujDfGn-Nqh_86jTfeRJYr5yMM10ewV1I_AsfgqFrlqw80LPCO-1TFabMdGFdd6tjr85Q-rSbW9GvUEYC7gQQGoUoUrUdiFXtZZD2l0cj"/>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-8 space-y-8">
+<!-- Hero Header Section with Bento Elements -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Main Date Selector -->
+<div class="lg:col-span-2 relative overflow-hidden rounded-xl h-64 flex flex-col justify-end p-8 text-on-primary">
+<div class="absolute inset-0 z-0">
+<img alt="Hero background" class="w-full h-full object-cover" data-alt="A wide, cinematic view of a modern office cafeteria during a quiet morning hours. The space features floor-to-ceiling glass windows allowing soft morning light to flood the room. The interior design uses a palette of deep teals and warm woods, with minimalist furniture and high-end culinary presentation stations. The atmosphere is calm, professional, and sophisticated." src="https://lh3.googleusercontent.com/aida/ADBb0uhen8AM2pLtlEqOvR_arpVLGTht7-EPzV4RhsqiI45EHavfWBGtGHLhy5wojbSgFp9N3FMwBeJ7brkxPq6SH_o17_DN2TnM7mkx_v8G8VN-uRsxRFlgO-RZaQcA86nGKX2jHZQbQSmXmL1qyOoGutgcaOwJjhgSXEPvYsx2rVJp4V42qoyaWIPGMoV6R5VfIozojKpPwqocAjVIv3bYlWr9CaLXb9tGtznuN5ICzeJGmgJugn-bMH8YirOR3ufNl_5JhQcjkvTcTEw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+</div>
+<div class="relative z-10">
+<span class="text-primary-fixed font-bold tracking-widest text-xs uppercase">Planner Overview</span>
+<h2 class="font-display text-4xl font-extrabold mt-1">Weekly Culinary Schedule</h2>
+<p class="text-primary-fixed/80 mt-2 max-w-md">Manage nutrient-balanced menus for the executive team and staff. Ensuring peak performance through better nutrition.</p>
+</div>
+</div>
+<!-- Quick Stats Bento Card -->
+<div class="bg-primary-container rounded-xl p-6 flex flex-col justify-between border-none">
+<div class="flex justify-between items-start">
+<div class="bg-on-primary-container/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="trending_up">trending_up</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full text-[10px] font-bold">12% GROWTH</span>
+</div>
+<div>
+<div class="text-on-primary-container/60 text-sm font-medium">Predicted Orders Today</div>
+<div class="text-3xl font-display font-extrabold text-on-primary-container mt-1">482 Meals</div>
+</div>
+<div class="pt-4 border-t border-on-primary-container/10">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border border-primary-container" data-alt="Close-up portrait of a corporate employee in a business casual outfit, smiling warmly with natural outdoor lighting and a blurred office park background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8JRSuq4WRxS5tSTxCLQnVTaOPVJXpjPVJoN2O6pOYMSw82ncNDrzO7pLlE2A21Ne8JxzlQT97Qn-JFCPTAWW4SlOWp_zWomtbhSCqInme5C7IP-wQe0032Eo9N3Cg51saOz_-dO0jzL4B6OrNG0VTRbz1o8elclYtgB3AAD-2947d3QB536GDN2UWr_QqCPCN7mQfpezXZ9CRGe31siRsi8G3qfzFWNZbER6HAlF-T1mcMHqpkVn_nVSNLqWux_COs1FbiosS8e6O"/>
+<img class="w-6 h-6 rounded-full border border-primary-container" data-alt="A portrait of a diverse female professional in an urban office setting, looking confident and focused under soft studio-style lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVVLOnvzihP79kDybsPtEK3r_csTmMs1gHvaWUaCmFZ1rcnsI8hbWzXpDTMQF9R4IrhpVSLN1KMG8hrXtJpvx5QnTv0qIYjqbkIHs_hgvzKBSmPUlLCoDbRybJ9ySOBml2xm8IaRNA3Q-ZC0t2tztkoOT4TH8g-W86VF07BrcvgYBUc96zhjob1CguP2KgUL6A8xA2QPELCkayMIJ9A3WnZsYt9e7hHWpek_BTqKCJ6w9Gi_ls3ndyg1l-tALp5XRupNTvKpjIKAXm"/>
+<div class="w-6 h-6 rounded-full border border-primary-container bg-surface-container-highest flex items-center justify-center text-[8px] font-bold">+15</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Calendar Navigation -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex items-center gap-1 bg-surface-container-low p-1.5 rounded-xl">
+<button class="px-6 py-2 rounded-lg bg-surface-container-lowest text-primary font-bold shadow-sm transition-all duration-300">Daily</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">Weekly</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">Monthly</button>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<h3 class="font-headline font-bold text-lg px-4">Thursday, 24 October</h3>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high text-primary font-semibold hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+<span>Filter</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-on-primary font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>Add Item</span>
+</button>
+</div>
+</section>
+<!-- Menu Grid Section (Asymmetric Layout) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Category Sidebar -->
+<div class="lg:col-span-3 space-y-4">
+<div class="bg-surface-container-low rounded-2xl p-6">
+<h4 class="font-headline font-bold text-sm uppercase tracking-widest text-on-surface-variant mb-6">Meal Types</h4>
+<div class="space-y-2">
+<button class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-surface-container-lowest text-primary font-bold border border-primary/10 transition-all">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined text-xl" data-icon="wb_sunny">wb_sunny</span>Breakfast</span>
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full">4 Items</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined text-xl" data-icon="restaurant">restaurant</span>Lunch</span>
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full">12 Items</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined text-xl" data-icon="coffee">coffee</span>Snacks</span>
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full">8 Items</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="flex items-center gap-3"><span class="material-symbols-outlined text-xl" data-icon="local_bar">local_bar</span>Drinks</span>
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full">24 Items</span>
+</button>
+</div>
+</div>
+<!-- Daily Inspiration Card -->
+<div class="relative rounded-2xl overflow-hidden group">
+<img alt="Chef Recommendation" class="w-full h-80 object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" data-alt="A vertical, artistic shot of a chef's hands carefully garnishing a vibrant healthy meal bowl. The shot has a high-contrast aesthetic with deep shadows and spotlighting on the fresh ingredients like microgreens and heirloom radishes. The background is a clean, dark industrial kitchen, conveying a sense of culinary mastery and focus on fresh, premium ingredients." src="https://lh3.googleusercontent.com/aida/ADBb0uiUBUr7HQk35x2CrjkvzdlFM_MkJZKiO2pdbtSdXYy2H_oyX065M1YNXzNgbeaVVvDe-TPtMWFN_XmLmV3DdtaFHFNBjUDDAqFHOMkLr8uq1G5XBwsg34Y88MTjec4GNgbosCxJB9f_fXhNI3ITHIRZ9AOuHN_1YMmaZIjEylCc9nhIjAE_naLq5W_cdIy86F4k9PX3V5spcw4CmvtfsT6LYPq88Jo2GbJeQUb8Wt7z07i1sUZr225A4wdyZzJtI3mhXx_4sVsdNA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 text-on-primary">
+<p class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed">Chef's Choice</p>
+<h5 class="text-xl font-bold mt-1">Avocado Truffle Sourdough</h5>
+<button class="mt-4 text-sm font-bold flex items-center gap-2 group-hover:gap-4 transition-all">
+                                View Recipe <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Menu Items Canvas -->
+<div class="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Menu Item Card 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 group hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col gap-4">
+<div class="relative h-48 rounded-xl overflow-hidden">
+<img alt="Item Photo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A top-down, beautifully styled photograph of a classic breakfast plate featuring poached eggs on thick sourdough bread with a side of wilted spinach and roasted tomatoes. The lighting is bright and airy, typical of a high-end morning cafe. The colors are natural and appetizing, with vibrant yellows and deep greens against a white marble tabletop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzrPfrSBfOW9H8LZ1tWzvzvYJgODQpCFIOMe5dgGwjqh0VGLQfaEX4Dl_FsukxRpG6mjCZd6kWe7dPUXKVtaKi3A2glVs53bBL3CNwiWr9TRHBCLWz3Zw5rGRrvwB425si1mcxHzjkFNp5GAjYfvzuXbiSoI27vRSnVHmJcYhiAR0zqKRFI-J3r-nHQQUNo5DFlgZZ7YjirTzq_61pq8tPkbEA2ix32p6cirEb_3VQS8M7TvXLv7SfRed3hk5l5uPDONsZ0bu5wxNH"/>
+<div class="absolute top-3 right-3 flex flex-col gap-2">
+<button class="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-lg text-primary hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-lg text-error hover:bg-error hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-bold text-lg group-hover:text-primary transition-colors">Poached Egg Sourdough</h4>
+<span class="font-headline font-extrabold text-primary">$12.50</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Two farm-fresh poached eggs on toasted sourdough with micro-greens and chili flakes.</p>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-xs font-semibold text-secondary uppercase">Available</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ml-3 text-xs font-medium text-on-surface-variant">In Stock</span>
+</label>
+</div>
+</div>
+<!-- Menu Item Card 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 group hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col gap-4">
+<div class="relative h-48 rounded-xl overflow-hidden">
+<img alt="Item Photo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A macro photograph of an organic acai bowl topped with precisely arranged rows of sliced strawberries, blueberries, chia seeds, and granola. The lighting is soft and flattering, highlighting the rich purple textures of the acai. The overall aesthetic is healthy, premium, and visually stunning, suitable for a modern corporate wellness menu." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPNsOrO3uFB6Z_SDPDKCjQPIDEyszSCDNg73CBR8nfi3Scx_uZ-95kVVfHPMXK0LjAb6F0znpxctw7LJckMEXrJ-poiM8k6qWdEWJj5jvPUvuML7i8urZjG7Gu9zFXpcP8kUt8xO4OIjifSo5RFnE4IzRZndJcXHZ88ck-5kDpnHF4HsU0v63u7-WQmNCJvWkvFe9fOA99Q7GJoUH6Ek2SYShaVgUHKZnrNegRkTYyclfT96HSfsqYIuunbfc3ijGpE73Pyr2bQq0T"/>
+<div class="absolute top-3 right-3 flex flex-col gap-2">
+<button class="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-lg text-primary hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-lg text-error hover:bg-error hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-bold text-lg group-hover:text-primary transition-colors">Berry Bliss Acai</h4>
+<span class="font-headline font-extrabold text-primary">$9.00</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Organic Brazilian acai topped with seasonal berries, house-made granola, and honey drizzle.</p>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-xs font-semibold text-error uppercase">Stock Out</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ml-3 text-xs font-medium text-on-surface-variant">Out of Stock</span>
+</label>
+</div>
+</div>
+<!-- Menu Item Card 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 group hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col gap-4">
+<div class="relative h-48 rounded-xl overflow-hidden">
+<img alt="Item Photo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A clean and bright studio shot of classic Greek yogurt served in a glass bowl, topped with walnuts and a swirl of golden honey. The background is a minimalist, light blue surface that creates a fresh and healthy vibe. The composition is focused on the textures of the creamy yogurt and the crunch of the nuts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM6VV8RbPyPMPcSljKJVmjJZAed3LJpnIm3LTSGK_wlFs-jmO_KrO_yCiDzSU_wx8TCF-emqpNx5NbQAtXrnGbO14TV-B6rMgtZP-atXWfSc4HaiBXTW9SE_ObUFtX-uxSp1Hmb_3qNIOHmsV-L6AN6uiEA5HKIPcec2ThVnAAnU59wfGDKScfKVa4v9_u60R90WMWYICvcjuy85GM2uo21oqZ_4CTQcI8nTgnErNRLZDlJOKKe_zWdSLPKlSQXpNs3sbYbhYCjcyN"/>
+<div class="absolute top-3 right-3 flex flex-col gap-2">
+<button class="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-lg text-primary hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-lg text-error hover:bg-error hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-bold text-lg group-hover:text-primary transition-colors">Walnut Yogurt Bowl</h4>
+<span class="font-headline font-extrabold text-primary">$7.50</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Greek yogurt base, premium toasted walnuts, and local wildflower honey infusion.</p>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-xs font-semibold text-secondary uppercase">Available</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ml-3 text-xs font-medium text-on-surface-variant">In Stock</span>
+</label>
+</div>
+</div>
+<!-- Placeholder/Add New Card -->
+<button class="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-2xl p-5 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-high hover:border-primary transition-all duration-300 min-h-[300px]">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add_circle">add_circle</span>
+</div>
+<div class="text-center">
+<h4 class="font-headline font-bold text-lg">Add New Dish</h4>
+<p class="text-on-surface-variant text-sm">Expand your breakfast menu</p>
+</div>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface glass-panel flex items-center justify-around h-16 z-50">
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="calendar_month" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="text-[10px] font-bold">Planner</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="text-[10px] font-bold">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] font-bold">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</nav>
+</body></html>

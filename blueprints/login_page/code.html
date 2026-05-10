@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Smart Office</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#8ed0e9",
+                      "inverse-surface": "#2d3135",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb68f",
+                      "surface-tint": "#1a667d",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#bfc8cd",
+                      "on-error-container": "#93000a",
+                      "surface-container-high": "#e5e8ee",
+                      "primary-container": "#1a667d",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#773200",
+                      "surface-variant": "#dfe3e8",
+                      "primary": "#004d61",
+                      "surface-dim": "#d7dae0",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#66d9cc",
+                      "tertiary-container": "#9c4400",
+                      "secondary-fixed": "#84f5e8",
+                      "on-tertiary-fixed": "#331200",
+                      "on-background": "#181c20",
+                      "secondary-container": "#81f3e5",
+                      "outline": "#6f787d",
+                      "on-primary-fixed-variant": "#004d61",
+                      "on-error": "#ffffff",
+                      "background": "#f7f9ff",
+                      "on-surface-variant": "#3f484c",
+                      "surface": "#f7f9ff",
+                      "on-tertiary-container": "#ffceb5",
+                      "on-secondary-fixed": "#00201d",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#8ed0e9",
+                      "on-primary-fixed": "#001f28",
+                      "on-secondary-container": "#006f66",
+                      "on-secondary-fixed-variant": "#005049",
+                      "inverse-on-surface": "#eef1f7",
+                      "on-surface": "#181c20",
+                      "on-primary-container": "#a0e2fc",
+                      "tertiary": "#773200",
+                      "surface-container-highest": "#dfe3e8",
+                      "surface-container": "#ebeef4",
+                      "secondary": "#006a62",
+                      "surface-bright": "#f7f9ff",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed": "#ffdbca",
+                      "primary-fixed": "#b8eaff",
+                      "surface-container-low": "#f1f4fa"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Manrope"],
+                      "display": ["Manrope"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .brand-logo { font-family: 'Manrope', sans-serif; }
+      </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<header class="bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl docked full-width top-0 sticky no-border bg-surface-container-low z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-black tracking-tighter text-[#00677F] dark:text-cyan-400">Smart Office</div>
+<div class="flex items-center gap-4">
+<button class="text-slate-600 dark:text-slate-400 font-medium hover:text-[#00677F] dark:hover:text-cyan-300 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center p-6 relative overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
+<div class="absolute top-0 left-0 w-full h-full" data-alt="modern architectural office space with glass walls and minimalist furniture in soft natural light" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBTZDsoFuLKKSOMkdoPRaIT3PrQLuOurn2ZxSDKzBoKAGFbfA08aQApURyZvRstBKjs9-exW28BYByV6SWZl6o2wtHGJ4gL4NyvhEml6dsLqebJWLONzDaZAKyz-sPxteHzcvoUw_Ooq1FWwQxaO2UEN_HfIZRthmGxOpePv2Qx8tVe0_H7xe5YJpjqtOzYmNs_xGS7ziil9aI6djZa174O0TXut7c9Pqj-Lybyw5jQFfHmWmic_Nej5veDz97qcY8RJUYoB8Py0I'); background-size: cover; background-position: center;">
+</div>
+</div>
+<div class="w-full max-w-md z-10">
+<div class="bg-surface-container-lowest rounded-lg shadow-none border border-outline-variant/15 p-10 relative">
+<div class="mb-10 text-center">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary-container mb-6 text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined text-4xl" data-icon="corporate_fare" style="font-variation-settings: 'FILL' 1;">corporate_fare</span>
+</div>
+<h1 class="text-3xl font-extrabold tracking-tight text-on-surface mb-2">Welcome Back</h1>
+<p class="text-on-surface-variant text-sm font-medium">Please enter your workplace credentials</p>
+</div>
+<form class="space-y-6" onsubmit="return false;">
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-primary ml-1" for="email">Work Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl" data-icon="mail">mail</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-high border-0 rounded-lg focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline/60" id="email" placeholder="name@company.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="text-xs font-bold uppercase tracking-widest text-primary" for="password">Password</label>
+<a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl" data-icon="lock">lock</span>
+<input class="w-full pl-12 pr-12 py-3.5 bg-surface-container-high border-0 rounded-lg focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline/60" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center px-1">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-primary bg-surface-container-high border-0 rounded-md focus:ring-offset-0 focus:ring-2 focus:ring-primary/20" id="remember" type="checkbox"/>
+</div>
+<label class="ml-3 text-sm font-medium text-on-surface-variant cursor-pointer" for="remember">Keep me signed in</label>
+</div>
+<button class="w-full py-4 px-6 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-lg shadow-md hover:shadow-lg hover:opacity-95 transition-all active:scale-[0.98] flex items-center justify-center gap-2" type="submit">
+                        Sign In to Dashboard
+                        <span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<div class="mt-8 pt-8 border-t border-outline-variant/15 text-center">
+<p class="text-sm text-on-surface-variant">
+                        New to the platform? 
+                        <a class="text-primary font-bold hover:underline ml-1" href="#">Contact Administrator</a>
+</p>
+</div>
+</div>
+<div class="mt-8 flex justify-center gap-6">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-full text-xs font-bold text-outline uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                    SSO Enabled
+                </div>
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-full text-xs font-bold text-outline uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm" data-icon="shield" style="font-variation-settings: 'FILL' 1;">shield</span>
+                    Encrypted
+                </div>
+</div>
+</div>
+</main>
+<footer class="bg-slate-50 dark:bg-slate-950 full-width border-t border-slate-200 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 space-y-4 md:space-y-0 max-w-screen-2xl mx-auto">
+<div class="text-lg font-bold text-slate-900 dark:text-white">Smart Office</div>
+<div class="font-inter text-sm text-slate-500 dark:text-slate-400">© 2024 Smart Office Systems. All rights reserved.</div>
+<div class="flex space-x-6">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors opacity-80 hover:opacity-100 font-inter text-sm" href="#">Privacy Policy</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors opacity-80 hover:opacity-100 font-inter text-sm" href="#">Terms of Service</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors opacity-80 hover:opacity-100 font-inter text-sm" href="#">Security</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventory Management - Nexus Canteen</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#181c20",
+                        "surface": "#f7f9ff",
+                        "surface-variant": "#dfe3e8",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef1f7",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#66d9cc",
+                        "primary": "#004d61",
+                        "on-surface-variant": "#3f484c",
+                        "tertiary-container": "#9c4400",
+                        "surface-bright": "#f7f9ff",
+                        "on-secondary-fixed": "#00201d",
+                        "surface-container-high": "#e5e8ee",
+                        "on-primary-container": "#a0e2fc",
+                        "tertiary-fixed": "#ffdbca",
+                        "surface-container": "#ebeef4",
+                        "on-secondary-container": "#006f66",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001f28",
+                        "inverse-surface": "#2d3135",
+                        "primary-fixed-dim": "#8ed0e9",
+                        "primary-fixed": "#b8eaff",
+                        "surface-container-highest": "#dfe3e8",
+                        "tertiary-fixed-dim": "#ffb68f",
+                        "on-tertiary-container": "#ffceb5",
+                        "outline-variant": "#bfc8cd",
+                        "on-background": "#181c20",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-dim": "#d7dae0",
+                        "secondary-container": "#81f3e5",
+                        "surface-tint": "#1a667d",
+                        "secondary-fixed": "#84f5e8",
+                        "primary-container": "#1a667d",
+                        "on-primary-fixed-variant": "#004d61",
+                        "on-tertiary-fixed": "#331200",
+                        "secondary": "#006a62",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#773200",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#8ed0e9",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#773200",
+                        "background": "#f7f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f1f4fa",
+                        "outline": "#6f787d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(247, 249, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full p-4 flex flex-col gap-2 z-50 bg-surface-container-low dark:bg-surface-container h-screen w-64">
+<div class="flex items-center gap-3 px-2 py-4 mb-4">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-lg text-on-surface dark:text-inverse-on-surface">Canteen Ops</h2>
+<p class="text-xs text-on-surface-variant">Staff Portal</p>
+</div>
+</div>
+<nav class="flex-grow flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all duration-300 font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all duration-300 font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span>Meal Planner</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all duration-300 font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>All Orders</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-primary-fixed-dim font-bold bg-surface-container-high dark:bg-surface-container-highest rounded-lg font-body text-label-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all duration-300 font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10 pt-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all font-body text-label-lg rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between px-6 w-full sticky top-0 z-40 bg-surface dark:bg-on-surface h-16 glass-nav">
+<div class="flex items-center gap-8">
+<h1 class="font-headline font-extrabold text-xl tracking-tight text-primary dark:text-primary-fixed">Nexus Canteen</h1>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-body text-label-md" href="#">Analytics</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-body text-label-md" href="#">Help Center</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-surface-container-high rounded-full px-4 py-1.5 w-64">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline" placeholder="Search inventory..." type="text"/>
+</div>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all" data-icon="apps">apps</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Canteen Staff Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a canteen staff member wearing a clean white chef uniform and a friendly smile. The background is a brightly lit, modern commercial kitchen with soft blue and white lighting, maintaining a clean and professional corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIJCC_ugscE11x-Na3sA8uKO3o_jZ2pqPPh_bvkNXJ3CKKsTZ7afWeF8jlrUKJHoMZt9hgdzGNWL4dFuB7DuKb1-h6yNYPqDGFNkuzW3xyEwIn-ulJN8cTuttL6Kr90VzrFJsojIuEVdRT-PFgKSBceO2asIKniU7eVVZvfzFx1z-HzPP81Qww1xbLmD7hTE1BWyjAFCU6AhzLJw3sPY35kkantvG7uIp6Ns5qQPg2gDJguW09DllUCzKCcn5wBzbf9WotigLfr3S1"/>
+</div>
+<button class="bg-primary-container text-on-primary text-sm font-bold px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">Create Order</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<div class="p-8 space-y-8">
+<!-- Summary Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1: Total Items -->
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-4 relative overflow-hidden group">
+<div class="flex justify-between items-start">
+<div class="p-3 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+</div>
+<span class="text-xs font-bold text-primary px-2 py-1 bg-primary-fixed rounded-full">+12 new</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant font-medium">Total Items</p>
+<h3 class="text-3xl font-headline font-extrabold text-on-surface mt-1">1,248</h3>
+</div>
+<div class="h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4 rounded-full"></div>
+</div>
+</div>
+<!-- Card 2: Low Stock Alerts -->
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-4 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="p-3 bg-error/10 rounded-lg text-error">
+<span class="material-symbols-outlined" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<span class="text-xs font-bold text-error px-2 py-1 bg-error-container rounded-full">Action Required</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant font-medium">Low Stock Alerts</p>
+<h3 class="text-3xl font-headline font-extrabold text-on-surface mt-1">14</h3>
+</div>
+<p class="text-xs text-error font-medium">3 items critically low (below 5%)</p>
+</div>
+<!-- Card 3: Recent Deliveries -->
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-4 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="p-3 bg-secondary/10 rounded-lg text-secondary">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+</div>
+<button class="text-xs font-bold text-secondary hover:underline">View History</button>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant font-medium">Recent Deliveries</p>
+<h3 class="text-3xl font-headline font-extrabold text-on-surface mt-1">28</h3>
+</div>
+<p class="text-xs text-on-surface-variant">Last delivery: Today, 8:45 AM</p>
+</div>
+</div>
+<!-- Inventory Table Section -->
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+<div>
+<h2 class="text-2xl font-headline font-extrabold text-on-surface">Inventory Management</h2>
+<p class="text-on-surface-variant text-sm mt-1">Manage food supplies, dry goods, and equipment levels.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high text-primary font-bold rounded-lg hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+                            Update Stock
+                        </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold rounded-lg shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                            Add New Item
+                        </button>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-4 mb-6">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-full text-sm font-medium">All Categories</button>
+<button class="px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full text-sm font-medium hover:bg-surface-container-highest transition-all">Vegetables</button>
+<button class="px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full text-sm font-medium hover:bg-surface-container-highest transition-all">Dairy &amp; Eggs</button>
+<button class="px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full text-sm font-medium hover:bg-surface-container-highest transition-all">Dry Goods</button>
+<button class="px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full text-sm font-medium hover:bg-surface-container-highest transition-all">Beverages</button>
+<div class="ml-auto flex items-center gap-2 text-on-surface-variant text-sm border-l border-outline-variant pl-4">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+<span>Filter by: Stock Level</span>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-separate border-spacing-y-2">
+<thead>
+<tr class="text-on-surface-variant text-sm uppercase tracking-wider font-bold">
+<th class="px-4 py-3 pb-4">Item Name</th>
+<th class="px-4 py-3 pb-4">Category</th>
+<th class="px-4 py-3 pb-4">Stock Level</th>
+<th class="px-4 py-3 pb-4">Unit</th>
+<th class="px-4 py-3 pb-4">Last Updated</th>
+<th class="px-4 py-3 pb-4">Action</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<!-- Table Row 1 -->
+<tr class="bg-surface hover:bg-surface-container-low transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Fresh produce" class="w-full h-full object-cover" data-alt="A macro shot of fresh, crisp bell peppers and leafy greens, vibrant and full of texture. The lighting is bright and natural, reflecting a healthy, appetizing aesthetic. The colors are rich reds, greens, and yellows, fitting the high-end office pantry vibe." src="https://lh3.googleusercontent.com/aida/ADBb0uiUBUr7HQk35x2CrjkvzdlFM_MkJZKiO2pdbtSdXYy2H_oyX065M1YNXzNgbeaVVvDe-TPtMWFN_XmLmV3DdtaFHFNBjUDDAqFHOMkLr8uq1G5XBwsg34Y88MTjec4GNgbosCxJB9f_fXhNI3ITHIRZ9AOuHN_1YMmaZIjEylCc9nhIjAE_naLq5W_cdIy86F4k9PX3V5spcw4CmvtfsT6LYPq88Jo2GbJeQUb8Wt7z07i1sUZr225A4wdyZzJtI3mhXx_4sVsdNA"/>
+</div>
+<span class="font-semibold text-on-surface">Organic Milk 2%</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Dairy &amp; Eggs</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-15%" style="width: 15%;"></div>
+</div>
+<span class="text-error font-bold text-xs uppercase">Low Stock</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Liters</td>
+<td class="px-4 py-4 text-on-surface-variant">2h ago</td>
+<td class="px-4 py-4 rounded-r-xl">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="edit_note">edit_note</button>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="bg-surface hover:bg-surface-container-low transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Coffee Beans" class="w-full h-full object-cover" data-alt="Close-up of premium, oily roasted coffee beans in a sleek ceramic container. The lighting is warm and directional, emphasizing the rich texture and deep brown tones. The aesthetic is sophisticated and artisanal, suitable for a high-end office environment." src="https://lh3.googleusercontent.com/aida/ADBb0uhen8AM2pLtlEqOvR_arpVLGTht7-EPzV4RhsqiI45EHavfWBGtGHLhy5wojbSgFp9N3FMwBeJ7brkxPq6SH_o17_DN2TnM7mkx_v8G8VN-uRsxRFlgO-RZaQcA86nGKX2jHZQbQSmXmL1qyOoGutgcaOwJjhgSXEPvYsx2rVJp4V42qoyaWIPGMoV6R5VfIozojKpPwqocAjVIv3bYlWr9CaLXb9tGtznuN5ICzeJGmgJugn-bMH8YirOR3ufNl_5JhQcjkvTcTEw"/>
+</div>
+<span class="font-semibold text-on-surface">Arabica Coffee Beans</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Beverages</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-85%" style="width: 85%;"></div>
+</div>
+<span class="text-on-secondary-container font-bold text-xs uppercase">Optimal</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Kilograms</td>
+<td class="px-4 py-4 text-on-surface-variant">Today, 09:12</td>
+<td class="px-4 py-4 rounded-r-xl">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="edit_note">edit_note</button>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="bg-surface hover:bg-surface-container-low transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="bakery_dining">bakery_dining</span>
+</div>
+</div>
+<span class="font-semibold text-on-surface">Whole Wheat Flour</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Dry Goods</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-45%" style="width: 45%;"></div>
+</div>
+<span class="text-primary font-bold text-xs uppercase">Healthy</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Bags (5kg)</td>
+<td class="px-4 py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-4 py-4 rounded-r-xl">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="edit_note">edit_note</button>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="bg-surface hover:bg-surface-container-low transition-colors group">
+<td class="px-4 py-4 rounded-l-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="egg">egg</span>
+</div>
+</div>
+<span class="font-semibold text-on-surface">Large Grade A Eggs</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Dairy &amp; Eggs</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-8%" style="width: 8%;"></div>
+</div>
+<span class="text-error font-bold text-xs uppercase">Critical</span>
+</div>
+</td>
+<td class="px-4 py-4 text-on-surface-variant">Cartons (12)</td>
+<td class="px-4 py-4 text-on-surface-variant">1h ago</td>
+<td class="px-4 py-4 rounded-r-xl">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="edit_note">edit_note</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="mt-8 flex items-center justify-between">
+<p class="text-sm text-on-surface-variant font-medium">Showing 1 to 4 of 1,248 items</p>
+<div class="flex items-center gap-2">
+<button class="p-2 text-outline-variant hover:text-primary transition-colors" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary text-xs font-bold">1</button>
+<button class="w-8 h-8 rounded-full text-on-surface-variant hover:bg-surface-container-high text-xs font-bold transition-all">2</button>
+<button class="w-8 h-8 rounded-full text-on-surface-variant hover:bg-surface-container-high text-xs font-bold transition-all">3</button>
+<span class="text-outline-variant text-xs">...</span>
+<button class="w-8 h-8 rounded-full text-on-surface-variant hover:bg-surface-container-high text-xs font-bold transition-all">312</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contextual Insights Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Delivery Timeline -->
+<div class="bg-surface-container-low p-8 rounded-xl">
+<h3 class="font-headline font-bold text-lg mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+                        Delivery Schedule
+                    </h3>
+<div class="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant/30">
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-xs text-on-secondary-container" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Dairy Delivery Received</p>
+<p class="text-xs text-on-surface-variant mt-1">Order #DX-9021 by FreshDaily Co.</p>
+<span class="text-[10px] font-bold text-outline uppercase mt-2 block">Today, 08:45 AM</span>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-xs text-on-primary-fixed" data-icon="local_shipping" style="font-variation-settings: 'wght' 700;">local_shipping</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Grain &amp; Flour Incoming</p>
+<p class="text-xs text-on-surface-variant mt-1">Courier: Apex Logistics • ETA 1h 20m</p>
+<span class="text-[10px] font-bold text-primary uppercase mt-2 block">In Transit</span>
+</div>
+</div>
+<div class="flex gap-4 relative opacity-50">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center z-10"></div>
+<div>
+<p class="text-sm font-bold text-on-surface">Produce Market Restock</p>
+<p class="text-xs text-on-surface-variant mt-1">Scheduled for Tomorrow</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Low Stock Quick Action -->
+<div class="bg-primary text-on-primary p-8 rounded-xl flex flex-col justify-between overflow-hidden relative">
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary-container/20 rounded-full blur-3xl"></div>
+<div>
+<h3 class="font-headline font-bold text-lg mb-2">Replenishment Assistant</h3>
+<p class="text-primary-fixed-dim text-sm opacity-90 leading-relaxed">Based on your current consumption patterns and upcoming meal plan for "International Pasta Day," you are projected to run out of <span class="font-bold text-on-primary underline decoration-secondary-fixed">Semolina Flour</span> within 48 hours.</p>
+</div>
+<div class="mt-8 flex flex-col gap-4">
+<div class="bg-white/10 p-4 rounded-lg flex items-center justify-between border border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-sm font-medium">Smart Order Recommendation</span>
+</div>
+<span class="text-xs font-bold bg-white/20 px-2 py-1 rounded">25kg bulk</span>
+</div>
+<button class="w-full py-3 bg-white text-primary font-bold rounded-lg hover:bg-primary-fixed transition-all active:scale-[0.98]">Approve &amp; Order Now</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Mobile FAB (Suppressed on Web Layout per Platform Pivot rules) -->
+<div class="md:hidden fixed bottom-6 right-6">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

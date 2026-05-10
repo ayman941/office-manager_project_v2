@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartOffice Canteen | Kitchen Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#81f3e5",
+                    "on-tertiary-fixed-variant": "#773200",
+                    "secondary-fixed-dim": "#66d9cc",
+                    "on-primary-fixed": "#001f28",
+                    "surface-container-highest": "#dfe3e8",
+                    "outline": "#6f787d",
+                    "on-tertiary-fixed": "#331200",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "surface": "#f7f9ff",
+                    "surface-dim": "#d7dae0",
+                    "background": "#f7f9ff",
+                    "surface-variant": "#dfe3e8",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#181c20",
+                    "on-primary-fixed-variant": "#004d61",
+                    "tertiary-fixed": "#ffdbca",
+                    "on-secondary-fixed": "#00201d",
+                    "outline-variant": "#bfc8cd",
+                    "on-primary-container": "#a0e2fc",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#006a62",
+                    "on-secondary-fixed-variant": "#005049",
+                    "on-background": "#181c20",
+                    "tertiary-container": "#9c4400",
+                    "surface-container-high": "#e5e8ee",
+                    "primary": "#004d61",
+                    "primary-fixed": "#b8eaff",
+                    "primary-fixed-dim": "#8ed0e9",
+                    "surface-bright": "#f7f9ff",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#1a667d",
+                    "secondary-fixed": "#84f5e8",
+                    "on-tertiary-container": "#ffceb5",
+                    "surface-container": "#ebeef4",
+                    "inverse-on-surface": "#eef1f7",
+                    "surface-container-low": "#f1f4fa",
+                    "inverse-primary": "#8ed0e9",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#773200",
+                    "primary-container": "#1a667d",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#2d3135",
+                    "on-surface-variant": "#3f484c",
+                    "on-secondary-container": "#006f66",
+                    "tertiary-fixed-dim": "#ffb68f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- Shell Container -->
+<div class="flex min-h-screen overflow-hidden">
+<!-- Navigation Drawer (SideNav for Desktop) -->
+<aside class="hidden md:flex h-screen w-72 flex-col gap-2 p-6 bg-slate-50 border-r-0 rounded-r-3xl shadow-2xl z-40 fixed left-0 top-0 overflow-y-auto">
+<div class="mb-8 px-2">
+<h1 class="text-2xl font-bold text-cyan-900 tracking-tighter">SmartOffice</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mt-1">Canteen Operations</p>
+</div>
+<!-- Profile Header -->
+<div class="flex items-center gap-4 mb-8 px-2">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-high">
+<img alt="Alex Rivera" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional chef in a white uniform smiling in a bright modern kitchen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbeESANRJe6_mAeE63Dj4ITY-kbtqpgEgFOlxrlNxCzRq_q97OWppMltQSO2xElFB4pvt3HNCNIGBV0teOLkvMXUrgPvIIuLJzCP-sflQRSW---u2tRXIzs-IPFw08JDP9-EmKA42dW4r0Z1h89qaY7z9geYJBZy_HJSJDn3CsDkEKmtAMU2v47rOs14Vh1NJaRrubKIPhhM-V3-WaMSraPD4XRc43Rv-tDIONHj5O46e3GcUCUs2STXR91caPwHB9gSO3V8cbNW0"/>
+</div>
+<div>
+<p class="font-headline text-sm font-bold text-cyan-900">Alex Rivera</p>
+<p class="text-xs text-slate-500">Operations Manager</p>
+</div>
+</div>
+<!-- Nav Items -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-cyan-100 text-cyan-900 font-bold rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">lunch_dining</span>
+<span class="font-manrope text-sm">Meal Planner</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-manrope text-sm">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-manrope text-sm">Leave Approvals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">policy</span>
+<span class="font-manrope text-sm">HR Policy</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-manrope text-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-primary-container rounded-2xl text-on-primary-container">
+<p class="text-xs font-bold opacity-80 uppercase tracking-tighter mb-2">System Status</p>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></div>
+<span class="text-sm font-semibold tracking-tight">Kitchen Live</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 min-h-screen pb-20 md:pb-8">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-0 md:left-72 z-40 bg-white/80 backdrop-blur-md px-6 h-16 flex justify-between items-center shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-manrope font-bold text-xl tracking-tight text-cyan-900">Orders Dashboard</h2>
+<div class="hidden lg:flex items-center gap-2 bg-surface-container px-3 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-secondary">14 Active Orders</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors active:scale-95 duration-200 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-800 font-bold text-xs border border-cyan-200">
+                        AR
+                    </div>
+</div>
+</header>
+<!-- Dashboard Content Container -->
+<div class="pt-24 px-6 max-w-[1600px] mx-auto">
+<div class="grid grid-cols-12 gap-6">
+<!-- LEFT COLUMN: Live Orders Bento Grid -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- Status Tabs -->
+<div class="flex items-center gap-4 border-b-0">
+<button class="px-6 py-2 bg-primary text-white rounded-full text-sm font-bold shadow-md">Incoming (6)</button>
+<button class="px-6 py-2 bg-surface-container text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-container-high transition-colors">Preparing (4)</button>
+<button class="px-6 py-2 bg-surface-container text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-container-high transition-colors">Out for Delivery (4)</button>
+</div>
+<!-- Orders Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Order Card: Item 1 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest">Order #8842</span>
+<h3 class="font-headline text-lg font-extrabold text-on-surface">Alex Mercer</h3>
+</div>
+<div class="bg-secondary-container/30 text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase">Preparing</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">lunch_dining</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Artisan Beef Burger</p>
+<p class="text-xs text-slate-500">No Onions, Extra Cheese</p>
+</div>
+<span class="text-sm font-bold text-primary">x1</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">local_drink</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Cold Brew Coffee</p>
+<p class="text-xs text-slate-500">Oat Milk, 2 Sugars</p>
+</div>
+<span class="text-sm font-bold text-primary">x1</span>
+</div>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-low rounded-2xl mb-5">
+<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+<span class="text-xs font-semibold text-on-surface-variant tracking-tight">Floor 4 • Zone B • Desk 142</span>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 bg-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity">Mark Ready</button>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high rounded-xl text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Order Card: Item 2 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest">Order #8845</span>
+<h3 class="font-headline text-lg font-extrabold text-on-surface">Sarah Chen</h3>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase">Pending</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">meal_lunch</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Quinoa Harvest Bowl</p>
+<p class="text-xs text-slate-500">Extra Avocado</p>
+</div>
+<span class="text-sm font-bold text-primary">x2</span>
+</div>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-low rounded-2xl mb-5">
+<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+<span class="text-xs font-semibold text-on-surface-variant tracking-tight">Floor 2 • Creative Hub • Desk 08</span>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 bg-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity">Start Prep</button>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high rounded-xl text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Order Card: Item 3 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest">Order #8849</span>
+<h3 class="font-headline text-lg font-extrabold text-on-surface">Marcus Thorne</h3>
+</div>
+<div class="bg-secondary-container/30 text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase">Preparing</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">ramen_dining</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Spicy Miso Ramen</p>
+<p class="text-xs text-slate-500">Soft boiled egg, Bamboo</p>
+</div>
+<span class="text-sm font-bold text-primary">x1</span>
+</div>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-low rounded-2xl mb-5">
+<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+<span class="text-xs font-semibold text-on-surface-variant tracking-tight">Floor 6 • Executive Wing • Boardroom 4</span>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 bg-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity">Mark Ready</button>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high rounded-xl text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Order Card: Item 4 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest">Order #8851</span>
+<h3 class="font-headline text-lg font-extrabold text-on-surface">Diana Prince</h3>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase">Pending</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">cake</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Berry Cheesecake</p>
+<p class="text-xs text-slate-500">Vegan base</p>
+</div>
+<span class="text-sm font-bold text-primary">x3</span>
+</div>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-low rounded-2xl mb-5">
+<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+<span class="text-xs font-semibold text-on-surface-variant tracking-tight">Floor 1 • Reception Area</span>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-3 bg-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity">Start Prep</button>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high rounded-xl text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Inventory & Metrics -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- Inventory Summary Card -->
+<div class="bg-surface-container p-6 rounded-[2rem] shadow-sm border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline text-lg font-extrabold text-on-surface tracking-tight">Core Inventory</h3>
+<button class="text-xs font-bold text-primary uppercase tracking-widest hover:underline">Manage All</button>
+</div>
+<div class="space-y-4">
+<!-- Inventory Item -->
+<div class="p-4 bg-surface-container-lowest rounded-2xl">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">egg</span>
+<span class="text-sm font-bold text-on-surface">Fresh Eggs</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant">42/150 units</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-[28%] h-full bg-error rounded-full"></div>
+</div>
+<p class="text-[10px] text-error font-bold uppercase mt-2">Critical Stock Level</p>
+</div>
+<!-- Inventory Item -->
+<div class="p-4 bg-surface-container-lowest rounded-2xl">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">coffee</span>
+<span class="text-sm font-bold text-on-surface">Arabica Beans</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant">12.5/20 kg</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-[62%] h-full bg-secondary rounded-full"></div>
+</div>
+<p class="text-[10px] text-slate-400 font-bold uppercase mt-2 tracking-wider">Sufficient Stock</p>
+</div>
+<!-- Inventory Item -->
+<div class="p-4 bg-surface-container-lowest rounded-2xl">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">local_pizza</span>
+<span class="text-sm font-bold text-on-surface">Pizza Dough</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant">85/100 units</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-[85%] h-full bg-primary rounded-full"></div>
+</div>
+<p class="text-[10px] text-slate-400 font-bold uppercase mt-2 tracking-wider">Optimal Level</p>
+</div>
+</div>
+</div>
+<!-- Staff Performance/Quick Metrics Card -->
+<div class="bg-primary p-6 rounded-[2rem] text-white overflow-hidden relative group">
+<div class="relative z-10">
+<h3 class="font-headline text-lg font-extrabold mb-4 tracking-tight">Today's Performance</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl">
+<p class="text-[10px] uppercase font-bold opacity-70 mb-1">Avg Prep Time</p>
+<p class="text-2xl font-black">12m</p>
+</div>
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl">
+<p class="text-[10px] uppercase font-bold opacity-70 mb-1">Peak Load</p>
+<p class="text-2xl font-black">12:30</p>
+</div>
+</div>
+<div class="mt-4 p-4 bg-secondary-container rounded-2xl flex items-center gap-4 text-on-secondary-container">
+<span class="material-symbols-outlined text-3xl">trending_up</span>
+<div>
+<p class="text-xs font-extrabold uppercase tracking-widest leading-none mb-1">Revenue Pace</p>
+<p class="text-lg font-black leading-none">+12.4% vs prev Mon</p>
+</div>
+</div>
+</div>
+<!-- Abstract decorative element -->
+<div class="absolute -right-12 -bottom-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:scale-110 transition-transform"></div>
+</div>
+<!-- Waste Log Action -->
+<button class="w-full p-5 bg-surface-container-high hover:bg-surface-container-highest transition-colors rounded-[2rem] flex items-center justify-between group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-on-surface-variant group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined">delete_sweep</span>
+</div>
+<div class="text-left">
+<h4 class="font-bold text-on-surface tracking-tight">Log Daily Waste</h4>
+<p class="text-xs text-slate-500">Record kitchen surplus</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 backdrop-blur-xl rounded-t-2xl z-50 shadow-[0_-1px_10px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center bg-cyan-50 text-cyan-800 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-3 py-1.5 hover:text-cyan-600 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Food</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-3 py-1.5 hover:text-cyan-600 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-3 py-1.5 hover:text-cyan-600 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Leave</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-3 py-1.5 hover:text-cyan-600 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Menu</span>
+</a>
+</nav>
+<!-- FAB for quick action (Kitchen context: New manual order or inventory note) -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-gradient-to-br from-primary to-primary-container text-white rounded-2xl shadow-lg shadow-primary/30 flex items-center justify-center z-50 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</body></html>
