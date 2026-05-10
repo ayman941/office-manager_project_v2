@@ -1,4 +1,5 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
+import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
 import { UserMenu } from '@/shared/ui/UserMenu'
@@ -6,7 +7,6 @@ import { LayoutDashboard, IdCard, CalendarOff, BarChart2, Settings, Plus, Search
 
 export function HRLayout() {
   const { user } = useAuth()
-  const navigate = useNavigate()
 
   return (
     <div className="bg-surface text-on-background min-h-screen font-body selection:bg-secondary-container">
@@ -17,18 +17,18 @@ export function HRLayout() {
           <p className="font-manrope uppercase tracking-widest text-[10px] font-semibold text-slate-500">HR Administration</p>
         </div>
         <nav className="flex-1 space-y-1">
-          <Link className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 shadow-sm rounded-lg font-bold transition-all duration-200 translate-x-1" to="/hr/dashboard">
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/dashboard">
             <LayoutDashboard size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Overview</span>
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" to="/hr/directory">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/directory">
             <IdCard size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Directory</span>
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" to="/hr/leave-audit">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/leave-audit">
             <CalendarOff size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Leave Audit</span>
-          </Link>
+          </NavLink>
           <a className="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" href="#">
             <BarChart2 size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Org Stats</span>
@@ -81,18 +81,18 @@ export function HRLayout() {
 
       {/* BottomNavBar (Mobile) */}
       <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-[0_-1px_10px_rgba(0,0,0,0.05)] z-50 rounded-t-2xl border-t border-slate-200">
-        <Link className="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" to="/hr/dashboard">
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-300")} to="/hr/dashboard">
           <LayoutDashboard size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider">Home</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" to="/hr/directory">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-300")} to="/hr/directory">
           <IdCard size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider">Directory</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" to="/hr/leave-audit">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-300")} to="/hr/leave-audit">
           <CalendarOff size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider">Audit</span>
-        </Link>
+        </NavLink>
       </nav>
     </div>
   )

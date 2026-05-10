@@ -1,4 +1,5 @@
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
 import { UserMenu } from '@/shared/ui/UserMenu'
@@ -32,18 +33,18 @@ export function ManagerLayout() {
         </div>
         
         <nav className="flex flex-col gap-1">
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" to="/manager/dashboard">
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="/manager/dashboard">
             <LayoutDashboard size={20} /> Dashboard
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold rounded-lg font-manrope text-sm hover:translate-x-1 transition-all" to="/manager/leave">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="/manager/leave">
             <ClipboardCheck size={20} /> Leave Approvals
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" to="/manager/team">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="/manager/team">
             <Users size={20} /> Team
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg font-manrope text-sm font-medium" to="#">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="#">
             <Settings size={20} /> Settings
-          </Link>
+          </NavLink>
         </nav>
       </aside>
 
@@ -70,18 +71,18 @@ export function ManagerLayout() {
 
       {/* BottomNavBar (Mobile) */}
       <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-[0_-1px_10px_rgba(0,0,0,0.05)] z-50 rounded-t-2xl">
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" to="/manager/dashboard">
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-300")} to="/manager/dashboard">
           <LayoutDashboard size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider">Home</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" to="/manager/leave">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-300")} to="/manager/leave">
           <ClipboardCheck size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider">Approvals</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-cyan-600 dark:hover:text-cyan-300 active:scale-90 transition-transform duration-150" to="/manager/team">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-300")} to="/manager/team">
           <Users size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider">Team</span>
-        </Link>
+        </NavLink>
       </nav>
     </div>
   )

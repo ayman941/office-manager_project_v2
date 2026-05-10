@@ -1,4 +1,5 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
+import { cn } from '@/utils/cn'
 import { useAuth } from '@/features/auth/AuthContext'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 
@@ -30,26 +31,26 @@ export function EmployeeLayout() {
 
       {/* BottomNavBar */}
       <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl z-50 shadow-[0_-1px_10px_rgba(0,0,0,0.05)] rounded-t-2xl md:hidden">
-        <Link className="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" to="/employee/dashboard">
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600")} to="/employee/dashboard">
           <LayoutGrid size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Home</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" to="/employee/attendance">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600")} to="/employee/attendance">
           <Clock size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Time</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" to="/employee/food">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600")} to="/employee/food">
           <Utensils size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Food</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" to="/employee/food">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600")} to="/employee/orders">
           <ReceiptText size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Orders</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 active:scale-90 transition-transform duration-150 hover:text-cyan-600" to="/employee/leave">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600")} to="/employee/leave">
           <Calendar size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Leave</span>
-        </Link>
+        </NavLink>
       </nav>
 
       {/* Desktop Sidebar */}
@@ -58,21 +59,21 @@ export function EmployeeLayout() {
           <Zap size={24} />
         </div>
         <div className="flex flex-col gap-8">
-          <Link to="/employee/dashboard">
-            <LayoutGrid className="text-primary" size={24} />
-          </Link>
-          <Link to="/employee/attendance">
-            <Clock className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
-          </Link>
-          <Link to="/employee/food">
-            <Utensils className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
-          </Link>
-          <Link to="/employee/food">
-            <ReceiptText className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
-          </Link>
-          <Link to="/employee/leave">
-            <Calendar className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
-          </Link>
+          <NavLink to="/employee/dashboard" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <LayoutGrid size={24} />
+          </NavLink>
+          <NavLink to="/employee/attendance" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <Clock size={24} />
+          </NavLink>
+          <NavLink to="/employee/food" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <Utensils size={24} />
+          </NavLink>
+          <NavLink to="/employee/orders" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <ReceiptText size={24} />
+          </NavLink>
+          <NavLink to="/employee/leave" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <Calendar size={24} />
+          </NavLink>
           <Shield className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
         </div>
         <div className="mt-auto">

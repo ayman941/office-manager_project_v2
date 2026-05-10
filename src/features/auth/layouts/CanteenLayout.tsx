@@ -1,4 +1,5 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
+import { cn } from '@/utils/cn'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
@@ -36,22 +37,22 @@ export function CanteenLayout() {
 
         {/* Nav Items */}
         <nav className="flex flex-col gap-1">
-          <Link className="flex items-center gap-3 px-4 py-3 bg-cyan-100 text-cyan-900 font-bold rounded-lg transition-all" to="/canteen/dashboard">
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all", isActive ? "bg-cyan-100 text-cyan-900 font-bold" : "text-slate-600 hover:bg-slate-200/50 hover:translate-x-1")} to="/canteen/dashboard">
             <LayoutDashboard size={20} />
             <span className="font-manrope text-sm">Dashboard</span>
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" to="/canteen/menu">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all", isActive ? "bg-cyan-100 text-cyan-900 font-bold" : "text-slate-600 hover:bg-slate-200/50 hover:translate-x-1")} to="/canteen/menu">
             <UtensilsCrossed size={20} />
             <span className="font-manrope text-sm">Meal Planner</span>
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" to="/canteen/orders">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all", isActive ? "bg-cyan-100 text-cyan-900 font-bold" : "text-slate-600 hover:bg-slate-200/50 hover:translate-x-1")} to="/canteen/orders">
             <ReceiptText size={20} />
             <span className="font-manrope text-sm">All Orders</span>
-          </Link>
-          <Link className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" to="/canteen/inventory">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all", isActive ? "bg-cyan-100 text-cyan-900 font-bold" : "text-slate-600 hover:bg-slate-200/50 hover:translate-x-1")} to="/canteen/inventory">
             <Archive size={20} />
             <span className="font-manrope text-sm">Inventory</span>
-          </Link>
+          </NavLink>
           <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
             <Settings size={20} />
             <span className="font-manrope text-sm">Settings</span>
@@ -96,18 +97,18 @@ export function CanteenLayout() {
 
       {/* Bottom Navigation Bar (Mobile Only) */}
       <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 backdrop-blur-xl rounded-t-2xl z-50 shadow-[0_-1px_10px_rgba(0,0,0,0.05)]">
-        <Link className="flex flex-col items-center justify-center bg-cyan-50 text-cyan-800 rounded-xl px-3 py-1.5 active:scale-90 transition-transform duration-150" to="/canteen/dashboard">
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 text-cyan-800 rounded-xl" : "text-slate-400 hover:text-cyan-600")} to="/canteen/dashboard">
           <LayoutGrid size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Home</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 px-3 py-1.5 hover:text-cyan-600 active:scale-90 transition-transform duration-150" to="/canteen/menu">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 text-cyan-800 rounded-xl" : "text-slate-400 hover:text-cyan-600")} to="/canteen/menu">
           <Utensils size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Food</span>
-        </Link>
-        <Link className="flex flex-col items-center justify-center text-slate-400 px-3 py-1.5 hover:text-cyan-600 active:scale-90 transition-transform duration-150" to="/canteen/orders">
+        </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150", isActive ? "bg-cyan-50 text-cyan-800 rounded-xl" : "text-slate-400 hover:text-cyan-600")} to="/canteen/orders">
           <ReceiptText size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Orders</span>
-        </Link>
+        </NavLink>
       </nav>
 
       {/* FAB */}
