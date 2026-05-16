@@ -14,7 +14,7 @@ export function HRLayout() {
       <aside className="hidden md:flex h-screen w-64 fixed left-0 top-0 z-50 bg-slate-50 dark:bg-slate-950 flex-col p-6 space-y-2 border-r border-slate-200 dark:border-slate-800">
         <div className="mb-8">
           <h1 className="text-2xl font-black text-cyan-900 dark:text-cyan-100 font-manrope">Smart Office</h1>
-          <p className="font-manrope uppercase tracking-widest text-[10px] font-semibold text-slate-500">HR Administration</p>
+          <p className="font-manrope uppercase tracking-widest text-[10px] font-semibold text-slate-500">HR Admin</p>
         </div>
         <nav className="flex-1 space-y-1">
           <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/dashboard">
@@ -69,7 +69,7 @@ export function HRLayout() {
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
                 <p className="text-xs font-bold text-cyan-900 dark:text-cyan-100 font-manrope uppercase tracking-tight">Admin Dashboard</p>
-                <p className="text-[10px] text-slate-500">{user?.role === 'hr_manager' ? 'HR Manager' : 'Administrator'}</p>
+                <p className="text-[10px] text-slate-500">{user?.role === 'hr_manager' ? 'HR Manager' : 'HR Admin'}</p>
               </div>
               <UserMenu />
             </div>
