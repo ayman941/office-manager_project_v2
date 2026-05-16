@@ -251,7 +251,7 @@ export function HRDirectoryPage() {
             <div className="w-8 h-8 rounded-full border-2 border-white bg-secondary text-white flex items-center justify-center text-xs">HR</div>
             <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">+12</div>
           </div>
-          <p className="text-xs font-medium text-slate-500">Administrators currently managing this list</p>
+          <p className="text-xs font-medium text-slate-500">HR Admins currently managing this list</p>
         </div>
         <div className="text-xs text-slate-400 italic">Last sync: 4 minutes ago</div>
       </div>
