@@ -91,7 +91,7 @@ export function FoodOrderList() {
                 <div className="flex items-center gap-4">
                   <Badge status={order.status} />
                   <Link to={`/employee/food/track/${order.id}`}>
-                    <Button variant="outline" size="sm">Track Order</Button>
+                    <Button variant="secondary" size="sm">Track Order</Button>
                   </Link>
                 </div>
               </div>

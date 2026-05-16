@@ -1,14 +1,11 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { cn } from '@/utils/cn'
-import { useAuth } from '@/features/auth/AuthContext'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 
 import { UserMenu } from '@/shared/ui/UserMenu'
 import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings, Clock } from 'lucide-react'
 
 export function EmployeeLayout() {
-  const { user } = useAuth()
-  
   return (
     <div className="bg-surface font-body text-on-surface min-h-screen selection:bg-secondary-container">
       <main className="flex-1 md:ml-20 pb-20 md:pb-0 min-h-screen flex flex-col">

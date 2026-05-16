@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
@@ -7,7 +7,6 @@ import { Bell, LayoutDashboard, ClipboardCheck, Users, Settings } from 'lucide-r
 
 export function ManagerLayout() {
   const { pathname } = useLocation()
-  const navigate = useNavigate()
   const activePortal = pathname.startsWith('/employee') ? 'employee' : 'manager'
   const { user } = useAuth()
 

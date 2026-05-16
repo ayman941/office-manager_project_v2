@@ -2,14 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
-import { useLeaveStore } from '@/stores/useLeaveStore'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { LogOut, LogIn, Utensils, ArrowRight, Calendar, ShieldCheck } from 'lucide-react'
 
 export function EmployeeDashboard() {
   const { user } = useAuth()
   const { logs, checkIn, checkOut } = useAttendanceStore()
-  const { leaves } = useLeaveStore()
   const { orders } = useOrderStore()
   
   const today = new Date().toISOString().split('T')[0]
@@ -17,7 +15,6 @@ export function EmployeeDashboard() {
   const todayLog = logs.find(l => l.employeeId === user?.id && l.date === today)
   const isCheckedIn = !!todayLog && !todayLog.checkOut
 
-  const userLeaves = leaves.filter(l => l.requestedById === user?.id)
   const leaveBalance = 12 // Mocked annual leave balance
   const sickBalance = 4 // Mocked sick leave balance
 

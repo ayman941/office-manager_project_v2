@@ -59,9 +59,7 @@ export function PortalSwitcher({ activePortal }: PortalSwitcherProps) {
             )
           }
         >
-          {({ checked }) => (
-            <span>{portal.label}</span>
-          )}
+          {() => <span>{portal.label}</span>}
         </RadioGroup.Option>
       ))}
     </RadioGroup>

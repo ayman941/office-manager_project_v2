@@ -24,6 +24,7 @@ export function ManagerDashboardPage() {
   
   // A simple late calculation: if check-in is after 09:15 local time
   const lateCount = teamLogsToday.filter(l => {
+    if (!l.checkIn) return false
     const checkInDate = new Date(l.checkIn)
     return checkInDate.getHours() > 9 || (checkInDate.getHours() === 9 && checkInDate.getMinutes() > 15)
   }).length

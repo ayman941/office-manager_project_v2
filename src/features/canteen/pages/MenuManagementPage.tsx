@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { useMenuStore, MenuCategory } from '@/features/canteen/stores/useMenuStore'
-import { TrendingUp, ChevronLeft, ChevronRight, FilterList, Plus, Edit, Trash2, ArrowRight } from 'lucide-react'
-
 export function MenuManagementPage() {
   const { items, toggleStock, deleteItem } = useMenuStore()
   const [activeCategory, setActiveCategory] = useState<MenuCategory>('Breakfast')

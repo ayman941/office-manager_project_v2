@@ -21,10 +21,10 @@ export const useOrderStore = create<OrderStore>((set) => ({
       orderedById: 'user-1',
       status: 'Pending',
       items: [
-        { id: 'f1', name: 'Artisan Avocado Toast', price: 8.50, quantity: 1, type: 'food' },
-        { id: 'b1', name: 'Cold Brew Coffee', price: 4.50, quantity: 1, type: 'beverage' }
+        { menuItemId: 'f1', name: 'Artisan Avocado Toast', unitPrice: 850, quantity: 1 },
+        { menuItemId: 'b1', name: 'Cold Brew Coffee', unitPrice: 450, quantity: 1 },
       ],
-      totalPrice: 13.00,
+      totalAmount: 1300,
       deliveryLocation: 'East Wing, Floor 4',
       createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
       updatedAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
@@ -35,9 +35,9 @@ export const useOrderStore = create<OrderStore>((set) => ({
       orderedById: 'user-2',
       status: 'Pending',
       items: [
-        { id: 'f2', name: 'Spicy Chicken Wrap', price: 10.00, quantity: 2, type: 'food' }
+        { menuItemId: 'f2', name: 'Spicy Chicken Wrap', unitPrice: 1000, quantity: 2 },
       ],
-      totalPrice: 20.00,
+      totalAmount: 2000,
       deliveryLocation: 'Marketing, Floor 2',
       createdAt: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
       updatedAt: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
@@ -48,10 +48,10 @@ export const useOrderStore = create<OrderStore>((set) => ({
       orderedById: 'user-3',
       status: 'Preparing',
       items: [
-        { id: 'f3', name: 'Quinoa Harvest Bowl', price: 12.00, quantity: 1, type: 'food' },
-        { id: 'b2', name: 'Green Smoothie', price: 6.00, quantity: 1, type: 'beverage' }
+        { menuItemId: 'f3', name: 'Quinoa Harvest Bowl', unitPrice: 1200, quantity: 1 },
+        { menuItemId: 'b2', name: 'Green Smoothie', unitPrice: 600, quantity: 1 },
       ],
-      totalPrice: 18.00,
+      totalAmount: 1800,
       deliveryLocation: 'Engineering, Floor 3',
       createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
       updatedAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
@@ -62,9 +62,9 @@ export const useOrderStore = create<OrderStore>((set) => ({
       orderedById: 'user-4',
       status: 'OutForDelivery',
       items: [
-        { id: 'b3', name: 'Iced Latte', price: 5.00, quantity: 3, type: 'beverage' }
+        { menuItemId: 'b3', name: 'Iced Latte', unitPrice: 500, quantity: 3 },
       ],
-      totalPrice: 15.00,
+      totalAmount: 1500,
       deliveryLocation: 'Design Studio, Floor 1',
       createdAt: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
       updatedAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
