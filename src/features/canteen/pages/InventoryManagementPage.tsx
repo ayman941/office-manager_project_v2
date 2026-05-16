@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { useInventoryStore, InventoryCategory, StockStatus } from '@/features/canteen/stores/useInventoryStore'
-import { ListAlt, Warning, LocalShipping, RefreshCw, Plus, FilterList, Edit } from 'lucide-react'
-
 export function InventoryManagementPage() {
   const { items } = useInventoryStore()
   const [activeFilter, setActiveFilter] = useState<InventoryCategory>('All Categories')
