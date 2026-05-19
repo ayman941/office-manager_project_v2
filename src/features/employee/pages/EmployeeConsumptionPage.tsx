@@ -3,7 +3,7 @@ import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { Card } from '@/shared/ui'
 import { Coffee, DollarSign, TrendingUp, Calendar } from 'lucide-react'
 
-export function ConsumptionPage() {
+export function EmployeeConsumptionPage() {
   const { user } = useAuth()
   const { orders } = useOrderStore()
 

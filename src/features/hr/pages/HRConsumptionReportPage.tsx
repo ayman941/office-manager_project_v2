@@ -2,7 +2,7 @@ import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { Card } from '@/shared/ui'
 import { Users, DollarSign, BarChart2 } from 'lucide-react'
 
-export function HRConsumptionPage() {
+export function HRConsumptionReportPage() {
   const { orders } = useOrderStore()
 
   // Filter to completed/delivered orders
