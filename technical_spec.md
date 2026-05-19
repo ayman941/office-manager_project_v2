@@ -89,6 +89,19 @@ export interface LeaveRequest {
 ### 1.4 `FoodOrder`
 
 ```ts
+export interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;               // in local currency cents
+  category: 'Breakfast' | 'Lunch Specials' | 'Snacks & Drinks' | string;
+  imageUrl: string;
+  tags?: string[];
+  calories?: number;
+  isAvailable: boolean;
+  isChefSpecial?: boolean;
+}
+
 export interface FoodOrderItem {
   menuItemId: string;
   name: string;

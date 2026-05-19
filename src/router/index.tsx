@@ -68,8 +68,8 @@ export function AppRouter() {
           <Route path="attendance" element={<MyAttendancePage />} />
           <Route path="leave"     element={<LeaveRequestListPage />} />
           <Route path="leave/new" element={<NewLeaveRequestPage />} />
-          <Route path="food"      element={<FoodOrderList />} />
-          <Route path="food/new"  element={<NewFoodOrderPage />} />
+          <Route path="food"      element={<NewFoodOrderPage />} />
+          <Route path="orders"    element={<FoodOrderList />} />
           <Route path="food/track/:orderId" element={<FoodOrderTrackingPage />} />
         </Route>
 

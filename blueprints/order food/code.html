@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartOffice - Food Menu</title>
+<!-- Google Fonts: Manrope & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#331200",
+                    "on-primary-container": "#a0e2fc",
+                    "on-background": "#181c20",
+                    "primary-fixed": "#b8eaff",
+                    "surface-container-highest": "#dfe3e8",
+                    "tertiary-fixed-dim": "#ffb68f",
+                    "tertiary-fixed": "#ffdbca",
+                    "secondary-container": "#81f3e5",
+                    "tertiary": "#773200",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#d7dae0",
+                    "on-primary-fixed-variant": "#004d61",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#1a667d",
+                    "outline": "#6f787d",
+                    "secondary-fixed": "#84f5e8",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e5e8ee",
+                    "surface": "#f7f9ff",
+                    "outline-variant": "#bfc8cd",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eef1f7",
+                    "tertiary-container": "#9c4400",
+                    "on-tertiary-fixed-variant": "#773200",
+                    "on-surface-variant": "#3f484c",
+                    "primary": "#004d61",
+                    "on-tertiary-container": "#ffceb5",
+                    "primary-container": "#1a667d",
+                    "primary-fixed-dim": "#8ed0e9",
+                    "on-primary-fixed": "#001f28",
+                    "inverse-surface": "#2d3135",
+                    "surface-container-low": "#f1f4fa",
+                    "on-secondary-container": "#006f66",
+                    "inverse-primary": "#8ed0e9",
+                    "surface-container": "#ebeef4",
+                    "secondary": "#006a62",
+                    "surface-bright": "#f7f9ff",
+                    "on-secondary-fixed-variant": "#005049",
+                    "on-surface": "#181c20",
+                    "background": "#f7f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "display": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bfc8cd;
+            border-radius: 10px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .active-pill {
+            position: relative;
+        }
+        .active-pill::after {
+            content: '';
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: #004d61;
+            border-radius: 2px 0 0 2px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed antialiased">
+<!-- Sidebar (Desktop Navigation Drawer Mapping) -->
+<aside class="fixed left-0 top-0 h-full w-20 md:w-24 lg:w-72 bg-surface-container-low z-50 flex flex-col items-center lg:items-stretch transition-all duration-300">
+<!-- Logo Area -->
+<div class="p-8 flex items-center gap-3">
+<div class="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-2xl" data-icon="electric_bolt">electric_bolt</span>
+</div>
+<span class="hidden lg:block text-2xl font-black tracking-tighter text-cyan-900 font-headline">SmartOffice</span>
+</div>
+<!-- Nav Items -->
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<!-- Home -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="grid_view">grid_view</span>
+<span class="hidden lg:block font-medium">Home</span>
+</a>
+<!-- Food (Active State) -->
+<a class="flex items-center gap-4 px-4 py-3 bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 font-bold rounded-xl active-pill group transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="restaurant" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="hidden lg:block">Food</span>
+</a>
+<!-- Orders -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="receipt_long">receipt_long</span>
+<span class="hidden lg:block font-medium">Orders</span>
+</a>
+<!-- Leave -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="calendar_today">calendar_today</span>
+<span class="hidden lg:block font-medium">Leave</span>
+</a>
+<!-- HR Policy -->
+<a class="flex items-center gap-4 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="policy">policy</span>
+<span class="hidden lg:block font-medium">HR Policy</span>
+</a>
+</nav>
+<!-- Bottom Sidebar Section -->
+<div class="p-6 mt-auto border-t border-slate-200/30">
+<a class="flex items-center gap-4 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-45 transition-transform" data-icon="settings">settings</span>
+<span class="hidden lg:block font-medium">Settings</span>
+</a>
+<div class="mt-6 flex items-center gap-4 px-4 py-3 lg:bg-white/50 lg:rounded-2xl">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary font-bold overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a male corporate manager in a clean, modern office setting. He is wearing a crisp blue shirt, illuminated by soft natural light filtering through large windows. The overall aesthetic is bright, professional, and sophisticated, aligning with a high-end enterprise software user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoidzbXYX1jTXpV9onE8XUVrLxTRdSnvLcPRli6Gg66SUIDKP5q0jLxoOlVCfhRv3QBF-k0JTmcMKDUuVf7TSjyuWCSudrxhzMH1IDWJN8RuXpP8SKuiWODqQLkH5YZ882CwFf_teY1nVp206DRYGWsZ4bwFcbFb0_Eh8JeGPkyx9zUm7Afr34G-hA9qYFZItOGe72JjJYtJYF7GrUyTjSp2h0uviP9vwGynzNpwNpY8pLS0uGsgfGxAdp5ABdw32mjCCl-80bf1g"/>
+</div>
+<div class="hidden lg:block overflow-hidden">
+<p class="text-sm font-bold truncate">Alex Rivera</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider truncate">Operations Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-72 min-h-screen relative flex flex-col">
+<!-- TopAppBar -->
+<header class="h-16 lg:h-20 flex items-center justify-between px-8 bg-white/80 backdrop-blur-md sticky top-0 z-40">
+<div>
+<h1 class="text-2xl font-black tracking-tight text-on-background font-headline">Food Menu</h1>
+<p class="text-sm text-slate-500 font-medium">Wednesday, Oct 24 • Daily Curation</p>
+</div>
+<div class="flex items-center gap-4">
+<!-- Cart Trigger -->
+<button class="relative w-12 h-12 flex items-center justify-center rounded-2xl bg-surface-container hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-on-surface group-hover:scale-110 transition-transform" data-icon="shopping_bag">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">2</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-2xl bg-surface-container hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-on-surface group-hover:rotate-12 transition-transform" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="flex-1 p-8 space-y-12 pb-24">
+<!-- Category: Breakfast (Bento Grid Start) -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-xl font-bold font-headline text-cyan-900">Breakfast</h2>
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+<span class="text-xs font-bold text-slate-400 tracking-widest uppercase">08:00 - 10:30 AM</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Item 1 -->
+<div class="group bg-surface-container-lowest rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 border border-transparent hover:border-outline-variant/20">
+<div class="h-48 relative overflow-hidden">
+<img alt="Avocado Toast" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A top-down gourmet shot of artisan avocado toast on sourdough bread, topped with poached eggs, chili flakes, and microgreens. The plate sits on a minimalist marble table in a bright, sunlit cafe. The lighting is airy and high-key, using a fresh palette of vibrant greens and soft whites to create a healthy, high-end culinary vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXObEStfwR2U9Gjrl6q1GCogeo2YHGcbZ8MaTcLooYtSXKhwPl6w6b1b_xGdh5H94Za09s-xONDP6jQ86zHdJ6gA3zcV83ohiLUHgGXrDdl57z7SIE8iQp_GUI8CSEw4hm9EYJOv4pNFKEh5r_QOq9_RomTozOJHMpYhFvp7DjuvFb00Acv0Vaz8tgWA8mKouz1vbLeBEAzIHho30p0isZ6bDI8MDRC6QiG9If4UJJwyUaWDhkRpDeO23NgjeuOs_m2haK3YalBrA"/>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">$8.50</div>
+</div>
+<div class="p-6">
+<h3 class="text-lg font-bold text-on-surface mb-2">Artisan Avocado Toast</h3>
+<p class="text-sm text-slate-500 line-clamp-2 mb-6">Sourdough bread topped with mashed avocado, organic poached eggs, and a dash of red pepper flakes.</p>
+<button class="w-full py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                                Add to Cart
+                            </button>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group bg-surface-container-lowest rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="h-48 relative overflow-hidden">
+<img alt="Fruit Bowl" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A vibrant breakfast bowl filled with dragon fruit, blueberries, kiwi, and granola, beautifully arranged with a professional food stylist's precision. The background is a clean, neutral surface that makes the rich tropical colors pop. The lighting is soft and diffused, emphasizing the freshness and organic textures of the ingredients in a modern, healthy office lunch context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE_7GsD86AUesA3V7IApguhunrBT-U8qZ160JnSUwjB2dUlEruShkgAnlOYu_PYZKLOeHeO9sogee23uJigTCzZZYxbk8AcBTwuLJ4M68SmiEeNf-6XRLwDAw4oYB4ilQiSdoprIxwO_Hf1zFRIWwHoobPiUdUr9vqTYVumKc29fhxFvoEC-pqf6lLHPvdvddUwSuS3xkwxAUkEoIKg-VAPCjgQK3ZYFdPd2tDvUngf_uYXGUD0z-ZH-xA3CKZO4PowO3h4GQH1e0"/>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">$6.00</div>
+</div>
+<div class="p-6">
+<h3 class="text-lg font-bold text-on-surface mb-2">Tropical Smoothie Bowl</h3>
+<p class="text-sm text-slate-500 line-clamp-2 mb-6">Dragon fruit and banana base with house-made honey granola and seasonal fresh berries.</p>
+<button class="w-full py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                                Add to Cart
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Category: Lunch -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-xl font-bold font-headline text-cyan-900">Lunch Specials</h2>
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+<span class="text-xs font-bold text-slate-400 tracking-widest uppercase">12:00 - 02:30 PM</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Item 3: Wide Layout Bento Style -->
+<div class="lg:col-span-2 group bg-surface-container-lowest rounded-[2rem] overflow-hidden flex flex-col md:flex-row transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="w-full md:w-1/2 h-64 md:h-full relative overflow-hidden">
+<img alt="Salmon Salad" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" data-alt="A pan-seared salmon fillet served over a bed of quinoa, roasted asparagus, and cherry tomatoes, plated with Michelin-star precision. The scene is lit by warm, directional light that creates soft shadows and highlights the glistening texture of the salmon. The composition is clean and modern, evoking a premium corporate dining experience with high-quality, nutritious ingredients." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC62OfEyzD88bGm_TSa-2Bu7DtFHaM71X0LdUUt1xVW5Jt_x_NEuNSGud8X8Gkuamo6qVYTWipjX8Bd7Qc_AmvTSJNnrWmkWwNcrAuWcHdN5A6rfO_Yfo5P5iEmh-bYGjZ-HajctSPQrEMCiCLXbqG5SWInq8y-hrOh_Xsf5QWgKObBa-HSgymwWd0xS__6rq7ErspvomB9HHaZ8NWojbILEiirWVjOCAP432dua_pVwMctZvf92AZmoHB1S75JYoPyI3NTb1LgQso"/>
+<div class="absolute bottom-4 left-4 bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">Chef's Special</div>
+</div>
+<div class="w-full md:w-1/2 p-8 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-xl font-bold text-on-surface">Miso Glazed Salmon Bowl</h3>
+<span class="text-lg font-bold text-primary">$14.95</span>
+</div>
+<p class="text-sm text-slate-500 mb-8 leading-relaxed">Sustainably sourced salmon fillet with miso honey glaze, served over quinoa with charred broccoli and pickled ginger.</p>
+<div class="mt-auto space-y-4">
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded uppercase">Gluten Free</span>
+<span class="px-2 py-1 bg-surface-container-high text-slate-500 text-[10px] font-bold rounded uppercase">480 kcal</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                                    Add to Cart
+                                </button>
+</div>
+</div>
+</div>
+<!-- Item 4: Out of Stock State -->
+<div class="group bg-surface-container/50 rounded-[2rem] overflow-hidden opacity-80 cursor-not-allowed">
+<div class="h-48 relative overflow-hidden">
+<img alt="Wagyu Burger" class="w-full h-full object-cover grayscale transition-all duration-300" data-alt="A gourmet Wagyu beef burger with melting cheddar, caramelized onions, and truffle aioli on a toasted brioche bun. The image is styled with a rustic-modern feel, featuring a dark slate background. The lighting is dramatic and moody, focusing on the textures of the burger. The image appears slightly desaturated to represent an out-of-stock state in a premium UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6WKFTc04C_0SKbOmjv1BTj4KtqLT18127pKBf-eScikKz7Cy2vsZeho2-6bAbSZm6C4QDhsLYJE1m00c_81Jn_0h5EBuLbfHEXmSwfX-ZspK5szr19s1XwrWtFm-pbPszo_urlsjIbEDnCeglgcSHiSFJk5nHCxlAwrDmPMRzpnVMmqCAl5QYywhQx2q463rG_KbYLDfnz10J4Bw4GflsoS9IB4NnQ6wqlAzDcdzMvwUHDD_RJ5Zh6bJHoOTnxm1MQ629Fra6HM4"/>
+<div class="absolute inset-0 bg-slate-900/40 flex items-center justify-center backdrop-blur-[2px]">
+<span class="bg-white/90 px-4 py-2 rounded-full text-xs font-bold text-slate-900 uppercase tracking-widest shadow-xl">Out of Stock</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-lg font-bold text-slate-500 mb-2">Signature Wagyu Burger</h3>
+<p class="text-sm text-slate-400 line-clamp-2 mb-6">Wagyu beef patty, aged cheddar, caramelized onions, and truffle aioli on a brioche bun.</p>
+<button class="w-full py-3 bg-slate-200 text-slate-400 rounded-xl font-bold flex items-center justify-center gap-2 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-sm" data-icon="block">block</span>
+                                Unavailable
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Category: Snacks & Drinks -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-xl font-bold font-headline text-cyan-900">Snacks &amp; Drinks</h2>
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Drink 1 -->
+<div class="group bg-white rounded-3xl p-4 transition-all hover:shadow-xl border border-transparent hover:border-outline-variant/10">
+<div class="aspect-square rounded-2xl overflow-hidden mb-4">
+<img alt="Iced Coffee" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A cold brew coffee with swirling cream and ice cubes in a tall, minimalist glass. The setting is a clean, bright white studio, with soft natural light creating long, elegant shadows. The color palette is composed of rich coffee browns and creamy whites, fitting a modern and sophisticated corporate cafe aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvIUcd5HfgO86yBdSI-NKoRV8cUh4rXjRvoEgcwe6PFR26aQAENUl2w2bffACl_2sLCWqdJonf0W2fV1r2T96Nps9_4uIqUHATU8DHpX2qjUCLL-U-WQlWu40BxJUWazaclSOpnfWbSu2tYoelNCiAm4nE_fa_HymKDBf7nf34rkafubKShBtJ1ixyuWDg-jXlal7UzZBK3t4R2Aqfy3_sMqpjKRKvrVau1xECo21fWT4wjih3mX9LnzvT_X2yzXjjIgCanjGQokM"/>
+</div>
+<div class="flex flex-col h-[calc(100%-11rem)]">
+<h4 class="font-bold text-sm mb-1">Cold Brew with Oat Milk</h4>
+<p class="text-primary font-bold text-sm mb-4">$4.50</p>
+<button class="mt-auto w-full py-2 border-2 border-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-[16px]" data-icon="add">add</span> Add
+                            </button>
+</div>
+</div>
+<!-- Snack 1 -->
+<div class="group bg-white rounded-3xl p-4 transition-all hover:shadow-xl border border-transparent hover:border-outline-variant/10">
+<div class="aspect-square rounded-2xl overflow-hidden mb-4">
+<img alt="Energy Bar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A gourmet energy bar featuring whole almonds, dates, and dark chocolate chunks, neatly packaged in a minimalist transparent wrap with a clean label. The background is a soft blue surface that matches the primary UI color. The lighting is bright and professional, highlighting the healthy and premium nature of the office snack." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWqfBNgqeN3v5YtwPra241zDkq8LDdCPFJCTn-NxClOQJBdRblB1bAkt2KuGYfpduT4SNM_f4i7SatXW6JHGQ8vkumIwlsHRyDS7zcygeqU7WNuULWEHJOnSGV-FE6B74sIeTFzo4NIU6-inF1HJLrgW5pm21jXLIqOQzzpAxyoD5zn1qhfMtPUAf98VHxesAxdv8eoL4HbJbvwmRoVeW-k-VNJae0Q443ZyDLU63XPM2M9RNz3bQdWBPTtFSVx3Zp6LlFVWinw5k"/>
+</div>
+<div class="flex flex-col h-[calc(100%-11rem)]">
+<h4 class="font-bold text-sm mb-1">Almond &amp; Date Power Bar</h4>
+<p class="text-primary font-bold text-sm mb-4">$3.25</p>
+<button class="mt-auto w-full py-2 border-2 border-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1 active:scale-95">
+<span class="material-symbols-outlined text-[16px]" data-icon="add">add</span> Add
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Float Cart Action (Mobile Navigation Replacement Style) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-auto lg:right-12 lg:translate-x-0 z-50">
+<button class="bg-cyan-900 text-white px-8 py-4 rounded-full shadow-[0_20px_50px_rgba(0,77,97,0.3)] flex items-center gap-4 hover:scale-105 active:scale-95 transition-all group">
+<div class="relative">
+<span class="material-symbols-outlined text-2xl" data-icon="shopping_basket">shopping_basket</span>
+<span class="absolute -top-1 -right-1 bg-tertiary w-2 h-2 rounded-full border border-white"></span>
+</div>
+<span class="font-bold tracking-tight">Review Order ($23.45)</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Simple Feedback Message Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.innerText.includes('Add')) {
+                    const originalContent = this.innerHTML;
+                    this.innerHTML = '<span class="material-symbols-outlined text-sm" data-icon="check">check</span> Added';
+                    this.classList.replace('bg-primary', 'bg-secondary');
+                    setTimeout(() => {
+                        this.innerHTML = originalContent;
+                        this.classList.replace('bg-secondary', 'bg-primary');
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+</body></html>
