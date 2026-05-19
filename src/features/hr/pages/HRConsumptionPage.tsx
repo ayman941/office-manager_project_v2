@@ -1,6 +1,6 @@
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { Card } from '@/shared/ui'
-import { Users, DollarSign, BarChart2, Coffee } from 'lucide-react'
+import { Users, DollarSign, BarChart2 } from 'lucide-react'
 
 export function HRConsumptionPage() {
   const { orders } = useOrderStore()
@@ -113,7 +113,7 @@ export function HRConsumptionPage() {
               <div className="p-8 text-center text-outline">No employee data.</div>
             ) : (
               <ul className="divide-y divide-outline-variant/10">
-                {topSpenders.map((spender, idx) => (
+                {topSpenders.map((spender) => (
                   <li key={spender.userId} className="p-4 flex justify-between items-center hover:bg-surface-container-low transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
