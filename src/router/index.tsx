@@ -118,7 +118,7 @@ export function AppRouter() {
         >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard"   element={<HRDashboardPage />} />
-          <Route path="employees"   element={<HRDirectoryPage />} />
+          <Route path="directory"   element={<HRDirectoryPage />} />
           <Route path="attendance"  element={<AttendanceLogPage />} />
           <Route path="attendance/:employeeId" element={<EmployeeAttendancePage />} />
           <Route path="leave-audit" element={<LeaveAuditPage />} />
