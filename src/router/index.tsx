@@ -13,6 +13,7 @@ import { FoodOrderTrackingPage } from '@/features/food/pages/FoodOrderTrackingPa
 import { LeaveRequestListPage }  from '@/features/leave/pages/LeaveRequestListPage'
 import { NewLeaveRequestPage }   from '@/features/leave/pages/NewLeaveRequestPage'
 import { MyAttendancePage }      from '@/features/employee/pages/MyAttendancePage'
+import { ConsumptionPage }       from '@/features/employee/pages/ConsumptionPage'
 
 // Manager pages
 import { ManagerDashboardPage }    from '@/features/manager/pages/ManagerDashboardPage'
@@ -32,6 +33,7 @@ import { HRDirectoryPage }       from '@/features/hr/pages/HRDirectoryPage'
 import { LeaveAuditPage }        from '@/features/hr/pages/LeaveAuditPage'
 import { AttendanceLogPage }     from '@/features/hr/pages/AttendanceLogPage'
 import { EmployeeAttendancePage } from '@/features/hr/pages/EmployeeAttendancePage'
+import { HRConsumptionPage }     from '@/features/hr/pages/HRConsumptionPage'
 
 function UnauthorizedPage() {
   return (
@@ -70,6 +72,7 @@ export function AppRouter() {
           <Route path="leave/new" element={<NewLeaveRequestPage />} />
           <Route path="food"      element={<NewFoodOrderPage />} />
           <Route path="orders"    element={<FoodOrderList />} />
+          <Route path="consumption" element={<ConsumptionPage />} />
           <Route path="food/track/:orderId" element={<FoodOrderTrackingPage />} />
         </Route>
 
@@ -119,6 +122,7 @@ export function AppRouter() {
           <Route path="attendance"  element={<AttendanceLogPage />} />
           <Route path="attendance/:employeeId" element={<EmployeeAttendancePage />} />
           <Route path="leave-audit" element={<LeaveAuditPage />} />
+          <Route path="consumption" element={<HRConsumptionPage />} />
         </Route>
 
         {/* Catch-all */}

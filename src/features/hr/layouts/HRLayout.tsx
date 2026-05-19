@@ -3,7 +3,7 @@ import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { LayoutDashboard, IdCard, CalendarOff, BarChart2, Settings, Plus, Search, Bell, HelpCircle } from 'lucide-react'
+import { LayoutDashboard, IdCard, CalendarOff, BarChart2, Settings, Plus, Search, Bell, HelpCircle, Coffee } from 'lucide-react'
 
 export function HRLayout() {
   const { user } = useAuth()
@@ -28,6 +28,10 @@ export function HRLayout() {
           <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/leave-audit">
             <CalendarOff size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Leave Audit</span>
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/consumption">
+            <Coffee size={20} />
+            <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Consumption</span>
           </NavLink>
           <a className="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" href="#">
             <BarChart2 size={20} />

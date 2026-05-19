@@ -3,7 +3,7 @@ import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings, Clock } from 'lucide-react'
+import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings, Clock, Coffee } from 'lucide-react'
 
 export function EmployeeLayout() {
   return (
@@ -48,6 +48,10 @@ export function EmployeeLayout() {
           <Calendar size={24} />
           <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Leave</span>
         </NavLink>
+        <NavLink className={({ isActive }) => cn("flex flex-col items-center justify-center px-3 py-1.5 active:scale-90 transition-transform duration-150 hidden sm:flex", isActive ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-100 rounded-xl" : "text-slate-400 dark:text-slate-500 hover:text-cyan-600")} to="/employee/consumption">
+          <Coffee size={24} />
+          <span className="font-inter text-[11px] font-semibold uppercase tracking-wider mt-1">Costs</span>
+        </NavLink>
       </nav>
 
       {/* Desktop Sidebar */}
@@ -70,6 +74,9 @@ export function EmployeeLayout() {
           </NavLink>
           <NavLink to="/employee/leave" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <Calendar size={24} />
+          </NavLink>
+          <NavLink to="/employee/consumption" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <Coffee size={24} />
           </NavLink>
           <Shield className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
         </div>
