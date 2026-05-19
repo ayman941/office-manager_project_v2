@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add / Edit Employee - Smart Office</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001f28",
+                        "inverse-surface": "#2d3135",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d7dae0",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#66d9cc",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#a0e2fc",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#b8eaff",
+                        "outline-variant": "#bfc8cd",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffdbca",
+                        "surface-bright": "#f7f9ff",
+                        "surface-tint": "#1a667d",
+                        "surface-container-high": "#e5e8ee",
+                        "surface-container": "#ebeef4",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#8ed0e9",
+                        "on-surface-variant": "#3f484c",
+                        "secondary": "#006a62",
+                        "primary-container": "#1a667d",
+                        "on-tertiary-container": "#ffceb5",
+                        "surface-container-low": "#f1f4fa",
+                        "inverse-on-surface": "#eef1f7",
+                        "surface-container-highest": "#dfe3e8",
+                        "on-background": "#181c20",
+                        "tertiary": "#773200",
+                        "surface": "#f7f9ff",
+                        "on-tertiary-fixed": "#331200",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-surface": "#181c20",
+                        "on-primary-fixed-variant": "#004d61",
+                        "background": "#f7f9ff",
+                        "outline": "#6f787d",
+                        "surface-variant": "#dfe3e8",
+                        "secondary-container": "#81f3e5",
+                        "tertiary-fixed-dim": "#ffb68f",
+                        "on-tertiary-fixed-variant": "#773200",
+                        "secondary-fixed": "#84f5e8",
+                        "inverse-primary": "#8ed0e9",
+                        "tertiary-container": "#9c4400",
+                        "primary": "#004d61",
+                        "on-secondary-container": "#006f66"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .nav-text { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-[#f7f9ff] flex flex-col py-8">
+<div class="px-10 mb-10">
+<h1 class="text-xl font-black text-[#00677F] tracking-tighter">Smart Office</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Dashboard Tab -->
+<a class="flex items-center text-slate-500 py-3 px-10 hover:text-[#00677F] transition-colors group" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span class="font-['Manrope'] tracking-tight font-semibold">Dashboard</span>
+</a>
+<!-- Directory Tab (Active) -->
+<div class="bg-white text-[#00677F] rounded-l-full ml-4 py-3 px-6 shadow-sm flex items-center">
+<span class="material-symbols-outlined mr-4" style="font-variation-settings: 'FILL' 1;">badge</span>
+<span class="font-['Manrope'] tracking-tight font-semibold">Directory</span>
+</div>
+<!-- Payroll Tab -->
+<a class="flex items-center text-slate-500 py-3 px-10 hover:text-[#00677F] transition-colors group" href="#">
+<span class="material-symbols-outlined mr-4">payments</span>
+<span class="font-['Manrope'] tracking-tight font-semibold">Payroll</span>
+</a>
+<!-- Benefits Tab -->
+<a class="flex items-center text-slate-500 py-3 px-10 hover:text-[#00677F] transition-colors group" href="#">
+<span class="material-symbols-outlined mr-4">volunteer_activism</span>
+<span class="font-['Manrope'] tracking-tight font-semibold">Benefits</span>
+</a>
+<!-- Settings Tab -->
+<a class="flex items-center text-slate-500 py-3 px-10 hover:text-[#00677F] transition-colors group" href="#">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-['Manrope'] tracking-tight font-semibold">Settings</span>
+</a>
+</nav>
+<div class="px-8 mt-auto">
+<button class="w-full bg-[#004d61] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">add</span>
+                New Request
+            </button>
+</div>
+</aside>
+<!-- TopNavBar Component -->
+<header class="fixed top-0 right-0 left-64 h-16 z-10 bg-white/80 backdrop-blur-md flex justify-between items-center px-8">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 text-sm focus:ring-2 focus:ring-[#00677F]/20" placeholder="Search employees..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-slate-200"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-bold text-slate-900">Admin User</p>
+<p class="text-[10px] text-slate-500">Super Admin</p>
+</div>
+<img class="w-10 h-10 rounded-full object-cover" data-alt="professional male corporate portrait with neutral lighting and minimalist gray background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYPipCNdheYLYPytFkwZky3rJL0YpMxSfsrrH-me8oiFcRUVI-OpGsIqUQ2B-1RFuCY-Qvy_Anm5nlLyBcHquWlC4v9xAg1OLfFUlimO0YtDk1T24TMYFskNa8PGQSd-sQHYkDo1p3gUVzsFEBwnqJfzcOUZBMNtC0sunTGsHyUyZbmKr52_585SfO7-xXhK2YQFK0ChkZwpFHCmTbnx2CWMj_yG5Mkwn45kR2oiARxh1bkp-7dT7JLRqBgQJ08ffsRQqDfhyRP-s"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-12 px-12 max-w-7xl">
+<!-- Header Section -->
+<div class="mb-10 flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-2">
+<span>Directory</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-[#00677F]">Add Employee</span>
+</nav>
+<h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Add / Edit Employee</h2>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2.5 rounded-lg bg-surface-container-high text-primary font-bold text-sm hover:brightness-95 transition-all">Cancel</button>
+<button class="px-8 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-all">Save Changes</button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-8">
+<!-- Left Column: Primary Details (Bento-style layout) -->
+<div class="col-span-12 lg:col-span-8 space-y-8">
+<!-- Section: Personal Information -->
+<section class="bg-surface-container-lowest rounded-2xl p-8 border-none ring-1 ring-outline-variant/15">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-primary-fixed-dim">person</span>
+<h3 class="text-lg font-bold text-slate-900 tracking-tight">Personal Information</h3>
+</div>
+<div class="flex flex-col md:flex-row gap-10">
+<!-- Profile Upload -->
+<div class="flex flex-col items-center gap-4">
+<div class="relative group">
+<div class="w-32 h-32 rounded-2xl bg-surface-container-high flex items-center justify-center overflow-hidden border-2 border-dashed border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-4xl text-slate-400 group-hover:text-primary transition-colors">add_a_photo</span>
+</div>
+<button class="absolute -bottom-2 -right-2 bg-primary text-white p-2 rounded-full shadow-lg">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest text-center">Profile Photo</p>
+</div>
+<!-- Inputs Grid -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Full Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface" placeholder="Johnathan Doe" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface" placeholder="j.doe@smartoffice.com" type="email"/>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Phone Number</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Employment Details -->
+<section class="bg-surface-container-low rounded-2xl p-8">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-primary-fixed-dim">work</span>
+<h3 class="text-lg font-bold text-slate-900 tracking-tight">Employment Details</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Employee ID</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface" placeholder="SO-00245" type="text"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary-fixed-dim cursor-pointer uppercase tracking-tighter">Auto-Gen</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Join Date</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface" type="date"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Department</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface appearance-none">
+<option>Product Design</option>
+<option>Engineering</option>
+<option>Human Resources</option>
+<option>Marketing</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Job Title</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface" placeholder="Senior UI Designer" type="text"/>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Manager</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface">
+<option>Sarah Jenkins (Head of Design)</option>
+<option>Michael Chen (Lead Engineer)</option>
+<option>Admin User (Global Admin)</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Balance & Access (Floating Cards) -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Section: Leave Balances -->
+<section class="bg-surface-container-lowest rounded-2xl p-8 border-none ring-1 ring-outline-variant/15">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim">event_available</span>
+<h3 class="text-lg font-bold text-slate-900 tracking-tight">Leave Balances</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface rounded-xl">
+<div>
+<p class="text-xs font-bold text-slate-700">Annual Leave</p>
+<p class="text-[10px] text-slate-400">Days per year</p>
+</div>
+<input class="w-16 bg-white border-none rounded-lg text-center font-bold text-primary focus:ring-1 focus:ring-primary/50" type="number" value="20"/>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface rounded-xl">
+<div>
+<p class="text-xs font-bold text-slate-700">Sick Leave</p>
+<p class="text-[10px] text-slate-400">Available annually</p>
+</div>
+<input class="w-16 bg-white border-none rounded-lg text-center font-bold text-primary focus:ring-1 focus:ring-primary/50" type="number" value="10"/>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface rounded-xl">
+<div>
+<p class="text-xs font-bold text-slate-700">Emergency Leave</p>
+<p class="text-[10px] text-slate-400">Discretionary</p>
+</div>
+<input class="w-16 bg-white border-none rounded-lg text-center font-bold text-primary focus:ring-1 focus:ring-primary/50" type="number" value="5"/>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface rounded-xl">
+<div>
+<p class="text-xs font-bold text-slate-700">Unpaid Leave</p>
+<p class="text-[10px] text-slate-400">Taken to date</p>
+</div>
+<input class="w-16 bg-white border-none rounded-lg text-center font-bold text-primary focus:ring-1 focus:ring-primary/50" type="number" value="0"/>
+</div>
+</div>
+</section>
+<!-- Section: System Access -->
+<section class="bg-tertiary-container rounded-2xl p-8 text-on-tertiary-container">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined">security</span>
+<h3 class="text-lg font-bold tracking-tight">System Access</h3>
+</div>
+<div class="space-y-4">
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative flex items-center pt-1">
+<input class="w-5 h-5 rounded border-none bg-black/20 text-on-tertiary-container focus:ring-0" type="checkbox"/>
+</div>
+<div>
+<p class="font-bold text-sm">Admin Access</p>
+<p class="text-xs opacity-70 leading-relaxed">Granting admin access allows this user to manage other employees, payroll settings, and directory entries.</p>
+</div>
+</label>
+</div>
+<!-- Visual Accent (Glassmorphism card) -->
+<div class="mt-8 p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">info</span>
+<p class="text-[11px] font-medium leading-tight">Access levels can be modified later in the 'Permissions' sub-menu.</p>
+</div>
+</div>
+</section>
+<!-- Quick Action Tip -->
+<div class="bg-secondary-container p-6 rounded-2xl flex gap-4">
+<div class="bg-white/40 w-12 h-12 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-secondary-container">HR Suggestion</p>
+<p class="text-xs text-on-secondary-container/80 leading-relaxed mt-1">Based on this department, the recommended join-package is 'Standard Creative'.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Mobile Fallback (hidden on desktop) -->
+<div class="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-100 flex gap-4 z-20">
+<button class="flex-1 py-3 rounded-xl bg-surface-container-high text-primary font-bold text-sm">Cancel</button>
+<button class="flex-[2] py-3 rounded-xl bg-primary text-white font-bold text-sm shadow-xl shadow-primary/30">Save Changes</button>
+</div>
+</main>
+</body></html>

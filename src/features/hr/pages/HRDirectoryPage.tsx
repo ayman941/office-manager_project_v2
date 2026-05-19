@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { SEED_USERS } from '@/features/auth/AuthContext'
 import { UserPlus, Users, UserCheck, Plane, UserMinus, Search, Filter, Download, Eye, Edit2, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -39,10 +40,10 @@ export function HRDirectoryPage() {
           <h2 className="text-4xl font-extrabold text-on-surface font-headline tracking-tighter">Employee Directory</h2>
           <p className="text-on-surface-variant mt-1">Manage and monitor your organization's workforce from a central hub.</p>
         </div>
-        <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
+        <Link to="/hr/directory/new" className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
           <UserPlus size={20} />
           Add New Employee
-        </button>
+        </Link>
       </div>
 
       {/* Dashboard Stats Summary (Bento Minimal) */}
@@ -172,9 +173,9 @@ export function HRDirectoryPage() {
                         <button className="p-2 hover:bg-white rounded-lg text-primary shadow-sm" title="View Profile">
                           <Eye size={18} />
                         </button>
-                        <button className="p-2 hover:bg-white rounded-lg text-slate-500 shadow-sm" title="Edit">
+                        <Link to={`/hr/directory/${emp.id}/edit`} className="p-2 hover:bg-white rounded-lg text-slate-500 shadow-sm" title="Edit">
                           <Edit2 size={18} />
-                        </button>
+                        </Link>
                         <button className="p-2 hover:bg-white rounded-lg text-slate-500 shadow-sm" title="More Actions">
                           <MoreVertical size={18} />
                         </button>
@@ -220,9 +221,9 @@ export function HRDirectoryPage() {
                   <button className="p-2 hover:bg-slate-100 rounded-lg text-primary" title="View Profile">
                     <Eye size={18} />
                   </button>
-                  <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-500" title="Edit">
+                  <Link to={`/hr/directory/${emp.id}/edit`} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500" title="Edit">
                     <Edit2 size={18} />
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))

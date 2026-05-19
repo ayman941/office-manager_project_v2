@@ -23,3 +23,11 @@ The Food Menu screen enables employees to browse and order meals and snacks. It 
 - **Purpose**: The primary goal is to track inventory levels and monitor beverage and food consumption (and associated internal costs) per employee.
 - **Employee View**: A new page will be added to the Employee Portal (`/employee/consumption`) to allow individuals to track their personal consumption and cost history.
 - **HR View**: A new page will be added to the HR Portal (`/hr/consumption`) to monitor company-wide consumption trends and track individual employee costs.
+
+## 6. HR Employee Directory & Form
+- **Directory**: The HR Directory lists all employees with their department, role, and status. It supports filtering and search.
+- **Add/Edit Employee Form**: A dedicated bento-layout form (`/hr/directory/new` or `/hr/directory/:id/edit`) for managing employee records.
+  - **Personal Information**: Fields for Name, Email, Phone, and Profile Photo.
+  - **Employment Details**: Fields for Employee ID, Join Date, Department, Job Title, and Manager.
+  - **Leave Balances**: Fields to set initial/current leave balances for Annual, Sick, Emergency, and Unpaid leave.
+  - **System Access**: Checkbox to grant Admin Access.

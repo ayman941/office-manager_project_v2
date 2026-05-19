@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { RoleGuard }    from '@/components/navigation/RoleGuard'
 import { LoginPage }    from '@/features/auth/LoginPage'
 import { EmployeeLayout } from '@/features/auth/layouts/EmployeeLayout'
@@ -34,6 +34,7 @@ import { LeaveAuditPage }        from '@/features/hr/pages/LeaveAuditPage'
 import { AttendanceLogPage }     from '@/features/hr/pages/AttendanceLogPage'
 import { EmployeeAttendancePage } from '@/features/hr/pages/EmployeeAttendancePage'
 import { HRConsumptionPage }     from '@/features/hr/pages/HRConsumptionPage'
+import { HREmployeeFormPage }    from '@/features/hr/pages/HREmployeeFormPage'
 
 function UnauthorizedPage() {
   return (
@@ -119,6 +120,8 @@ export function AppRouter() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard"   element={<HRDashboardPage />} />
           <Route path="directory"   element={<HRDirectoryPage />} />
+          <Route path="directory/new" element={<HREmployeeFormPage />} />
+          <Route path="directory/:id/edit" element={<HREmployeeFormPage />} />
           <Route path="attendance"  element={<AttendanceLogPage />} />
           <Route path="attendance/:employeeId" element={<EmployeeAttendancePage />} />
           <Route path="leave-audit" element={<LeaveAuditPage />} />
