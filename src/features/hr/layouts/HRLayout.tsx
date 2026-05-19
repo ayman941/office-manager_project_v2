@@ -1,4 +1,4 @@
-import { Outlet, NavLink } from 'react-router-dom'
+import { Outlet, NavLink, Link } from 'react-router-dom'
 import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
@@ -43,10 +43,10 @@ export function HRLayout() {
           </a>
         </nav>
         <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
-          <button className="w-full py-3 bg-primary text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+          <Link to="/hr/directory/new" className="w-full py-3 bg-primary text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
             <Plus size={16} />
             <span className="font-manrope uppercase tracking-widest text-[10px]">Add Employee</span>
-          </button>
+          </Link>
         </div>
       </aside>
 

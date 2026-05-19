@@ -129,11 +129,11 @@ export function HRDashboardPage() {
           </div>
           {/* Quick Actions Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left">
+            <Link to="/hr/directory/new" className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left block">
               <span className="material-symbols-outlined text-primary group-hover:text-white mb-4 block transition-colors">person_add</span>
               <h4 className="text-sm font-bold text-on-surface group-hover:text-white font-manrope">Add New Employee</h4>
               <p className="text-xs text-on-surface-variant group-hover:text-white/80 mt-1">Register individual profile</p>
-            </button>
+            </Link>
             <button className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left">
               <span className="material-symbols-outlined text-primary group-hover:text-white mb-4 block transition-colors">ios_share</span>
               <h4 className="text-sm font-bold text-on-surface group-hover:text-white font-manrope">Export Report</h4>
