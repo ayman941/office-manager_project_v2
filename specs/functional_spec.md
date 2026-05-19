@@ -17,3 +17,9 @@ The Food Menu screen enables employees to browse and order meals and snacks. It 
 ## 4. Dependencies
 - Reads from `MenuItem` catalog (mocked or from an API).
 - Submits to `useOrderStore` to create a `FoodOrder`.
+
+## 5. Billing & Consumption Tracking
+- **Internal System**: The system is for internal tracking only. There is no actual payment gateway or real-world billing during the checkout process. Prices are meant to represent internal costs.
+- **Purpose**: The primary goal is to track inventory levels and monitor beverage and food consumption (and associated internal costs) per employee.
+- **Employee View**: A new page will be added to the Employee Portal (`/employee/consumption`) to allow individuals to track their personal consumption and cost history.
+- **HR View**: A new page will be added to the HR Portal (`/hr/consumption`) to monitor company-wide consumption trends and track individual employee costs.

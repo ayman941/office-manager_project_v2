@@ -292,7 +292,7 @@ export function NewFoodOrderPage() {
                 disabled={cart.length === 0}
                 className="w-full py-3 bg-primary text-surface font-bold rounded-xl active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
               >
-                Confirm & Pay
+                Confirm Order
               </button>
             </div>
           </div>
