@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/features/auth/useAuth'
 import { useOrderStore } from '../stores/useOrderStore'
 import { MenuItem } from '@/types'
-import { ShoppingBasket, Check, ArrowRight, Ban, Plus } from 'lucide-react'
+import { ShoppingBasket, Check, ArrowRight, Ban, Plus, Trash2, X } from 'lucide-react'
 
 const MOCK_MENU: MenuItem[] = [
   {
@@ -71,6 +71,11 @@ export function NewFoodOrderPage() {
   
   const [cart, setCart] = useState<{ menuItemId: string; name: string; quantity: number; unitPrice: number }[]>([])
   const [addedItemFeedback, setAddedItemFeedback] = useState<string | null>(null)
+  const [showCart, setShowCart] = useState(false)
+
+  const removeFromCart = (id: string) => {
+    setCart(prev => prev.filter(item => item.menuItemId !== id))
+  }
 
   const addToCart = (item: MenuItem) => {
     if (!item.isAvailable) return;
@@ -224,7 +229,7 @@ export function NewFoodOrderPage() {
       {cartItemCount > 0 && (
         <div className="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 desktop:left-auto desktop:right-12 desktop:translate-x-0 z-50 animate-in slide-in-from-bottom-10 fade-in duration-300">
           <button 
-            onClick={handleSubmitOrder}
+            onClick={() => setShowCart(true)}
             className="bg-primary text-surface px-8 py-4 rounded-full shadow-[0_20px_50px_rgba(14,94,111,0.3)] flex items-center gap-4 hover:scale-105 active:scale-95 transition-all group"
           >
             <div className="relative">
@@ -234,6 +239,63 @@ export function NewFoodOrderPage() {
             <span className="font-bold tracking-tight">Review Order (${(totalAmount / 100).toFixed(2)})</span>
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </button>
+        </div>
+      )}
+
+      {showCart && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 tablet:p-6 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-surface w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+            <div className="p-6 border-b border-outline-variant/20 flex items-center justify-between">
+              <h2 className="text-xl font-bold font-headline text-on-surface flex items-center gap-2">
+                <ShoppingBasket size={24} className="text-primary" /> Review Order
+              </h2>
+              <button onClick={() => setShowCart(false)} className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-container-highest">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-6 flex-1 overflow-y-auto">
+              {cart.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-on-surface-variant">Your cart is empty.</p>
+                </div>
+              ) : (
+                <ul className="space-y-4">
+                  {cart.map(item => (
+                    <li key={item.menuItemId} className="flex justify-between items-center gap-4 p-4 rounded-xl border border-outline-variant/20">
+                      <div className="flex-1">
+                        <p className="font-bold text-sm text-on-surface">{item.name}</p>
+                        <p className="text-primary font-bold mt-1">${(item.unitPrice / 100).toFixed(2)}</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold text-on-surface-variant px-2">x{item.quantity}</span>
+                        <button 
+                          onClick={() => removeFromCart(item.menuItemId)}
+                          className="p-2 text-critical hover:bg-critical/10 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            
+            <div className="p-6 border-t border-outline-variant/20 bg-surface-container-low">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-on-surface-variant font-medium">Total</span>
+                <span className="text-2xl font-black text-primary">${(totalAmount / 100).toFixed(2)}</span>
+              </div>
+              <button 
+                onClick={handleSubmitOrder}
+                disabled={cart.length === 0}
+                className="w-full py-3 bg-primary text-surface font-bold rounded-xl active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+              >
+                Confirm & Pay
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
