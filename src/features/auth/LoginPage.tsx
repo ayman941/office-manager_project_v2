@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './useAuth'
-import { HelpCircle, Building2, Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Shield } from 'lucide-react'
+import { HelpCircle, Building2, User, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Shield } from 'lucide-react'
 
 const ROLE_HOME: Record<string, string> = {
   employee:   '/employee/dashboard',
@@ -22,17 +22,10 @@ export function LoginPage() {
     e.preventDefault()
     setError('')
     try {
-      await login(email, password)
-      const role = email.includes('hr')
-        ? 'hr_manager'
-        : email.includes('manager')
-        ? 'manager'
-        : email.includes('canteen')
-        ? 'canteen'
-        : 'employee'
-      navigate(ROLE_HOME[role], { replace: true })
+      const role = await login(email, password) ?? 'employee'
+      navigate(ROLE_HOME[role] ?? '/', { replace: true })
     } catch {
-      setError('Invalid email or password.')
+      setError('Invalid username or password.')
     }
   }
 
@@ -71,14 +64,14 @@ export function LoginPage() {
             
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-primary ml-1" htmlFor="email">Work Email</label>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-primary ml-1" htmlFor="username">Username</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-outline" size={20} />
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-outline" size={20} />
                   <input 
                     className="w-full pl-12 pr-4 py-3.5 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline/60 text-sm font-medium" 
-                    id="email" 
-                    placeholder="name@company.com" 
-                    type="email"
+                    id="username" 
+                    placeholder="Enter your username" 
+                    type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -143,7 +136,7 @@ export function LoginPage() {
               <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/10">
                 <p className="text-[10px] font-bold text-outline uppercase tracking-widest mb-1">Demo Accounts</p>
                 <p className="text-xs text-on-surface-variant font-medium">
-                  employee@demo.com · manager@demo.com · hr@demo.com · canteen@demo.com
+                  admin · employee_demo · manager_demo
                 </p>
               </div>
             </div>
@@ -176,3 +169,5 @@ export function LoginPage() {
     </div>
   )
 }
+
+export default LoginPage;

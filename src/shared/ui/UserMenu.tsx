@@ -13,9 +13,9 @@ export function UserMenu() {
       <MenuButton className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
         <div className="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden flex items-center justify-center text-primary font-bold">
           {user.avatarUrl ? (
-            <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+            <img src={user.avatarUrl} alt={user.name || 'User'} className="w-full h-full object-cover" />
           ) : (
-            user.name.charAt(0).toUpperCase()
+            user.name?.charAt(0)?.toUpperCase() || 'U'
           )}
         </div>
       </MenuButton>
@@ -31,8 +31,8 @@ export function UserMenu() {
       >
         <MenuItems className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl bg-surface shadow-card ring-1 ring-black/5 focus:outline-none z-50">
           <div className="px-4 py-3 border-b border-outline-variant/20">
-            <p className="text-sm font-semibold text-on-surface truncate">{user.name}</p>
-            <p className="text-xs font-medium text-on-surface-variant truncate">{user.email}</p>
+            <p className="text-sm font-semibold text-on-surface truncate">{user.name || 'User'}</p>
+            <p className="text-xs font-medium text-on-surface-variant truncate">{user.email || ''}</p>
           </div>
           
           <div className="p-1">
