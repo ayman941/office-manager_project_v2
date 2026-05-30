@@ -1,12 +1,18 @@
 import { useLeaveStore } from '@/stores/useLeaveStore'
-import { SEED_USERS } from '@/features/auth/AuthContext'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { useAuth } from '@/features/auth/useAuth'
+import { useEffect } from 'react'
 
 export function LeaveApprovalQueuePage() {
   const { user } = useAuth()
-  const { leaves, reviewLeave } = useLeaveStore()
+  const { leaves, reviewLeave, fetchLeaves } = useLeaveStore()
+  const { employees: allEmployees, fetchEmployees } = useEmployeeStore()
+
+  useEffect(() => {
+    fetchLeaves()
+    fetchEmployees()
+  }, [fetchLeaves, fetchEmployees])
   
-  const allEmployees = Object.values(SEED_USERS)
   const directReportIds = allEmployees.filter(emp => emp.managerId === user?.id).map(e => e.id)
   
   // Only show leave requests for direct reports

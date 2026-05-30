@@ -1,9 +1,14 @@
 import { useAuth } from '@/features/auth/AuthContext'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
+import { useEffect } from 'react'
 
 export function MyAttendancePage() {
   const { user } = useAuth()
-  const { logs } = useAttendanceStore()
+  const { logs, fetchLogs } = useAttendanceStore()
+
+  useEffect(() => {
+    fetchLogs()
+  }, [fetchLogs])
   
   const myLogs = logs.filter(l => l.employeeId === user?.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 

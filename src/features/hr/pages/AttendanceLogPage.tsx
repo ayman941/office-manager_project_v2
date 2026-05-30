@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
-import { SEED_USERS } from '@/features/auth/AuthContext'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { useAuth } from '@/features/auth/AuthContext'
 
 export function AttendanceLogPage() {
   const { user } = useAuth()
-  const { logs, overrideLog } = useAttendanceStore()
+  const { logs, overrideLog, fetchLogs } = useAttendanceStore()
+  const { employees, fetchEmployees } = useEmployeeStore()
   const [selectedLogId, setSelectedLogId] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchLogs()
+    fetchEmployees()
+  }, [fetchLogs, fetchEmployees])
   
   const [overrideData, setOverrideData] = useState({
     checkInTime: '',
@@ -74,7 +80,7 @@ export function AttendanceLogPage() {
                 </tr>
               ) : (
                 logs.map(log => {
-                  const emp = Object.values(SEED_USERS).find(u => u.id === log.employeeId)
+                  const emp = employees.find(u => u.id === log.employeeId)
                   
                   return (
                     <tr key={log.id} className="hover:bg-surface-container-low transition-colors group">

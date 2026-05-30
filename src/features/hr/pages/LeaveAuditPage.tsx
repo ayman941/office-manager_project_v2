@@ -1,15 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, Badge, Button } from '@/shared/ui'
-import { SEED_USERS } from '@/features/auth/AuthContext'
 import { useLeaveStore } from '@/stores/useLeaveStore'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { useAuth } from '@/features/auth/useAuth'
 import { Settings } from 'lucide-react'
 
 export function LeaveAuditPage() {
   const { user } = useAuth()
-  const { leaves, auditLeave, settings, updateSettings } = useLeaveStore()
+  const { leaves, auditLeave, settings, updateSettings, fetchLeaves } = useLeaveStore()
+  const { employees, fetchEmployees } = useEmployeeStore()
   
   const [filter, setFilter] = useState<'All' | 'Unreviewed' | 'Flagged'>('All')
+
+  useEffect(() => {
+    fetchLeaves()
+    fetchEmployees()
+  }, [fetchLeaves, fetchEmployees])
 
   // Only show approved or rejected leaves for audit (HR doesn't audit pending)
   let auditList = leaves.filter(l => l.status !== 'Pending' && l.status !== 'Cancelled')
@@ -92,8 +98,8 @@ export function LeaveAuditPage() {
                 </tr>
               ) : (
                 auditList.map(leave => {
-                  const emp = Object.values(SEED_USERS).find(u => u.id === leave.requestedById)
-                  const mgr = Object.values(SEED_USERS).find(u => u.id === leave.reviewedById)
+                  const emp = employees.find(u => u.id === leave.requestedById)
+                  const mgr = employees.find(u => u.id === leave.reviewedById)
                   return (
                     <tr key={leave.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-5 py-4 font-medium text-gray-900">{emp?.name || 'Unknown'}</td>

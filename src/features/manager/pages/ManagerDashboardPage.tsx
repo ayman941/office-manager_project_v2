@@ -1,14 +1,22 @@
 import { Link } from 'react-router-dom'
-import { useAuth, SEED_USERS } from '@/features/auth/AuthContext'
+import { useAuth } from '@/features/auth/AuthContext'
 import { useLeaveStore } from '@/stores/useLeaveStore'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
+import { useEffect } from 'react'
 
 export function ManagerDashboardPage() {
   const { user } = useAuth()
-  const { leaves, reviewLeave } = useLeaveStore()
-  const { logs } = useAttendanceStore()
+  const { leaves, reviewLeave, fetchLeaves } = useLeaveStore()
+  const { logs, fetchLogs } = useAttendanceStore()
+  const { employees: allEmployees, fetchEmployees } = useEmployeeStore()
 
-  const allEmployees = Object.values(SEED_USERS)
+  useEffect(() => {
+    fetchLogs()
+    fetchEmployees()
+    fetchLeaves()
+  }, [fetchLogs, fetchEmployees, fetchLeaves])
+
   const directReports = allEmployees.filter(emp => emp.managerId === user?.id)
   const directReportIds = directReports.map(e => e.id)
 

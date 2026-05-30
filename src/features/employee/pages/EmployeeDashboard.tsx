@@ -7,12 +7,16 @@ import { LogOut, LogIn, Utensils, ArrowRight, Calendar, ShieldCheck } from 'luci
 
 export function EmployeeDashboard() {
   const { user } = useAuth()
-  const { logs, checkIn, checkOut } = useAttendanceStore()
+  const { todayStatus, fetchTodayStatus, checkIn, checkOut } = useAttendanceStore()
   const { orders } = useOrderStore()
   
   const today = new Date().toISOString().split('T')[0]
+
+  useEffect(() => {
+    fetchTodayStatus()
+  }, [fetchTodayStatus])
   
-  const todayLog = logs.find(l => l.employeeId === user?.id && l.date === today)
+  const todayLog = todayStatus
   const isCheckedIn = !!todayLog && !todayLog.checkOut
 
   const leaveBalance = 12 // Mocked annual leave balance
@@ -20,16 +24,16 @@ export function EmployeeDashboard() {
 
   const activeOrder = orders.find(o => o.orderedById === user?.id && o.status !== 'Delivered' && o.status !== 'Cancelled')
 
-  const handleAttendance = () => {
+  const handleAttendance = async () => {
     if (!user) return
     try {
       if (isCheckedIn) {
-        checkOut(user.id)
+        await checkOut(user.id)
       } else {
-        checkIn(user.id, today)
+        await checkIn(user.id, today)
       }
     } catch (e: any) {
-      alert(e.message)
+      alert(e.message || 'Failed to update attendance status')
     }
   }
 

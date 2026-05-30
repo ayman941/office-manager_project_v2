@@ -2,11 +2,17 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth/useAuth'
 import { useLeaveStore } from '@/stores/useLeaveStore'
 import { Plus, Filter, Umbrella, Stethoscope, AlertTriangle, CalendarOff, MoreVertical, Calendar } from 'lucide-react'
+import { useEffect } from 'react'
 
 export function LeaveRequestListPage() {
   const { user } = useAuth()
-  const { leaves } = useLeaveStore()
+  const { leaves, fetchLeaves, myBalance, fetchMyBalance } = useLeaveStore()
   
+  useEffect(() => {
+    fetchLeaves()
+    fetchMyBalance()
+  }, [fetchLeaves, fetchMyBalance])
+
   const userLeaves = leaves.filter(l => l.requestedById === user?.id)
 
   const getStatusBadge = (status: string) => {
@@ -60,12 +66,17 @@ export function LeaveRequestListPage() {
           </div>
           <p className="text-sm font-bold uppercase tracking-wider text-primary mb-4">Annual Leave</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl font-extrabold text-on-surface font-headline">14</span>
+            <span className="text-5xl font-extrabold text-on-surface font-headline">
+              {String(myBalance?.annualBalance ?? 21).padStart(2, '0')}
+            </span>
             <span className="text-on-surface-variant font-semibold">days</span>
           </div>
           <p className="text-xs text-slate-500 mt-2">Available until Dec 31</p>
           <div className="mt-4 h-1.5 bg-background rounded-full overflow-hidden">
-            <div className="h-full bg-primary w-[70%]"></div>
+            <div 
+              className="h-full bg-primary transition-all duration-500" 
+              style={{ width: `${myBalance ? Math.min(100, Math.max(0, (myBalance.annualBalance / 21) * 100)) : 70}%` }}
+            ></div>
           </div>
         </div>
 
@@ -76,12 +87,17 @@ export function LeaveRequestListPage() {
           </div>
           <p className="text-sm font-bold uppercase tracking-wider text-secondary mb-4 text-primary">Sick Leave</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl font-extrabold text-on-surface font-headline">08</span>
+            <span className="text-5xl font-extrabold text-on-surface font-headline">
+              {String(myBalance?.sickBalance ?? 7).padStart(2, '0')}
+            </span>
             <span className="text-on-surface-variant font-semibold">days</span>
           </div>
           <p className="text-xs text-slate-500 mt-2">Full pay eligibility</p>
           <div className="mt-4 h-1.5 bg-background rounded-full overflow-hidden">
-            <div className="h-full bg-secondary w-[40%]"></div>
+            <div 
+              className="h-full bg-secondary transition-all duration-500" 
+              style={{ width: `${myBalance ? Math.min(100, Math.max(0, (myBalance.sickBalance / 7) * 100)) : 40}%` }}
+            ></div>
           </div>
         </div>
 
@@ -92,12 +108,17 @@ export function LeaveRequestListPage() {
           </div>
           <p className="text-sm font-bold uppercase tracking-wider text-critical mb-4">Emergency</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl font-extrabold text-on-surface font-headline">03</span>
+            <span className="text-5xl font-extrabold text-on-surface font-headline">
+              {String(myBalance?.emergencyBalance ?? 3).padStart(2, '0')}
+            </span>
             <span className="text-on-surface-variant font-semibold">days</span>
           </div>
           <p className="text-xs text-slate-500 mt-2">Personal & Family</p>
           <div className="mt-4 h-1.5 bg-background rounded-full overflow-hidden">
-            <div className="h-full bg-critical w-[10%]"></div>
+            <div 
+              className="h-full bg-critical transition-all duration-500" 
+              style={{ width: `${myBalance ? Math.min(100, Math.max(0, (myBalance.emergencyBalance / 3) * 100)) : 10}%` }}
+            ></div>
           </div>
         </div>
 
@@ -105,7 +126,9 @@ export function LeaveRequestListPage() {
         <div className="bg-background p-6 rounded-2xl shadow-inner border border-outline-variant/10 relative overflow-hidden group">
           <p className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Unpaid Leave</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl font-extrabold text-slate-400 font-headline">00</span>
+            <span className="text-5xl font-extrabold text-slate-400 font-headline">
+              {String(myBalance?.unpaidBalance ?? 0).padStart(2, '0')}
+            </span>
             <span className="text-slate-400 font-semibold">days</span>
           </div>
           <p className="text-xs text-slate-500 mt-2">Taken this period</p>

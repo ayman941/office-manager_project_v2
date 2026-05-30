@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMenuStore, MenuCategory } from '@/features/canteen/stores/useMenuStore'
 export function MenuManagementPage() {
-  const { items, toggleStock, deleteItem } = useMenuStore()
+  const { items, toggleStock, deleteItem, fetchMenuItems } = useMenuStore()
   const [activeCategory, setActiveCategory] = useState<MenuCategory>('Breakfast')
+
+  useEffect(() => {
+    fetchMenuItems()
+  }, [fetchMenuItems])
 
   const filteredItems = items.filter(item => item.category === activeCategory)
 
@@ -156,7 +160,7 @@ export function MenuManagementPage() {
               <div className="space-y-1">
                 <div className="flex justify-between items-start">
                   <h4 className="font-headline font-bold text-lg group-hover:text-primary transition-colors">{item.name}</h4>
-                  <span className="font-headline font-extrabold text-primary">${item.price.toFixed(2)}</span>
+                  <span className="font-headline font-extrabold text-primary">${(item.price / 100).toFixed(2)}</span>
                 </div>
                 <p className="text-on-surface-variant text-sm leading-relaxed">{item.description}</p>
               </div>

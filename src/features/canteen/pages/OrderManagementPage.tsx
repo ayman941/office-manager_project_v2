@@ -2,9 +2,14 @@ import { Card, Button, Badge, EmptyState } from '@/shared/ui'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { formatTime } from '@/utils/dateUtils'
 import { FoodOrderStatus } from '@/types'
+import { useEffect } from 'react'
 
 export function OrderManagementPage() {
-  const { orders, updateStatus, cancelOrder } = useOrderStore()
+  const { orders, updateStatus, cancelOrder, fetchOrders } = useOrderStore()
+
+  useEffect(() => {
+    fetchOrders()
+  }, [fetchOrders])
 
   // We primarily want to see active orders in the queue
   const activeOrders = orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled')

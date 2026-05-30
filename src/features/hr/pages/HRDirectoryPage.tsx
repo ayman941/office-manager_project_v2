@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { SEED_USERS } from '@/features/auth/AuthContext'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { UserPlus, Users, UserCheck, Plane, UserMinus, Search, Filter, Download, Eye, Edit2, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-react'
 
 export function HRDirectoryPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('All')
 
-  const allEmployees = Object.values(SEED_USERS)
+  const { employees: allEmployees, fetchEmployees, isLoading } = useEmployeeStore()
+
+  useEffect(() => {
+    fetchEmployees()
+  }, [fetchEmployees])
 
   const roles = ['All', ...Array.from(new Set(allEmployees.map(e => e.role)))]
 
@@ -138,7 +142,11 @@ export function HRDirectoryPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filteredEmployees.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500">Loading employees...</td>
+                </tr>
+              ) : filteredEmployees.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-slate-500">No employees found.</td>
                 </tr>

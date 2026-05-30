@@ -1,20 +1,21 @@
 import { create } from 'zustand'
-import type { AttendanceLog, AttendanceOverride } from '@/types'
+import apiClient from '@/lib/apiClient'
+import type { AttendanceLog } from '@/types'
 
 interface AttendanceStore {
   logs: AttendanceLog[]
-  /** Emulates checking in for the current user */
-  checkIn: (employeeId: string, date: string) => AttendanceLog
-  /** Emulates checking out for the current user */
-  checkOut: (employeeId: string) => void
-  /** HR Override */
+  todayStatus: AttendanceLog | null
+  isLoading: boolean
+  fetchLogs: () => Promise<void>
+  fetchTodayStatus: () => Promise<void>
+  checkIn: (employeeId: string, date: string) => Promise<AttendanceLog>
+  checkOut: (employeeId: string) => Promise<void>
   overrideLog: (
     logId: string,
     patch: { checkIn?: string; checkOut?: string },
     reason: string,
     performedById: string
-  ) => void
-  /** Manual Add by HR */
+  ) => Promise<void>
   manualAdd: (
     employeeId: string,
     date: string,
@@ -22,117 +23,136 @@ interface AttendanceStore {
     checkOut: string,
     reason: string,
     performedById: string
-  ) => void
+  ) => Promise<void>
 }
 
-let _nextId = 1
+function parseBackendTimeToISO(date: string, time: string | null): string | undefined {
+  if (!time) return undefined
+  // Ensure we append Z to indicate UTC
+  return `${date}T${time}Z`
+}
 
-// Mock initial data to populate the HR dashboard
-const MOCK_LOGS: AttendanceLog[] = [
-  {
-    id: 'log-seed-1',
-    employeeId: 'u2',
-    date: new Date().toISOString().split('T')[0],
-    checkIn: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
-    source: 'System',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+function extractTimeFromISO(isoString?: string): string | null {
+  if (!isoString) return null
+  try {
+    return new Date(isoString).toISOString().split('T')[1].slice(0, 8)
+  } catch {
+    return null
+  }
+}
+
+export function mapBackendAttendanceToLog(att: any): AttendanceLog {
+  const checkIn = parseBackendTimeToISO(att.date, att.check_in_time)
+  const checkOut = parseBackendTimeToISO(att.date, att.check_out_time)
+  
+  let durationMinutes: number | undefined
+  if (checkIn && checkOut) {
+    durationMinutes = Math.floor((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 60000)
+  }
+
+  return {
+    id: String(att.id),
+    employeeId: String(att.employee),
+    date: att.date,
+    checkIn,
+    checkOut,
+    durationMinutes,
+    source: att.is_auto_closed ? 'Override' : (att.check_in_time ? 'System' : 'System'),
+    createdAt: att.date + 'T00:00:00Z',
+    updatedAt: att.date + 'T00:00:00Z',
+  }
+}
+
+export const useAttendanceStore = create<AttendanceStore>((set) => ({
+  logs: [],
+  todayStatus: null,
+  isLoading: false,
+
+  async fetchLogs() {
+    set({ isLoading: true })
+    try {
+      const { data } = await apiClient.get('/attendance/')
+      const mapped = data.map(mapBackendAttendanceToLog)
+      set({ logs: mapped })
+    } catch (err) {
+      console.error('Failed to fetch attendance logs:', err)
+    } finally {
+      set({ isLoading: false })
+    }
   },
-]
 
-export const useAttendanceStore = create<AttendanceStore>((set, get) => ({
-  logs: MOCK_LOGS,
-
-  checkIn(employeeId, date) {
-    const now = new Date().toISOString()
-    const existing = get().logs.find(
-      (l) => l.employeeId === employeeId && l.date === date && !l.checkOut
-    )
-    if (existing) {
-      throw new Error('409 Conflict: User already checked in without check out.')
+  async fetchTodayStatus() {
+    try {
+      const { data } = await apiClient.get('/attendance/today_status/')
+      set({ todayStatus: data ? mapBackendAttendanceToLog(data) : null })
+    } catch {
+      set({ todayStatus: null })
     }
+  },
 
-    const log: AttendanceLog = {
-      id: `log-${_nextId++}`,
-      employeeId,
+  async checkIn(employeeId, date) {
+    const payload = {
       date,
-      checkIn: now,
-      source: 'System',
-      createdAt: now,
-      updatedAt: now,
+      employee: Number(employeeId),
+      method: 'WiFi',
+      is_auto_closed: false,
+      actual_wifi_mac: '00:11:22:33:44:55'
     }
-    set((s) => ({ logs: [log, ...s.logs] }))
+    const { data } = await apiClient.post('/attendance/checkin/', payload)
+    const log = mapBackendAttendanceToLog(data)
+    set((s) => ({
+      todayStatus: log,
+      logs: [log, ...s.logs]
+    }))
     return log
   },
 
-  checkOut(employeeId) {
-    const now = new Date()
-    set((s) => ({
-      logs: s.logs.map((o) => {
-        if (o.employeeId === employeeId && !o.checkOut) {
-          const checkInTime = new Date(o.checkIn!)
-          const durationMinutes = Math.floor((now.getTime() - checkInTime.getTime()) / 60000)
-          return {
-            ...o,
-            checkOut: now.toISOString(),
-            durationMinutes,
-            updatedAt: now.toISOString(),
-          }
-        }
-        return o
-      }),
-    }))
-  },
-
-  overrideLog(logId, patch, reason, performedById) {
-    const now = new Date().toISOString()
-    set((s) => ({
-      logs: s.logs.map((o) => {
-        if (o.id !== logId) return o
-        
-        const override: AttendanceOverride = {
-          performedById,
-          reason,
-          originalCheckIn: o.checkIn,
-          originalCheckOut: o.checkOut,
-          performedAt: now,
-        }
-
-        let durationMinutes = o.durationMinutes
-        if (patch.checkIn && patch.checkOut) {
-           durationMinutes = Math.floor((new Date(patch.checkOut).getTime() - new Date(patch.checkIn).getTime()) / 60000)
-        }
-
-        return {
-          ...o,
-          ...patch,
-          durationMinutes: durationMinutes ?? o.durationMinutes,
-          source: 'Override',
-          override,
-          updatedAt: now,
-        }
-      }),
-    }))
-  },
-
-  manualAdd(employeeId, date, checkIn, checkOut, reason, performedById) {
-    const now = new Date().toISOString()
-    const log: AttendanceLog = {
-      id: `log-${_nextId++}`,
-      employeeId,
+  async checkOut(employeeId) {
+    const date = new Date().toISOString().split('T')[0]
+    const payload = {
       date,
-      checkIn,
-      checkOut,
-      durationMinutes: Math.floor((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 60000),
-      source: 'Manual',
-      override: {
-        performedById,
-        reason,
-        performedAt: now,
-      },
-      createdAt: now,
-      updatedAt: now,
+      employee: Number(employeeId)
     }
-    set((s) => ({ logs: [log, ...s.logs] }))
+    const { data } = await apiClient.post('/attendance/checkout/', payload)
+    const log = mapBackendAttendanceToLog(data)
+    set((s) => ({
+      todayStatus: log,
+      logs: s.logs.map((o) => (o.id === log.id ? log : o))
+    }))
   },
+
+  async overrideLog(logId, patch, _reason, _performedById) {
+    const payload: any = {}
+    if (patch.checkIn) {
+      payload.check_in_time = extractTimeFromISO(patch.checkIn)
+    }
+    if (patch.checkOut) {
+      payload.check_out_time = extractTimeFromISO(patch.checkOut)
+    }
+    // Note: We can also pass details to an override log table if the backend had it,
+    // but the backend's Attendance serializer takes standard fields. We will save the patch.
+    const { data } = await apiClient.patch(`/attendance/${logId}/`, payload)
+    const log = mapBackendAttendanceToLog(data)
+    set((s) => ({
+      logs: s.logs.map((o) => (o.id === logId ? log : o)),
+      todayStatus: s.todayStatus?.id === logId ? log : s.todayStatus
+    }))
+  },
+
+  async manualAdd(employeeId, date, checkIn, checkOut, _reason, _performedById) {
+    const payload = {
+      date,
+      employee: Number(employeeId),
+      check_in_time: extractTimeFromISO(checkIn),
+      check_out_time: extractTimeFromISO(checkOut),
+      method: 'WiFi',
+      is_auto_closed: false,
+      actual_wifi_mac: 'Manual Entry'
+    }
+    const { data } = await apiClient.post('/attendance/', payload)
+    const log = mapBackendAttendanceToLog(data)
+    set((s) => ({
+      logs: [log, ...s.logs]
+    }))
+  }
 }))

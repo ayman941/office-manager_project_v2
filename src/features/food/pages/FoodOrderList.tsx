@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 import { Button, Card, EmptyState, Badge } from '@/shared/ui'
 import { useAuth } from '@/features/auth/useAuth'
 import { useOrderStore } from '../stores/useOrderStore'
@@ -60,8 +61,12 @@ function OrderStepper({ currentStatus }: { currentStatus: FoodOrderStatus }) {
 
 export function FoodOrderList() {
   const { user } = useAuth()
-  const { orders } = useOrderStore()
+  const { orders, fetchOrders } = useOrderStore()
   
+  useEffect(() => {
+    fetchOrders()
+  }, [fetchOrders])
+
   const userOrders = orders.filter(o => o.orderedById === user?.id)
   
   return (
