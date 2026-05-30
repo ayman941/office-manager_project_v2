@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     try {
       const { data: tokens } = await axios.post(
-        'https://smart-office-backend-production.up.railway.app/api/token/',
+        '/api/token/',
         { username: email, password }
       )
       localStorage.setItem('access_token', tokens.access)
