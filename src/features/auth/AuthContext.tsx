@@ -42,17 +42,22 @@ function mapRole(djangoRole: string): User['role'] {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser]           = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(() => {
+    return !!localStorage.getItem('access_token')
+  })
 
   useEffect(() => {
     const token = localStorage.getItem('access_token')
-    if (!token) return
+    if (!token) {
+      setIsLoading(false)
+      return
+    }
     setIsLoading(true)
     apiClient.get('/employees/me/')
       .then(({ data }) => {
         setUser({
           id:           String(data.id),
-          name:         data.full_name,
+          name:         data.full_name || `${data.first_name || ''} ${data.last_name || ''}`.trim() || data.username || data.email || 'User',
           email:        data.email,
           role:         mapRole(data.role),
           departmentId: String(data.department ?? ''),
@@ -60,9 +65,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           createdAt:    data.date_joined ?? new Date().toISOString(),
         })
       })
-      .catch(() => {
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
+      .catch((err) => {
+        if (err?.response?.status === 401 || err?.response?.status === 403) {
+          localStorage.removeItem('access_token')
+          localStorage.removeItem('refresh_token')
+        }
       })
       .finally(() => setIsLoading(false))
   }, [])
@@ -86,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       setUser({
         id:           String(data.id),
-        name:         data.full_name,
+        name:         data.full_name || `${data.first_name || ''} ${data.last_name || ''}`.trim() || data.username || data.email || 'User',
         email:        data.email,
         role:         mapRole(data.role),
         departmentId: String(data.department ?? ''),

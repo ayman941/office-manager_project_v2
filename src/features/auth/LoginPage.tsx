@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './useAuth'
 import { HelpCircle, Building2, User, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Shield } from 'lucide-react'
@@ -11,12 +11,19 @@ const ROLE_HOME: Record<string, string> = {
 }
 
 export function LoginPage() {
-  const { login, isLoading } = useAuth()
+  const { user, login, isLoading } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
   const [showPassword, setShowPassword] = useState(false)
+
+  // Redirect to portal if already authenticated
+  useEffect(() => {
+    if (user && !isLoading) {
+      navigate(ROLE_HOME[user.role] ?? '/employee/dashboard', { replace: true })
+    }
+  }, [user, isLoading, navigate])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
