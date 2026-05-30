@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-  baseURL: 'https://smart-office-backend-production.up.railway.app/api',
+  baseURL: '/api',
 })
 
 apiClient.interceptors.request.use((config) => {
