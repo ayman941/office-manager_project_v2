@@ -2,24 +2,7 @@ import { createContext, useContext, useState, useCallback, useEffect, type React
 import axios from 'axios'
 import apiClient from '@/lib/apiClient'
 import type { User } from '@/types'
-export const SEED_USERS: Record<string, User> = {
-  'employee@demo.com': {
-    id: 'u1', name: 'Alex Johnson', email: 'employee@demo.com',
-    role: 'employee', departmentId: 'd1', managerId: 'u2', createdAt: '2025-01-15T00:00:00Z',
-  },
-  'manager@demo.com': {
-    id: 'u2', name: 'Sarah Manager', email: 'manager@demo.com',
-    role: 'manager', departmentId: 'd1', managerId: 'u4', createdAt: '2024-06-10T00:00:00Z',
-  },
-  'canteen@demo.com': {
-    id: 'u3', name: 'Canteen Staff', email: 'canteen@demo.com',
-    role: 'canteen', departmentId: 'd2', createdAt: '2025-03-01T00:00:00Z',
-  },
-  'hr@demo.com': {
-    id: 'u4', name: 'HR Manager', email: 'hr@demo.com',
-    role: 'hr_manager', departmentId: 'd3', createdAt: '2024-01-01T00:00:00Z',
-  },
-}
+export const SEED_USERS: Record<string, never> = {}
 
 interface AuthContextValue {
   user: User | null
