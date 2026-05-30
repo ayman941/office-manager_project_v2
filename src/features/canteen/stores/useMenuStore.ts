@@ -1,61 +1,138 @@
 import { create } from 'zustand'
+import apiClient from '@/lib/apiClient'
 
-export type MenuCategory = 'Breakfast' | 'Lunch' | 'Snacks' | 'Drinks'
+export type MenuCategory = 'Breakfast' | 'Lunch' | 'Snacks' | 'Drinks' | 'Lunch Specials' | 'Snacks & Drinks' | string
 
 export interface MenuItem {
   id: string
   name: string
-  price: number
+  price: number // in cents
   description: string
   category: MenuCategory
-  inStock: boolean
+  inStock: boolean      // for MenuManagementPage.tsx parity
+  isAvailable: boolean  // for NewFoodOrderPage.tsx and types/index.ts parity
   imageUrl: string
+  tags?: string[]
 }
 
 interface MenuStore {
   items: MenuItem[]
-  toggleStock: (id: string) => void
-  deleteItem: (id: string) => void
+  isLoading: boolean
+  fetchMenuItems: () => Promise<void>
+  toggleStock: (id: string) => Promise<void>
+  deleteItem: (id: string) => Promise<void>
+  addMenuItem: (item: {
+    name: string
+    price: number // in cents
+    description: string
+    category: string
+    imageUrl?: string
+  }) => Promise<void>
 }
 
-const MOCK_MENU: MenuItem[] = [
-  {
-    id: 'menu-1',
-    name: 'Poached Egg Sourdough',
-    price: 12.50,
-    description: 'Two farm-fresh poached eggs on toasted sourdough with micro-greens and chili flakes.',
-    category: 'Breakfast',
-    inStock: true,
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBzrPfrSBfOW9H8LZ1tWzvzvYJgODQpCFIOMe5dgGwjqh0VGLQfaEX4Dl_FsukxRpG6mjCZd6kWe7dPUXKVtaKi3A2glVs53bBL3CNwiWr9TRHBCLWz3Zw5rGRrvwB425si1mcxHzjkFNp5GAjYfvzuXbiSoI27vRSnVHmJcYhiAR0zqKRFI-J3r-nHQQUNo5DFlgZZ7YjirTzq_61pq8tPkbEA2ix32p6cirEb_3VQS8M7TvXLv7SfRed3hk5l5uPDONsZ0bu5wxNH'
-  },
-  {
-    id: 'menu-2',
-    name: 'Berry Bliss Acai',
-    price: 9.00,
-    description: 'Organic Brazilian acai topped with seasonal berries, house-made granola, and honey drizzle.',
-    category: 'Breakfast',
-    inStock: false,
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPNsOrO3uFB6Z_SDPDKCjQPIDEyszSCDNg73CBR8nfi3Scx_uZ-95kVVfHPMXK0LjAb6F0znpxctw7LJckMEXrJ-poiM8k6qWdEWJj5jvPUvuML7i8urZjG7Gu9zFXpcP8kUt8xO4OIjifSo5RFnE4IzRZndJcXHZ88ck-5kDpnHF4HsU0v63u7-WQmNCJvWkvFe9fOA99Q7GJoUH6Ek2SYShaVgUHKZnrNegRkTYyclfT96HSfsqYIuunbfc3ijGpE73Pyr2bQq0T'
-  },
-  {
-    id: 'menu-3',
-    name: 'Walnut Yogurt Bowl',
-    price: 7.50,
-    description: 'Greek yogurt base, premium toasted walnuts, and local wildflower honey infusion.',
-    category: 'Breakfast',
-    inStock: true,
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBM6VV8RbPyPMPcSljKJVmjJZAed3LJpnIm3LTSGK_wlFs-jmO_KrO_yCiDzSU_wx8TCF-emqpNx5NbQAtXrnGbO14TV-B6rMgtZP-atXWfSc4HaiBXTW9SE_ObUFtX-uxSp1Hmb_3qNIOHmsV-L6AN6uiEA5HKIPcec2ThVnAAnU59wfGDKScfKVa4v9_u60R90WMWYICvcjuy85GM2uo21oqZ_4CTQcI8nTgnErNRLZDlJOKKe_zWdSLPKlSQXpNs3sbYbhYCjcyN'
+export function mapBackendMenuItem(item: any): MenuItem {
+  let category = 'Breakfast'
+  let description = ''
+  
+  if (item.allergen_info && item.allergen_info.includes('|')) {
+    const parts = item.allergen_info.split('|')
+    category = parts[0] || 'Breakfast'
+    description = parts.slice(1).join('|') || ''
+  } else {
+    description = item.allergen_info || ''
+    // Guess category from name for backward-compatibility with unencoded items
+    const n = item.name.toLowerCase()
+    if (n.includes('egg') || n.includes('toast') || n.includes('smoothie') || n.includes('acai') || n.includes('yogurt') || n.includes('breakfast')) {
+      category = 'Breakfast'
+    } else if (n.includes('coffee') || n.includes('tea') || n.includes('drink') || n.includes('latte') || n.includes('brew') || n.includes('bar') || n.includes('cookie') || n.includes('snack')) {
+      category = 'Snacks & Drinks'
+    } else {
+      category = 'Lunch Specials'
+    }
   }
-]
 
-export const useMenuStore = create<MenuStore>((set) => ({
-  items: MOCK_MENU,
-  toggleStock: (id) => set((state) => ({
-    items: state.items.map(item => 
-      item.id === id ? { ...item, inStock: !item.inStock } : item
-    )
-  })),
-  deleteItem: (id) => set((state) => ({
-    items: state.items.filter(item => item.id !== id)
-  }))
+  const isAvail = (item.stock_quantity ?? 0) > 0
+
+  return {
+    id: String(item.id),
+    name: item.name,
+    price: Math.round(Number(item.price || 0) * 100),
+    description: description,
+    category: category,
+    inStock: isAvail,
+    isAvailable: isAvail,
+    imageUrl: item.image_path || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c',
+    tags: []
+  }
+}
+
+export const useMenuStore = create<MenuStore>((set, get) => ({
+  items: [],
+  isLoading: false,
+
+  async fetchMenuItems() {
+    set({ isLoading: true })
+    try {
+      const { data } = await apiClient.get('/menu-items/')
+      const mapped = data.map(mapBackendMenuItem)
+      set({ items: mapped })
+    } catch (err) {
+      console.error('Failed to fetch menu items:', err)
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  async toggleStock(id) {
+    const item = get().items.find(i => i.id === id)
+    if (!item) return
+    
+    // Toggle between stock of 0 and 50
+    const newStock = item.inStock ? 0 : 50
+    try {
+      const { data } = await apiClient.patch(`/menu-items/${id}/`, {
+        stock_quantity: newStock
+      })
+      const updated = mapBackendMenuItem(data)
+      set((state) => ({
+        items: state.items.map((i) => (i.id === id ? updated : i))
+      }))
+    } catch (err) {
+      console.error('Failed to toggle menu item stock:', err)
+    }
+  },
+
+  async deleteItem(id) {
+    try {
+      await apiClient.delete(`/menu-items/${id}/`)
+      set((state) => ({
+        items: state.items.filter((i) => i.id !== id)
+      }))
+    } catch (err) {
+      console.error('Failed to delete menu item:', err)
+    }
+  },
+
+  async addMenuItem(draft) {
+    try {
+      const payload = {
+        name: draft.name,
+        price: (draft.price / 100).toFixed(2),
+        cost: (draft.price / 150).toFixed(2),
+        stock_quantity: 50,
+        min_threshold: 5,
+        base_prep_time: 15,
+        image_path: draft.imageUrl || '',
+        allergen_info: `${draft.category}|${draft.description}`
+      }
+      const { data } = await apiClient.post('/menu-items/', payload)
+      const newItem = mapBackendMenuItem(data)
+      set((state) => ({
+        items: [...state.items, newItem]
+      }))
+    } catch (err) {
+      console.error('Failed to add menu item:', err)
+      throw err;
+    }
+  }
 }))

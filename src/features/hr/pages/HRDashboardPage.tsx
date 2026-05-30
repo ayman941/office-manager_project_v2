@@ -1,14 +1,23 @@
-import { SEED_USERS } from '@/features/auth/AuthContext'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
 import { useLeaveStore } from '@/stores/useLeaveStore'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export function HRDashboardPage() {
-  const { logs } = useAttendanceStore()
-  const { leaves } = useLeaveStore()
+  const { logs, fetchLogs } = useAttendanceStore()
+  const { leaves, fetchLeaves } = useLeaveStore()
   const today = new Date().toISOString().split('T')[0]
   
-  const allEmployees = Object.values(SEED_USERS).filter(u => u.role !== 'canteen')
+  const { employees, fetchEmployees } = useEmployeeStore()
+
+  useEffect(() => {
+    fetchEmployees()
+    fetchLeaves()
+    fetchLogs()
+  }, [fetchEmployees, fetchLeaves, fetchLogs])
+
+  const allEmployees = employees.filter(u => u.role !== 'canteen')
   const todayLogs = logs.filter(l => l.date === today)
   
   const presentCount = todayLogs.filter(l => !l.checkOut).length

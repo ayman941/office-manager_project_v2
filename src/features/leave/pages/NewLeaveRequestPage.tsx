@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useLeaveStore } from '@/stores/useLeaveStore'
@@ -7,12 +7,27 @@ import type { LeaveType } from '@/types'
 export function NewLeaveRequestPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
-  const { submitLeave, settings } = useLeaveStore()
+  const { submitLeave, settings, myBalance, fetchMyBalance } = useLeaveStore()
 
   const [type, setType] = useState<LeaveType>('Annual')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [reason, setReason] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchMyBalance()
+  }, [fetchMyBalance])
+
+  const overallUtilization = useMemo(() => {
+    const annual = myBalance?.annualBalance ?? 21
+    const sick = myBalance?.sickBalance ?? 7
+    const emergency = myBalance?.emergencyBalance ?? 3
+    const remaining = annual + sick + emergency
+    const totalMax = 31
+    const used = Math.max(0, totalMax - remaining)
+    return Math.round((used / totalMax) * 100)
+  }, [myBalance])
 
   const daysCount = useMemo(() => {
     if (!startDate || !endDate) return 0
@@ -35,20 +50,23 @@ export function NewLeaveRequestPage() {
     return count
   }, [startDate, endDate, settings.excludeWeekends])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user || daysCount === 0) return
+    setError(null)
 
-    submitLeave({
-      requestedById: user.id,
-      type,
-      startDate,
-      endDate,
-      daysCount,
-      reason
-    })
-
-    navigate('/employee/leave')
+    try {
+      await submitLeave({
+        requestedById: user.id,
+        type,
+        startDate,
+        endDate,
+        reason
+      })
+      navigate('/employee/leave')
+    } catch (err: any) {
+      setError(err.message || 'Failed to submit leave request')
+    }
   }
 
   return (
@@ -74,7 +92,10 @@ export function NewLeaveRequestPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl font-black text-primary">14 <span className="text-[10px] text-slate-400 font-bold uppercase">Days</span></p>
+                  <p className="text-xl font-black text-primary">
+                    {String(myBalance?.annualBalance ?? 21).padStart(2, '0')}{' '}
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Days</span>
+                  </p>
                 </div>
               </div>
               
@@ -89,7 +110,10 @@ export function NewLeaveRequestPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl font-black text-secondary">08 <span className="text-[10px] text-slate-400 font-bold uppercase">Days</span></p>
+                  <p className="text-xl font-black text-secondary">
+                    {String(myBalance?.sickBalance ?? 7).padStart(2, '0')}{' '}
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Days</span>
+                  </p>
                 </div>
               </div>
               
@@ -104,7 +128,10 @@ export function NewLeaveRequestPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl font-black text-tertiary">03 <span className="text-[10px] text-slate-400 font-bold uppercase">Days</span></p>
+                  <p className="text-xl font-black text-tertiary">
+                    {String(myBalance?.emergencyBalance ?? 3).padStart(2, '0')}{' '}
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">Days</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -112,10 +139,13 @@ export function NewLeaveRequestPage() {
             <div className="mt-8 pt-6 border-t border-outline-variant/20 relative z-10">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-xs font-bold text-slate-500">Overall Utilization</span>
-                <span className="text-xs font-black text-primary">62%</span>
+                <span className="text-xs font-black text-primary">{overallUtilization}%</span>
               </div>
               <div className="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
-                <div className="h-full bg-primary w-[62%] rounded-full"></div>
+                <div 
+                  className="h-full bg-primary rounded-full transition-all duration-500" 
+                  style={{ width: `${overallUtilization}%` }}
+                ></div>
               </div>
             </div>
           </div>
@@ -142,6 +172,12 @@ export function NewLeaveRequestPage() {
             </header>
             
             <form className="space-y-8 relative z-10" onSubmit={handleSubmit}>
+              {error && (
+                <div className="bg-critical/10 border border-critical/30 text-critical p-4 rounded-lg flex items-center gap-3">
+                  <span className="material-symbols-outlined text-critical">error</span>
+                  <p className="text-sm font-semibold">{error}</p>
+                </div>
+              )}
               {/* Leave Type Row */}
               <div className="grid grid-cols-1 gap-6">
                 <div className="group">

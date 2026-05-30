@@ -1,13 +1,21 @@
 import { useParams, Link } from 'react-router-dom'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
+import { useMenuStore } from '@/features/canteen/stores/useMenuStore'
 import { FoodOrderStatus } from '@/types'
+import { useEffect } from 'react'
 
 const STATUS_STAGES: FoodOrderStatus[] = ['Pending', 'Preparing', 'OutForDelivery', 'Delivered']
 
 export function FoodOrderTrackingPage() {
   const { orderId } = useParams()
-  const { orders } = useOrderStore()
+  const { orders, fetchOrders } = useOrderStore()
+  const { fetchMenuItems } = useMenuStore()
   
+  useEffect(() => {
+    fetchOrders()
+    fetchMenuItems()
+  }, [fetchOrders, fetchMenuItems])
+
   // Find the order, or default to the most recent one if no ID provided
   const order = orderId 
     ? orders.find(o => o.id === orderId) 

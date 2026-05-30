@@ -1,113 +1,135 @@
 import { create } from 'zustand'
+import apiClient from '@/lib/apiClient'
 import type { FoodOrder, FoodOrderStatus } from '@/types'
-import { FOOD_ORDER_TRANSITIONS } from '../types'
+import { useMenuStore } from '@/features/canteen/stores/useMenuStore'
 
 interface OrderStore {
   orders: FoodOrder[]
-  /** Place a new order — sets status to Pending */
-  placeOrder: (order: Omit<FoodOrder, 'id' | 'status' | 'createdAt' | 'updatedAt'>) => FoodOrder
-  /** Advance an order to its next valid status (Canteen action) */
-  updateStatus: (orderId: string, newStatus: FoodOrderStatus) => void
-  /** Cancel an order */
-  cancelOrder: (orderId: string) => void
+  isLoading: boolean
+  fetchOrders: () => Promise<void>
+  placeOrder: (order: {
+    orderedById: string
+    items: { menuItemId: string; name: string; quantity: number; unitPrice: number }[]
+    totalAmount: number
+    deliveryLocation: string
+    notes?: string
+  }) => Promise<FoodOrder>
+  updateStatus: (orderId: string, newStatus: FoodOrderStatus) => Promise<void>
+  cancelOrder: (orderId: string) => Promise<void>
 }
 
-let _nextId = 1
+export function mapBackendOrderToOrder(req: any): FoodOrder {
+  const statusMap: Record<string, FoodOrderStatus> = {
+    'Received': 'Pending',
+    'Preparing': 'Preparing',
+    'Ready': 'OutForDelivery',
+    'Delivered': 'Delivered',
+    'Cancelled': 'Cancelled',
+  }
+  
+  const menuItems = useMenuStore.getState().items
+  
+  const mappedItems = (req.items || req.order_items || []).map((item: any) => {
+    const matchedMenu = menuItems.find(m => m.id === String(item.menu_item))
+    return {
+      menuItemId: String(item.menu_item),
+      name: item.menu_item_name || matchedMenu?.name || `Item #${item.menu_item}`,
+      quantity: item.quantity,
+      unitPrice: Math.round(Number(item.price_at_order || 0) * 100)
+    }
+  })
+  
+  return {
+    id: String(req.id),
+    orderedById: req.employee ? String(req.employee) : '',
+    status: statusMap[req.status] ?? 'Pending',
+    items: mappedItems,
+    totalAmount: Math.round(Number(req.total_price || 0) * 100),
+    deliveryLocation: req.delivery_location_name || req.delivery_location_desc || String(req.delivery_location || ''),
+    createdAt: req.order_date || new Date().toISOString(),
+    updatedAt: req.order_date || new Date().toISOString(),
+    estimatedReadyAt: req.estimated_ready_at || undefined,
+    notes: req.notes || ''
+  }
+}
 
 export const useOrderStore = create<OrderStore>((set) => ({
-  orders: [
-    {
-      id: 'order-101',
-      orderedById: 'user-1',
-      status: 'Pending',
-      items: [
-        { menuItemId: 'f1', name: 'Artisan Avocado Toast', unitPrice: 850, quantity: 1 },
-        { menuItemId: 'b1', name: 'Cold Brew Coffee', unitPrice: 450, quantity: 1 },
-      ],
-      totalAmount: 1300,
-      deliveryLocation: 'East Wing, Floor 4',
-      createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      updatedAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      estimatedReadyAt: new Date(Date.now() + 1000 * 60 * 15).toISOString(),
-    },
-    {
-      id: 'order-102',
-      orderedById: 'user-2',
-      status: 'Pending',
-      items: [
-        { menuItemId: 'f2', name: 'Spicy Chicken Wrap', unitPrice: 1000, quantity: 2 },
-      ],
-      totalAmount: 2000,
-      deliveryLocation: 'Marketing, Floor 2',
-      createdAt: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
-      updatedAt: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
-      estimatedReadyAt: new Date(Date.now() + 1000 * 60 * 18).toISOString(),
-    },
-    {
-      id: 'order-103',
-      orderedById: 'user-3',
-      status: 'Preparing',
-      items: [
-        { menuItemId: 'f3', name: 'Quinoa Harvest Bowl', unitPrice: 1200, quantity: 1 },
-        { menuItemId: 'b2', name: 'Green Smoothie', unitPrice: 600, quantity: 1 },
-      ],
-      totalAmount: 1800,
-      deliveryLocation: 'Engineering, Floor 3',
-      createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-      updatedAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
-      estimatedReadyAt: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
-    },
-    {
-      id: 'order-104',
-      orderedById: 'user-4',
-      status: 'OutForDelivery',
-      items: [
-        { menuItemId: 'b3', name: 'Iced Latte', unitPrice: 500, quantity: 3 },
-      ],
-      totalAmount: 1500,
-      deliveryLocation: 'Design Studio, Floor 1',
-      createdAt: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
-      updatedAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      estimatedReadyAt: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
+  orders: [],
+  isLoading: false,
+
+  async fetchOrders() {
+    set({ isLoading: true })
+    try {
+      const { data } = await apiClient.get('/orders/')
+      const mapped = data.map(mapBackendOrderToOrder)
+      set({ orders: mapped })
+    } catch (err) {
+      console.error('Failed to fetch orders:', err)
+    } finally {
+      set({ isLoading: false })
     }
-  ],
+  },
 
-  placeOrder(draft) {
-    const now = new Date().toISOString()
-    const order: FoodOrder = {
-      ...draft,
-      id: `order-${_nextId++}`,
-      status: 'Pending',
-      createdAt: now,
-      updatedAt: now,
+  async placeOrder(draft) {
+    set({ isLoading: true })
+    try {
+      // Map location text to null or number
+      const locationId = isNaN(Number(draft.deliveryLocation)) ? null : Number(draft.deliveryLocation)
+      
+      const payload = {
+        delivery_location: locationId,
+        notes: draft.notes || '',
+        items: draft.items.map(item => ({
+          menu_item: Number(item.menuItemId),
+          quantity: item.quantity
+        }))
+      }
+      const { data } = await apiClient.post('/orders/place_order/', payload)
+      const newOrder = mapBackendOrderToOrder(data)
+      set((state) => ({ orders: [newOrder, ...state.orders] }))
+      return newOrder
+    } catch (err: any) {
+      const msg = err.response?.data ? JSON.stringify(err.response.data) : err.message
+      throw new Error(msg)
+    } finally {
+      set({ isLoading: false })
     }
-    set((s) => ({ orders: [order, ...s.orders] }))
-    return order
   },
 
-  updateStatus(orderId, newStatus) {
-    set((s) => ({
-      orders: s.orders.map((o) => {
-        if (o.id !== orderId) return o
-        const validNext = FOOD_ORDER_TRANSITIONS[o.status]
-        if (validNext !== newStatus) {
-          console.error(
-            `Invalid transition: ${o.status} → ${newStatus}. Expected: ${validNext ?? 'none (terminal state)'}`,
-          )
-          return o
-        }
-        return { ...o, status: newStatus, updatedAt: new Date().toISOString() }
-      }),
-    }))
+  async updateStatus(orderId, newStatus) {
+    const backendStatusMap: Record<FoodOrderStatus, string> = {
+      'Pending': 'Received',
+      'Preparing': 'Preparing',
+      'OutForDelivery': 'Ready',
+      'Delivered': 'Delivered',
+      'Cancelled': 'Cancelled',
+    }
+    const backendStatus = backendStatusMap[newStatus] || newStatus
+    
+    try {
+      const { data } = await apiClient.post(`/orders/${orderId}/update_status/`, {
+        status: backendStatus
+      })
+      const updated = mapBackendOrderToOrder(data)
+      set((state) => ({
+        orders: state.orders.map((o) => (o.id === orderId ? updated : o))
+      }))
+    } catch (err) {
+      console.error('Failed to update order status:', err)
+    }
   },
 
-  cancelOrder(orderId) {
-    set((s) => ({
-      orders: s.orders.map((o) =>
-        o.id === orderId
-          ? { ...o, status: 'Cancelled', updatedAt: new Date().toISOString() }
-          : o,
-      ),
-    }))
-  },
+  async cancelOrder(orderId) {
+    try {
+      const { data } = await apiClient.post(`/orders/${orderId}/update_status/`, {
+        status: 'Cancelled'
+      })
+      const updated = mapBackendOrderToOrder(data)
+      set((state) => ({
+        orders: state.orders.map((o) => (o.id === orderId ? updated : o))
+      }))
+    } catch (err) {
+      console.error('Failed to cancel order:', err)
+    }
+  }
 }))

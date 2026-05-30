@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { UtensilsCrossed, MapPin, X, Egg, Coffee, TrendingUp, Trash2, ChevronRight } from 'lucide-react'
 
 export function CanteenDashboardPage() {
-  const { orders, updateStatus, cancelOrder } = useOrderStore()
+  const { orders, updateStatus, cancelOrder, fetchOrders } = useOrderStore()
+  const { employees, fetchEmployees } = useEmployeeStore()
   const [activeTab, setActiveTab] = useState<'Pending' | 'Preparing' | 'OutForDelivery'>('Pending')
+
+  useEffect(() => {
+    fetchOrders()
+    fetchEmployees()
+  }, [fetchOrders, fetchEmployees])
 
   const displayedOrders = orders.filter(o => o.status === activeTab)
 
@@ -57,8 +64,10 @@ export function CanteenDashboardPage() {
                 <div key={order.id} className="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm border border-outline-variant/10 group hover:shadow-xl transition-all duration-300">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Order #{order.id.split('-')[1]}</span>
-                      <h3 className="font-headline text-lg font-extrabold text-on-surface">{order.orderedById || 'Guest'}</h3>
+                      <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Order #{order.id.split('-')[1] || order.id}</span>
+                      <h3 className="font-headline text-lg font-extrabold text-on-surface">
+                        {employees.find(e => e.id === order.orderedById)?.name || order.orderedById || 'Guest'}
+                      </h3>
                     </div>
                     <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase ${order.status === 'Pending' ? 'bg-tertiary-container/10 text-tertiary-container' : 'bg-secondary-container/30 text-on-secondary-container'}`}>
                       {order.status}

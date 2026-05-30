@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
-import { SEED_USERS } from '@/features/auth/AuthContext'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import {
   ChevronRight,
   User,
@@ -18,20 +18,44 @@ export function HREmployeeFormPage() {
   const navigate = useNavigate()
 
   const isEditing = Boolean(id)
-  const existingUser = id ? Object.values(SEED_USERS).find(u => u.id === id || u.id === `u${id}`) : null
+  
+  const { employees, departments, fetchEmployees, fetchDepartments, createEmployee, updateEmployee } = useEmployeeStore()
+
+  useEffect(() => {
+    fetchEmployees()
+    fetchDepartments()
+  }, [fetchEmployees, fetchDepartments])
+
+  const existingUser = id ? employees.find(u => u.id === id) : null
 
   // In a real app, this would use react-hook-form or similar
   const [formData, setFormData] = useState({
-    name: existingUser?.name || '',
-    email: existingUser?.email || '',
+    name: '',
+    email: '',
     phone: '',
-    employeeId: existingUser?.id || `SO-${Math.floor(Math.random() * 10000)}`,
-    joinDate: existingUser?.createdAt?.split('T')[0] || '',
-    department: existingUser?.departmentId || 'Product Design',
+    employeeId: `SO-${Math.floor(Math.random() * 10000)}`,
+    joinDate: '',
+    department: '',
     jobTitle: '',
-    manager: existingUser?.managerId || '',
-    adminAccess: existingUser?.role === 'hr_manager' || existingUser?.role === 'manager'
+    manager: '',
+    adminAccess: false
   })
+
+  useEffect(() => {
+    if (existingUser) {
+      setFormData({
+        name: existingUser.name || '',
+        email: existingUser.email || '',
+        phone: '',
+        employeeId: existingUser.id,
+        joinDate: existingUser.createdAt?.split('T')[0] || '',
+        department: existingUser.departmentId || '',
+        jobTitle: '',
+        manager: existingUser.managerId || '',
+        adminAccess: existingUser.role === 'hr_manager' || existingUser.role === 'manager'
+      })
+    }
+  }, [existingUser])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement
@@ -42,9 +66,26 @@ export function HREmployeeFormPage() {
     }))
   }
 
-  const handleSave = () => {
-    // Mock save behavior
-    navigate('/hr/directory')
+  const handleSave = async () => {
+    try {
+      const role = formData.adminAccess ? 'hr_manager' : 'employee'
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        role: role as any,
+        departmentId: formData.department,
+        managerId: formData.manager || undefined
+      }
+
+      if (isEditing && id) {
+        await updateEmployee(id, payload)
+      } else {
+        await createEmployee(payload)
+      }
+      navigate('/hr/directory')
+    } catch (err: any) {
+      alert(err.message || 'Error saving employee')
+    }
   }
 
   return (
@@ -180,10 +221,10 @@ export function HREmployeeFormPage() {
                   onChange={handleChange}
                   className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface"
                 >
-                  <option>Product Design</option>
-                  <option>Engineering</option>
-                  <option>Human Resources</option>
-                  <option>Marketing</option>
+                  <option value="">Select Department</option>
+                  {departments.map((dept) => (
+                    <option key={dept.id} value={dept.id}>{dept.name}</option>
+                  ))}
                 </select>
               </div>
               <div className="space-y-2">
@@ -205,9 +246,12 @@ export function HREmployeeFormPage() {
                   onChange={handleChange}
                   className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface"
                 >
-                  <option>Sarah Jenkins (Head of Design)</option>
-                  <option>Michael Chen (Lead Engineer)</option>
-                  <option>Admin User (Global Admin)</option>
+                  <option value="">Select Manager</option>
+                  {employees
+                    .filter((emp) => emp.role === 'manager' || emp.role === 'hr_manager')
+                    .map((mgr) => (
+                      <option key={mgr.id} value={mgr.id}>{mgr.name}</option>
+                    ))}
                 </select>
               </div>
             </div>

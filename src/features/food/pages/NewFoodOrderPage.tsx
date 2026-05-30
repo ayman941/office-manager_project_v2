@@ -1,77 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/features/auth/useAuth'
 import { useOrderStore } from '../stores/useOrderStore'
+import { useMenuStore } from '@/features/canteen/stores/useMenuStore'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { MenuItem } from '@/types'
 import { ShoppingBasket, Check, ArrowRight, Ban, Plus, Trash2, X } from 'lucide-react'
-
-const MOCK_MENU: MenuItem[] = [
-  {
-    id: 'm1',
-    name: 'Artisan Avocado Toast',
-    description: 'Sourdough bread topped with mashed avocado, organic poached eggs, and a dash of red pepper flakes.',
-    price: 850,
-    category: 'Breakfast',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXObEStfwR2U9Gjrl6q1GCogeo2YHGcbZ8MaTcLooYtSXKhwPl6w6b1b_xGdh5H94Za09s-xONDP6jQ86zHdJ6gA3zcV83ohiLUHgGXrDdl57z7SIE8iQp_GUI8CSEw4hm9EYJOv4pNFKEh5r_QOq9_RomTozOJHMpYhFvp7DjuvFb00Acv0Vaz8tgWA8mKouz1vbLeBEAzIHho30p0isZ6bDI8MDRC6QiG9If4UJJwyUaWDhkRpDeO23NgjeuOs_m2haK3YalBrA',
-    isAvailable: true,
-  },
-  {
-    id: 'm2',
-    name: 'Tropical Smoothie Bowl',
-    description: 'Dragon fruit and banana base with house-made honey granola and seasonal fresh berries.',
-    price: 600,
-    category: 'Breakfast',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCE_7GsD86AUesA3V7IApguhunrBT-U8qZ160JnSUwjB2dUlEruShkgAnlOYu_PYZKLOeHeO9sogee23uJigTCzZZYxbk8AcBTwuLJ4M68SmiEeNf-6XRLwDAw4oYB4ilQiSdoprIxwO_Hf1zFRIWwHoobPiUdUr9vqTYVumKc29fhxFvoEC-pqf6lLHPvdvddUwSuS3xkwxAUkEoIKg-VAPCjgQK3ZYFdPd2tDvUngf_uYXGUD0z-ZH-xA3CKZO4PowO3h4GQH1e0',
-    isAvailable: true,
-  },
-  {
-    id: 'm3',
-    name: 'Miso Glazed Salmon Bowl',
-    description: 'Sustainably sourced salmon fillet with miso honey glaze, served over quinoa with charred broccoli and pickled ginger.',
-    price: 1495,
-    category: 'Lunch Specials',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC62OfEyzD88bGm_TSa-2Bu7DtFHaM71X0LdUUt1xVW5Jt_x_NEuNSGud8X8Gkuamo6qVYTWipjX8Bd7Qc_AmvTSJNnrWmkWwNcrAuWcHdN5A6rfO_Yfo5P5iEmh-bYGjZ-HajctSPQrEMCiCLXbqG5SWInq8y-hrOh_Xsf5QWgKObBa-HSgymwWd0xS__6rq7ErspvomB9HHaZ8NWojbILEiirWVjOCAP432dua_pVwMctZvf92AZmoHB1S75JYoPyI3NTb1LgQso',
-    tags: ['Gluten Free', '480 kcal'],
-    isAvailable: true,
-    isChefSpecial: true,
-  },
-  {
-    id: 'm4',
-    name: 'Signature Wagyu Burger',
-    description: 'Wagyu beef patty, aged cheddar, caramelized onions, and truffle aioli on a brioche bun.',
-    price: 1600,
-    category: 'Lunch Specials',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD6WKFTc04C_0SKbOmjv1BTj4KtqLT18127pKBf-eScikKz7Cy2vsZeho2-6bAbSZm6C4QDhsLYJE1m00c_81Jn_0h5EBuLbfHEXmSwfX-ZspK5szr19s1XwrWtFm-pbPszo_urlsjIbEDnCeglgcSHiSFJk5nHCxlAwrDmPMRzpnVMmqCAl5QYywhQx2q463rG_KbYLDfnz10J4Bw4GflsoS9IB4NnQ6wqlAzDcdzMvwUHDD_RJ5Zh6bJHoOTnxm1MQ629Fra6HM4',
-    isAvailable: false,
-  },
-  {
-    id: 'm5',
-    name: 'Cold Brew with Oat Milk',
-    description: 'A cold brew coffee with swirling cream.',
-    price: 450,
-    category: 'Snacks & Drinks',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvIUcd5HfgO86yBdSI-NKoRV8cUh4rXjRvoEgcwe6PFR26aQAENUl2w2bffACl_2sLCWqdJonf0W2fV1r2T96Nps9_4uIqUHATU8DHpX2qjUCLL-U-WQlWu40BxJUWazaclSOpnfWbSu2tYoelNCiAm4nE_fa_HymKDBf7nf34rkafubKShBtJ1ixyuWDg-jXlal7UzZBK3t4R2Aqfy3_sMqpjKRKvrVau1xECo21fWT4wjih3mX9LnzvT_X2yzXjjIgCanjGQokM',
-    isAvailable: true,
-  },
-  {
-    id: 'm6',
-    name: 'Almond & Date Power Bar',
-    description: 'A gourmet energy bar featuring whole almonds, dates, and dark chocolate chunks.',
-    price: 325,
-    category: 'Snacks & Drinks',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBWqfBNgqeN3v5YtwPra241zDkq8LDdCPFJCTn-NxClOQJBdRblB1bAkt2KuGYfpduT4SNM_f4i7SatXW6JHGQ8vkumIwlsHRyDS7zcygeqU7WNuULWEHJOnSGV-FE6B74sIeTFzo4NIU6-inF1HJLrgW5pm21jXLIqOQzzpAxyoD5zn1qhfMtPUAf98VHxesAxdv8eoL4HbJbvwmRoVeW-k-VNJae0Q443ZyDLU63XPM2M9RNz3bQdWBPTtFSVx3Zp6LlFVWinw5k',
-    isAvailable: true,
-  }
-]
 
 export function NewFoodOrderPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const { placeOrder } = useOrderStore()
+  const { items, fetchMenuItems } = useMenuStore()
+  const { locations, fetchLocations } = useEmployeeStore()
   
   const [cart, setCart] = useState<{ menuItemId: string; name: string; quantity: number; unitPrice: number }[]>([])
   const [addedItemFeedback, setAddedItemFeedback] = useState<string | null>(null)
   const [showCart, setShowCart] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchMenuItems()
+    fetchLocations()
+  }, [fetchMenuItems, fetchLocations])
 
   const removeFromCart = (id: string) => {
     setCart(prev => prev.filter(item => item.menuItemId !== id))
@@ -97,18 +48,25 @@ export function NewFoodOrderPage() {
   const totalAmount = cart.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0)
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0)
 
-  const handleSubmitOrder = () => {
+  const handleSubmitOrder = async () => {
     if (!user || cart.length === 0) return
+    setError(null)
     
-    placeOrder({
-      orderedById: user.id,
-      items: cart,
-      totalAmount,
-      deliveryLocation: 'Desk - Level 3', // Assuming a default or picked up from profile
-      notes: ''
-    })
-    
-    navigate('/employee/orders')
+    try {
+      // Resolve location ID if any locations exist, otherwise use null (blank string maps to null in store)
+      const locationId = locations.length > 0 ? String(locations[0].id) : ''
+      
+      await placeOrder({
+        orderedById: user.id,
+        items: cart,
+        totalAmount,
+        deliveryLocation: locationId,
+        notes: ''
+      })
+      navigate('/employee/orders')
+    } catch (err: any) {
+      setError(err.message || 'Failed to place order')
+    }
   }
 
   const renderSection = (title: string, time: string, items: MenuItem[]) => (
@@ -221,9 +179,9 @@ export function NewFoodOrderPage() {
           <p className="text-sm text-outline font-medium">Daily Curation</p>
         </header>
 
-        {renderSection('Breakfast', '08:00 - 10:30 AM', MOCK_MENU.filter(m => m.category === 'Breakfast'))}
-        {renderSection('Lunch Specials', '12:00 - 02:30 PM', MOCK_MENU.filter(m => m.category === 'Lunch Specials'))}
-        {renderSmallItems('Snacks & Drinks', MOCK_MENU.filter(m => m.category === 'Snacks & Drinks'))}
+        {renderSection('Breakfast', '08:00 - 10:30 AM', items.filter(m => m.category === 'Breakfast') as MenuItem[])}
+        {renderSection('Lunch Specials', '12:00 - 02:30 PM', items.filter(m => m.category === 'Lunch Specials') as MenuItem[])}
+        {renderSmallItems('Snacks & Drinks', items.filter(m => m.category === 'Snacks & Drinks') as MenuItem[])}
       </div>
 
       {cartItemCount > 0 && (
@@ -255,6 +213,12 @@ export function NewFoodOrderPage() {
             </div>
             
             <div className="p-6 flex-1 overflow-y-auto">
+              {error && (
+                <div className="bg-critical/10 border border-critical/30 text-critical p-4 rounded-xl flex items-center gap-3 mb-4">
+                  <span className="material-symbols-outlined text-critical">error</span>
+                  <p className="text-sm font-semibold">{error}</p>
+                </div>
+              )}
               {cart.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-on-surface-variant">Your cart is empty.</p>
