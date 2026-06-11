@@ -4,6 +4,7 @@ import { useLeaveStore } from '@/stores/useLeaveStore'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
 import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { useEffect } from 'react'
+import { cn } from '@/utils/cn'
 
 export function ManagerDashboardPage() {
   const { user } = useAuth()
@@ -21,21 +22,32 @@ export function ManagerDashboardPage() {
   const directReportIds = directReports.map(e => e.id)
 
   const today = new Date()
-  const todayStr = today.toISOString().split('T')[0]
+  const todayStr = today.toLocaleDateString('en-CA')
+
+  const getGreeting = () => {
+    const hours = today.getHours()
+    if (hours < 12) return 'Good morning'
+    if (hours < 18) return 'Good afternoon'
+    return 'Good evening'
+  }
+  const greeting = getGreeting()
 
   // Team Attendance
   const teamLogsToday = logs.filter(l => l.date === todayStr && directReportIds.includes(l.employeeId))
-  const presentCount = teamLogsToday.length
+
+  const isLate = (checkInStr?: string) => {
+    if (!checkInStr) return false
+    const timePart = checkInStr.split('T')[1]
+    if (!timePart) return false
+    const [hours, minutes] = timePart.split(':').map(Number)
+    return hours > 9 || (hours === 9 && minutes > 0)
+  }
+
+  const presentCount = teamLogsToday.filter(l => l.checkIn && !isLate(l.checkIn)).length
+  const lateCount = teamLogsToday.filter(l => l.checkIn && isLate(l.checkIn)).length
   const totalTeamSize = directReportIds.length
-  const absentCount = Math.max(0, totalTeamSize - presentCount)
-  const attendanceRate = totalTeamSize > 0 ? Math.round((presentCount / totalTeamSize) * 100) : 100
-  
-  // A simple late calculation: if check-in is after 09:15 local time
-  const lateCount = teamLogsToday.filter(l => {
-    if (!l.checkIn) return false
-    const checkInDate = new Date(l.checkIn)
-    return checkInDate.getHours() > 9 || (checkInDate.getHours() === 9 && checkInDate.getMinutes() > 15)
-  }).length
+  const absentCount = Math.max(0, totalTeamSize - (presentCount + lateCount))
+  const attendanceRate = totalTeamSize > 0 ? Math.round(((presentCount + lateCount) / totalTeamSize) * 100) : 100
 
   // Leave Requests
   const teamLeaves = leaves.filter(l => directReportIds.includes(l.requestedById))
@@ -68,6 +80,12 @@ export function ManagerDashboardPage() {
   endOfWeek.setDate(startOfWeek.getDate() + 6)
   const weekLabel = `Week of ${startOfWeek.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })} - ${endOfWeek.toLocaleDateString('en-US', { day: '2-digit' })}`
 
+  const weekDays = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(startOfWeek)
+    d.setDate(startOfWeek.getDate() + i)
+    return d
+  })
+
   return (
     <div className="pb-12 max-w-7xl mx-auto">
       {/* Hero Summary (Bento Grid) */}
@@ -80,7 +98,7 @@ export function ManagerDashboardPage() {
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40 flex flex-col justify-center px-8 md:px-12 text-white">
-            <h2 className="text-3xl md:text-4xl font-black font-headline tracking-tight mb-2">Good morning, {user?.name.split(' ')[0]}.</h2>
+            <h2 className="text-3xl md:text-4xl font-black font-headline tracking-tight mb-2 capitalize">{greeting}, {user?.name.split(' ')[0]}.</h2>
             <p className="max-w-md text-primary-fixed opacity-90 leading-relaxed font-medium">
               Your team has {attendanceRate}% attendance today. You have {pendingLeaves.length} pending leave requests that need your review.
             </p>
@@ -225,14 +243,28 @@ export function ManagerDashboardPage() {
             </div>
             
             <div className="p-6">
-              {/* Dummy week view for aesthetics matching blueprint */}
+              {/* Dynamic week view */}
               <div className="grid grid-cols-7 gap-1 text-center mb-6">
                 {['M','T','W','T','F','S','S'].map((d, i) => <span key={i} className="text-[10px] font-black text-slate-400 uppercase">{d}</span>)}
-                {[9,10,11,12,13,14,15].map((d, i) => (
-                  <span key={i} className={`text-xs font-bold py-2 mt-2 ${d === 11 ? 'bg-primary/10 text-primary rounded-full' : (d >= 14 ? 'text-slate-400' : 'text-on-surface')}`}>
-                    {d.toString().padStart(2, '0')}
-                  </span>
-                ))}
+                {weekDays.map((d, i) => {
+                  const isCurrentDay = d.toDateString() === today.toDateString()
+                  const isWeekend = d.getDay() === 0 || d.getDay() === 6
+                  return (
+                    <span 
+                      key={i} 
+                      className={cn(
+                        "text-xs font-bold py-2 mt-2 flex items-center justify-center w-8 h-8 mx-auto",
+                        isCurrentDay 
+                          ? "bg-primary text-white rounded-full" 
+                          : isWeekend 
+                            ? "text-slate-400" 
+                            : "text-on-surface"
+                      )}
+                    >
+                      {d.getDate().toString().padStart(2, '0')}
+                    </span>
+                  )
+                })}
               </div>
               
               <div className="space-y-4 pt-6 border-t border-outline-variant/10">

@@ -53,6 +53,12 @@ export function mapBackendMenuItem(item: any): MenuItem {
 
   const isAvail = (item.stock_quantity ?? 0) > 0
 
+  const resolveImage = (path?: string) => {
+    if (!path) return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c'
+    if (path.startsWith('http')) return path
+    return `https://smart-office-backend-production.up.railway.app${path}`
+  }
+
   return {
     id: String(item.id),
     name: item.name,
@@ -61,7 +67,7 @@ export function mapBackendMenuItem(item: any): MenuItem {
     category: category,
     inStock: isAvail,
     isAvailable: isAvail,
-    imageUrl: item.image_path || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c',
+    imageUrl: resolveImage(item.image_path),
     tags: []
   }
 }

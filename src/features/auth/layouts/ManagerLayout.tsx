@@ -1,14 +1,21 @@
+import { useState } from 'react'
 import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { Bell, LayoutDashboard, ClipboardCheck, Users, Settings } from 'lucide-react'
+import { Bell, LayoutDashboard, ClipboardCheck, Users, Settings, X } from 'lucide-react'
 
 export function ManagerLayout() {
   const { pathname } = useLocation()
   const activePortal = pathname.startsWith('/employee') ? 'employee' : 'manager'
   const { user } = useAuth()
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notifications = [
+    { id: 1, text: 'New leave request from Alex Johnson.', time: '1 hour ago' },
+    { id: 2, text: 'Weekly team attendance report is ready.', time: '3 hours ago' },
+    { id: 3, text: 'Canteen food audit for Sector 4 completed.', time: '1 day ago' }
+  ]
 
   return (
     <div className="bg-surface text-on-surface min-h-screen font-body selection:bg-secondary-container flex">
@@ -41,7 +48,7 @@ export function ManagerLayout() {
           <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="/manager/team">
             <Users size={20} /> Team
           </NavLink>
-          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="#">
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg font-manrope text-sm transition-all", isActive ? "bg-cyan-100 dark:bg-cyan-900/40 text-cyan-900 dark:text-cyan-100 font-bold hover:translate-x-1" : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 hover:translate-x-1 font-medium")} to="/manager/settings">
             <Settings size={20} /> Settings
           </NavLink>
         </nav>
@@ -53,12 +60,36 @@ export function ManagerLayout() {
           <div className="flex items-center gap-4">
             <span className="text-xl font-black tracking-tighter text-cyan-800 dark:text-cyan-400 font-headline">SmartOffice</span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 relative">
             <PortalSwitcher activePortal={activePortal as any} />
-            <button className="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200">
-              <Bell className="text-cyan-900 dark:text-cyan-100" size={24} />
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 text-cyan-900 dark:text-cyan-100 relative"
+            >
+              <Bell size={24} />
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full border border-white"></span>
             </button>
             <UserMenu />
+
+            {/* Notifications Dropdown Panel */}
+            {showNotifications && (
+              <div className="absolute right-0 mt-12 top-4 w-80 bg-surface shadow-2xl rounded-2xl border border-outline-variant/10 p-4 z-50 animate-in fade-in slide-in-from-top-5 duration-200 text-left">
+                <div className="flex justify-between items-center pb-2 border-b border-outline-variant/20 mb-3">
+                  <h4 className="font-bold text-sm text-on-surface">Notifications</h4>
+                  <button onClick={() => setShowNotifications(false)} className="text-outline hover:text-on-surface">
+                    <X size={16} />
+                  </button>
+                </div>
+                <ul className="space-y-3">
+                  {notifications.map(n => (
+                    <li key={n.id} className="text-xs p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors">
+                      <p className="font-medium text-on-surface">{n.text}</p>
+                      <span className="text-[10px] text-slate-400 mt-1 block font-semibold">{n.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </header>
 

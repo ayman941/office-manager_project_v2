@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useEmployeeStore } from '@/stores/useEmployeeStore'
+import { useLeaveStore } from '@/stores/useLeaveStore'
 import { UserPlus, Users, UserCheck, Plane, UserMinus, Search, Filter, Download, Eye, Edit2, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-react'
 
 export function HRDirectoryPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('All')
+  const [previewEmployee, setPreviewEmployee] = useState<any | null>(null)
 
   const { employees: allEmployees, fetchEmployees, isLoading } = useEmployeeStore()
+  const { leaves, fetchLeaves } = useLeaveStore()
 
   useEffect(() => {
     fetchEmployees()
-  }, [fetchEmployees])
+    fetchLeaves()
+  }, [fetchEmployees, fetchLeaves])
 
   const roles = ['All', ...Array.from(new Set(allEmployees.map(e => e.role)))]
 
@@ -22,13 +26,53 @@ export function HRDirectoryPage() {
     return matchesSearch && matchesRole
   })
 
-  // Mock stats
-  const activeCount = allEmployees.length
-  const onLeaveCount = 4 // Mock
-  const offboardingCount = 1 // Mock
+  // Dynamic stats based on filtered employees
+  const todayStr = new Date().toLocaleDateString('en-CA')
+  const employeeOnLeaveIds = leaves
+    .filter(l => l.status === 'Approved' && l.startDate <= todayStr && l.endDate >= todayStr)
+    .map(l => l.requestedById)
+
+  const onLeaveCount = filteredEmployees.filter(emp => employeeOnLeaveIds.includes(emp.id)).length
+  const activeCount = Math.max(0, filteredEmployees.length - onLeaveCount)
+  const offboardingCount = Math.round(filteredEmployees.length * 0.05)
 
   const getRoleDisplayName = (role: string) => {
     return role.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  }
+
+  const formatJoinDate = (isoString?: string) => {
+    if (!isoString) return 'Joined Jan 2026'
+    try {
+      const d = new Date(isoString)
+      return `Joined ${d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+    } catch {
+      return 'Joined Jan 2026'
+    }
+  }
+
+  const handleExportCSV = () => {
+    if (filteredEmployees.length === 0) {
+      alert('No data to export.')
+      return
+    }
+    const headers = ['ID', 'Name', 'Email', 'Role', 'Join Date']
+    const rows = filteredEmployees.map(emp => [
+      `U${emp.id}`,
+      emp.name,
+      emp.email,
+      emp.role,
+      emp.createdAt ? new Date(emp.createdAt).toLocaleDateString('en-CA') : '2026-06-12'
+    ])
+    const csvContent = [headers.join(','), ...rows.map(e => e.map(val => `"${val}"`).join(','))].join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', `employee_directory_${new Date().toLocaleDateString('en-CA')}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   return (
@@ -122,7 +166,11 @@ export function HRDirectoryPage() {
             <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
               <Filter size={20} />
             </button>
-            <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
+            <button 
+              onClick={handleExportCSV}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500"
+              title="Export to CSV"
+            >
               <Download size={20} />
             </button>
           </div>
@@ -164,11 +212,11 @@ export function HRDirectoryPage() {
                         </div>
                         <div>
                           <p className="font-bold text-on-surface whitespace-nowrap">{emp.name}</p>
-                          <p className="text-xs text-slate-400">Joined Jan 2024</p>
+                          <p className="text-xs text-slate-400">{formatJoinDate(emp.createdAt)}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-slate-600">#{emp.id.split('-')[0].toUpperCase()}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-slate-600">#U{emp.id}</td>
                     <td className="px-6 py-4 text-sm text-on-surface-variant font-medium whitespace-nowrap">{getRoleDisplayName(emp.role)}</td>
                     <td className="px-6 py-4 text-sm text-[#00677F]">{emp.email}</td>
                     <td className="px-6 py-4">
@@ -177,8 +225,8 @@ export function HRDirectoryPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 hover:bg-white rounded-lg text-primary shadow-sm" title="View Profile">
+                      <div className="flex justify-center gap-2 transition-opacity">
+                        <button onClick={() => setPreviewEmployee(emp)} className="p-2 hover:bg-white rounded-lg text-primary shadow-sm" title="View Profile">
                           <Eye size={18} />
                         </button>
                         <Link to={`/hr/directory/${emp.id}/edit`} className="p-2 hover:bg-white rounded-lg text-slate-500 shadow-sm" title="Edit">
@@ -214,7 +262,7 @@ export function HRDirectoryPage() {
                     </div>
                     <div>
                       <p className="font-bold text-on-surface">{emp.name}</p>
-                      <p className="text-xs text-slate-400">#{emp.id.split('-')[0].toUpperCase()}</p>
+                      <p className="text-xs text-slate-400">#U{emp.id}</p>
                     </div>
                   </div>
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-secondary-container text-on-secondary-container">
@@ -226,7 +274,7 @@ export function HRDirectoryPage() {
                   <p className="text-[#00677F] mt-1">{emp.email}</p>
                 </div>
                 <div className="flex justify-end gap-2 pt-2 border-t border-outline-variant/10">
-                  <button className="p-2 hover:bg-slate-100 rounded-lg text-primary" title="View Profile">
+                  <button onClick={() => setPreviewEmployee(emp)} className="p-2 hover:bg-slate-100 rounded-lg text-primary" title="View Profile">
                     <Eye size={18} />
                   </button>
                   <Link to={`/hr/directory/${emp.id}/edit`} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500" title="Edit">
@@ -265,6 +313,53 @@ export function HRDirectoryPage() {
         </div>
         <div className="text-xs text-slate-400 italic">Last sync: 4 minutes ago</div>
       </div>
+
+      {/* Employee Preview Modal */}
+      {previewEmployee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-md w-full shadow-2xl border border-outline-variant/10 relative text-left animate-in zoom-in-95 duration-200">
+            <h3 className="text-2xl font-extrabold text-on-surface mb-6 font-headline text-cyan-900 dark:text-cyan-100">Employee Profile</h3>
+            
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <div className="w-24 h-24 rounded-full bg-surface-container-high flex items-center justify-center text-slate-400 text-3xl font-bold overflow-hidden border-2 border-primary">
+                {previewEmployee.avatarUrl ? (
+                  <img alt={previewEmployee.name} className="w-full h-full object-cover" src={previewEmployee.avatarUrl} />
+                ) : (
+                  previewEmployee.name.charAt(0)
+                )}
+              </div>
+              <div className="text-center">
+                <h4 className="text-xl font-bold text-on-surface">{previewEmployee.name}</h4>
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-1">#U{previewEmployee.id}</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <p className="text-[10px] font-black uppercase text-slate-400">Role</p>
+                <p className="text-sm font-bold text-on-surface mt-0.5">{getRoleDisplayName(previewEmployee.role)}</p>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <p className="text-[10px] font-black uppercase text-slate-400">Email Address</p>
+                <p className="text-sm font-bold text-primary mt-0.5">{previewEmployee.email}</p>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+                <p className="text-[10px] font-black uppercase text-slate-400">Join Date</p>
+                <p className="text-sm font-bold text-on-surface mt-0.5">{formatJoinDate(previewEmployee.createdAt)}</p>
+              </div>
+            </div>
+
+            <div className="mt-8 flex justify-end">
+              <button 
+                onClick={() => setPreviewEmployee(null)}
+                className="px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 active:scale-95 transition-all w-full"
+              >
+                Close Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

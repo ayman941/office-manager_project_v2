@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useEmployeeStore } from '@/stores/useEmployeeStore'
+import { cn } from '@/utils/cn'
 import {
   ChevronRight,
   User,
@@ -20,6 +21,7 @@ export function HREmployeeFormPage() {
   const isEditing = Boolean(id)
   
   const { employees, departments, fetchEmployees, fetchDepartments, createEmployee, updateEmployee } = useEmployeeStore()
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetchEmployees()
@@ -67,6 +69,22 @@ export function HREmployeeFormPage() {
   }
 
   const handleSave = async () => {
+    const newErrors: Record<string, string> = {}
+    if (!formData.name.trim()) {
+      newErrors.name = 'Full name is required'
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email address is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+    setErrors({})
+
     try {
       const role = formData.adminAccess ? 'hr_manager' : 'employee'
       const payload = {
@@ -150,10 +168,14 @@ export function HREmployeeFormPage() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface"
+                    className={cn(
+                      "w-full bg-surface-container-low border rounded-xl py-3 px-4 focus:ring-2 transition-all text-on-surface",
+                      errors.name ? "border-error focus:ring-error/20" : "border-transparent focus:ring-primary/20"
+                    )}
                     placeholder="Johnathan Doe"
                     type="text"
                   />
+                  {errors.name && <p className="text-xs text-error font-semibold mt-1">{errors.name}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
@@ -161,10 +183,14 @@ export function HREmployeeFormPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 transition-all text-on-surface"
+                    className={cn(
+                      "w-full bg-surface-container-low border rounded-xl py-3 px-4 focus:ring-2 transition-all text-on-surface",
+                      errors.email ? "border-error focus:ring-error/20" : "border-transparent focus:ring-primary/20"
+                    )}
                     placeholder="j.doe@smartoffice.com"
                     type="email"
                   />
+                  {errors.email && <p className="text-xs text-error font-semibold mt-1">{errors.email}</p>}
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Phone Number</label>

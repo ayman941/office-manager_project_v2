@@ -43,35 +43,62 @@ function mapRole(djangoRole: string): User['role'] {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser]           = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(() => {
-    return !!localStorage.getItem('access_token')
+    return !!localStorage.getItem('access_token') || !!localStorage.getItem('refresh_token')
   })
 
   useEffect(() => {
     const token = localStorage.getItem('access_token')
-    if (!token) {
+    const refresh = localStorage.getItem('refresh_token')
+    
+    if (!token && !refresh) {
       setIsLoading(false)
       return
     }
-    setIsLoading(true)
-    apiClient.get('/employees/me/')
-      .then(({ data }) => {
-        setUser({
-          id:           String(data.id),
-          name:         data.full_name || `${data.first_name || ''} ${data.last_name || ''}`.trim() || data.username || data.email || 'User',
-          email:        data.email,
-          role:         mapRole(data.role),
-          departmentId: String(data.department ?? ''),
-          managerId:    data.manager ? String(data.manager) : undefined,
-          createdAt:    data.date_joined ?? new Date().toISOString(),
+
+    const resolveAvatar = (photo?: string) => {
+      if (!photo) return undefined
+      if (photo.startsWith('http')) return photo
+      return `https://smart-office-backend-production.up.railway.app${photo}`
+    }
+
+    const fetchUser = () => {
+      setIsLoading(true)
+      apiClient.get('/employees/me/')
+        .then(({ data }) => {
+          setUser({
+            id:           String(data.id),
+            name:         data.full_name || `${data.first_name || ''} ${data.last_name || ''}`.trim() || data.username || data.email || 'User',
+            email:        data.email,
+            role:         mapRole(data.role),
+            departmentId: String(data.department ?? ''),
+            managerId:    data.manager ? String(data.manager) : undefined,
+            createdAt:    data.date_joined ?? new Date().toISOString(),
+            avatarUrl:    resolveAvatar(data.profile_photo || data.avatar || data.avatarUrl),
+          })
         })
-      })
-      .catch((err) => {
-        if (err?.response?.status === 401 || err?.response?.status === 403) {
+        .catch((err) => {
+          if (err?.response?.status === 401 || err?.response?.status === 403) {
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+          }
+        })
+        .finally(() => setIsLoading(false))
+    }
+
+    if (!token && refresh) {
+      axios.post('https://smart-office-backend-production.up.railway.app/api/token/refresh/', { refresh })
+        .then(({ data }) => {
+          localStorage.setItem('access_token', data.access)
+          fetchUser()
+        })
+        .catch(() => {
           localStorage.removeItem('access_token')
           localStorage.removeItem('refresh_token')
-        }
-      })
-      .finally(() => setIsLoading(false))
+          setIsLoading(false)
+        })
+    } else {
+      fetchUser()
+    }
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
@@ -84,6 +111,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('access_token', tokens.access)
       localStorage.setItem('refresh_token', tokens.refresh)
 
+      const resolveAvatar = (photo?: string) => {
+        if (!photo) return undefined
+        if (photo.startsWith('http')) return photo
+        return `https://smart-office-backend-production.up.railway.app${photo}`
+      }
      
       const { data } = await apiClient.get('/employees/me/', {
         headers: {
@@ -99,6 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         departmentId: String(data.department ?? ''),
         managerId:    data.manager ? String(data.manager) : undefined,
         createdAt:    data.date_joined ?? new Date().toISOString(),
+        avatarUrl:    resolveAvatar(data.profile_photo || data.avatar || data.avatarUrl),
       })
       return mapRole(data.role) as User['role']
     } finally {

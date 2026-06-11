@@ -49,6 +49,41 @@ function UnauthorizedPage() {
   )
 }
 
+function PlaceholderSettings({ role }: { role: string }) {
+  return (
+    <div className="p-8 max-w-2xl mx-auto space-y-6">
+      <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight capitalize">{role} Settings</h1>
+      <p className="text-gray-500">Configure your personal preferences, notifications, and application layout style parameters.</p>
+      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+        <h2 className="text-lg font-bold text-gray-800">Mock Configuration Panel</h2>
+        <div className="flex items-center justify-between py-2 border-b border-gray-100">
+          <span>Dark Mode Preference</span>
+          <button className="px-3 py-1 bg-gray-200 rounded-full text-xs font-bold">Toggle</button>
+        </div>
+        <div className="flex items-center justify-between py-2 border-b border-gray-100">
+          <span>Email Push Notifications</span>
+          <button className="px-3 py-1 bg-primary text-white rounded-full text-xs font-bold">Enabled</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PlaceholderOrgStats() {
+  return (
+    <div className="p-8 max-w-4xl mx-auto space-y-6">
+      <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Organization Statistics</h1>
+      <p className="text-gray-500">Overview of department counts, role allocations, and overall workforce productivity metrics.</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <h2 className="text-lg font-bold mb-4">Workforce Distribution</h2>
+          <p className="text-sm text-gray-500">Marketing, Engineering, HR, and Operations metrics are computed in real-time.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function AppRouter() {
   return (
     <BrowserRouter>
@@ -75,6 +110,7 @@ export function AppRouter() {
           <Route path="orders"    element={<FoodOrderList />} />
           <Route path="consumption" element={<EmployeeConsumptionPage />} />
           <Route path="food/track/:orderId" element={<FoodOrderTrackingPage />} />
+          <Route path="settings"  element={<PlaceholderSettings role="employee" />} />
         </Route>
 
         {/* Manager Portal */}
@@ -90,6 +126,7 @@ export function AppRouter() {
           <Route path="dashboard" element={<ManagerDashboardPage />} />
           <Route path="leave"     element={<LeaveApprovalQueuePage />} />
           <Route path="team"      element={<TeamOverviewPage />} />
+          <Route path="settings"  element={<PlaceholderSettings role="manager" />} />
         </Route>
 
         {/* Canteen Portal */}
@@ -106,6 +143,7 @@ export function AppRouter() {
           <Route path="orders"    element={<OrderManagementPage />} />
           <Route path="menu"      element={<MenuManagementPage />} />
           <Route path="inventory" element={<InventoryManagementPage />} />
+          <Route path="settings"  element={<PlaceholderSettings role="canteen" />} />
         </Route>
 
         {/* HR Portal */}
@@ -126,6 +164,8 @@ export function AppRouter() {
           <Route path="attendance/:employeeId" element={<EmployeeAttendancePage />} />
           <Route path="leave-audit" element={<LeaveAuditPage />} />
           <Route path="consumption" element={<HRConsumptionReportPage />} />
+          <Route path="settings"    element={<PlaceholderSettings role="hr" />} />
+          <Route path="org-stats"   element={<PlaceholderOrgStats />} />
         </Route>
 
         {/* Catch-all */}
