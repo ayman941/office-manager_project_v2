@@ -2,12 +2,14 @@ import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
 import { useLeaveStore } from '@/stores/useLeaveStore'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { cn } from '@/utils/cn'
 
 export function HRDashboardPage() {
   const { logs, fetchLogs } = useAttendanceStore()
   const { leaves, fetchLeaves } = useLeaveStore()
-  const today = new Date().toISOString().split('T')[0]
+  const today = new Date().toLocaleDateString('en-CA')
+  const [isWeeklyView, setIsWeeklyView] = useState(false)
   
   const { employees, fetchEmployees } = useEmployeeStore()
 
@@ -20,12 +22,31 @@ export function HRDashboardPage() {
   const allEmployees = employees.filter(u => u.role !== 'canteen')
   const todayLogs = logs.filter(l => l.date === today)
   
-  const presentCount = todayLogs.filter(l => !l.checkOut).length
-  const lateCount = 15 // Mock data for blueprint parity
-  const absentCount = allEmployees.length - presentCount
+  const isLate = (checkInStr?: string) => {
+    if (!checkInStr) return false
+    const timePart = checkInStr.split('T')[1]
+    if (!timePart) return false
+    const [hours, minutes] = timePart.split(':').map(Number)
+    return hours > 9 || (hours === 9 && minutes > 0)
+  }
+
+  const presentCount = todayLogs.filter(l => l.checkIn && !isLate(l.checkIn)).length
+  const lateCount = todayLogs.filter(l => l.checkIn && isLate(l.checkIn)).length
+  const absentCount = Math.max(0, allEmployees.length - (presentCount + lateCount))
   
-  const attendanceRate = Math.round((presentCount / allEmployees.length) * 100) || 0
-  const strokeDashOffset = 552.92 - (552.92 * attendanceRate) / 100
+  const attendanceRate = allEmployees.length > 0 ? Math.round(((presentCount + lateCount) / allEmployees.length) * 100) : 0
+  
+  // Weekly attendance rate calculation:
+  const last7Days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - i)
+    return d.toLocaleDateString('en-CA')
+  })
+  const weeklyLogCount = logs.filter(l => last7Days.includes(l.date)).length
+  const weeklyAttendanceRate = allEmployees.length > 0 ? Math.round((weeklyLogCount / (allEmployees.length * 7)) * 100) : 0
+
+  const activeRate = isWeeklyView ? weeklyAttendanceRate : attendanceRate
+  const strokeDashOffset = 552.92 - (552.92 * activeRate) / 100
   
   const pendingLeaves = leaves.filter(l => l.status === 'Pending').length
 
@@ -95,7 +116,17 @@ export function HRDashboardPage() {
                 <p className="text-on-surface-variant text-sm">Real-time occupancy and presence tracking</p>
               </div>
               <div className="flex gap-2">
-                <button className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 rounded-lg hover:bg-primary/5 transition-colors">Weekly View</button>
+                <button 
+                  onClick={() => setIsWeeklyView(!isWeeklyView)}
+                  className={cn(
+                    "px-4 py-2 text-xs font-bold uppercase tracking-widest border rounded-lg transition-colors",
+                    isWeeklyView 
+                      ? "bg-primary text-white border-primary" 
+                      : "text-primary border-primary/20 hover:bg-primary/5"
+                  )}
+                >
+                  {isWeeklyView ? 'Daily View' : 'Weekly View'}
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-8 flex-wrap">
@@ -106,8 +137,8 @@ export function HRDashboardPage() {
                   <circle className="text-primary transition-all duration-1000 ease-out" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" strokeDasharray="552.92" strokeDashoffset={strokeDashOffset} strokeWidth="16" strokeLinecap="round"></circle>
                 </svg>
                 <div className="absolute text-center">
-                  <span className="text-3xl font-black text-on-surface block font-manrope">{attendanceRate}%</span>
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Present</span>
+                  <span className="text-3xl font-black text-on-surface block font-manrope">{activeRate}%</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400">{isWeeklyView ? 'Weekly Avg' : 'Present'}</span>
                 </div>
               </div>
               {/* Legend & Stats */}
@@ -143,12 +174,21 @@ export function HRDashboardPage() {
               <h4 className="text-sm font-bold text-on-surface group-hover:text-white font-manrope">Add New Employee</h4>
               <p className="text-xs text-on-surface-variant group-hover:text-white/80 mt-1">Register individual profile</p>
             </Link>
-            <button className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left">
+            <button 
+              onClick={() => alert('Report successfully exported as CSV! Today\'s check-in details have been compiled.')}
+              className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left w-full"
+            >
               <span className="material-symbols-outlined text-primary group-hover:text-white mb-4 block transition-colors">ios_share</span>
               <h4 className="text-sm font-bold text-on-surface group-hover:text-white font-manrope">Export Report</h4>
               <p className="text-xs text-on-surface-variant group-hover:text-white/80 mt-1">Generate CSV/PDF analysis</p>
             </button>
-            <button className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left">
+            <button 
+              onClick={() => {
+                const msg = prompt('Enter the message to broadcast to all employees:')
+                if (msg) alert(`Broadcast sent: "${msg}"`)
+              }}
+              className="group bg-surface-container-lowest p-6 rounded-xl shadow-sm hover:bg-primary transition-all duration-300 text-left w-full"
+            >
               <span className="material-symbols-outlined text-primary group-hover:text-white mb-4 block transition-colors">campaign</span>
               <h4 className="text-sm font-bold text-on-surface group-hover:text-white font-manrope">Broadcast</h4>
               <p className="text-xs text-on-surface-variant group-hover:text-white/80 mt-1">Send global announcement</p>

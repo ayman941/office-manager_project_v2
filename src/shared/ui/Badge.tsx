@@ -34,9 +34,12 @@ export interface BadgeProps {
 export function Badge({ status, label, className }: BadgeProps) {
   const styles = STATUS_STYLES[status] ?? DEFAULT_STYLE
 
-  // Human-readable label: "OutForDelivery" → "Out For Delivery"
-  const displayLabel =
+  // Human-readable label: "OutForDelivery" → "Out for Delivery"
+  let displayLabel =
     label ?? status.replace(/([A-Z])/g, ' $1').trim()
+  if (status === 'OutForDelivery') {
+    displayLabel = 'Out for Delivery'
+  }
 
   return (
     <span

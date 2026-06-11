@@ -1,15 +1,22 @@
+import { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import { cn } from '@/utils/cn'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { LayoutDashboard, UtensilsCrossed, ReceiptText, Archive, Settings, Search, Bell, LayoutGrid, Utensils, Plus } from 'lucide-react'
+import { LayoutDashboard, UtensilsCrossed, ReceiptText, Archive, Settings, Search, Bell, LayoutGrid, Utensils, Plus, X } from 'lucide-react'
 
 export function CanteenLayout() {
   const { user } = useAuth()
   const { orders } = useOrderStore()
-  const activeOrdersCount = orders.filter(o => o.status === 'Pending' || o.status === 'Preparing').length
+  const activeOrdersCount = orders.filter(o => o.status === 'Pending' || o.status === 'Preparing' || o.status === 'OutForDelivery').length
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notifications = [
+    { id: 1, text: 'Low stock alert: Rice bags are below 10%', time: '1 hour ago' },
+    { id: 2, text: 'New bulk breakfast order received.', time: '2 hours ago' },
+    { id: 3, text: 'Menu schedule update complete.', time: '5 hours ago' }
+  ]
 
   return (
     <div className="flex min-h-screen overflow-hidden bg-surface font-body text-on-surface">
@@ -53,10 +60,10 @@ export function CanteenLayout() {
             <Archive size={20} />
             <span className="font-manrope text-sm">Inventory</span>
           </NavLink>
-          <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 hover:translate-x-1 transition-all rounded-lg" href="#">
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all", isActive ? "bg-cyan-100 text-cyan-900 font-bold" : "text-slate-600 hover:bg-slate-200/50 hover:translate-x-1")} to="/canteen/settings">
             <Settings size={20} />
             <span className="font-manrope text-sm">Settings</span>
-          </a>
+          </NavLink>
         </nav>
 
         <div className="mt-auto p-4 bg-primary-container rounded-2xl text-on-primary-container">
@@ -79,16 +86,39 @@ export function CanteenLayout() {
               <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">{activeOrdersCount} Active Orders</span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative">
             <PortalSwitcher activePortal="canteen" />
             <button className="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors active:scale-95 duration-200">
               <Search size={24} />
             </button>
-            <button className="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors active:scale-95 duration-200 relative">
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2 text-slate-500 hover:bg-slate-100/50 rounded-full transition-colors active:scale-95 duration-200 relative"
+            >
               <Bell size={24} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
             </button>
             <UserMenu />
+
+            {/* Notifications Dropdown Panel */}
+            {showNotifications && (
+              <div className="absolute right-0 mt-12 top-4 w-80 bg-surface shadow-2xl rounded-2xl border border-outline-variant/10 p-4 z-50 animate-in fade-in slide-in-from-top-5 duration-200 text-left">
+                <div className="flex justify-between items-center pb-2 border-b border-outline-variant/20 mb-3">
+                  <h4 className="font-bold text-sm text-on-surface">Notifications</h4>
+                  <button onClick={() => setShowNotifications(false)} className="text-outline hover:text-on-surface">
+                    <X size={16} />
+                  </button>
+                </div>
+                <ul className="space-y-3">
+                  {notifications.map(n => (
+                    <li key={n.id} className="text-xs p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors">
+                      <p className="font-medium text-on-surface">{n.text}</p>
+                      <span className="text-[10px] text-slate-400 mt-1 block font-semibold">{n.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </header>
 

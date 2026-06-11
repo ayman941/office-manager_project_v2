@@ -55,6 +55,20 @@ export function NewLeaveRequestPage() {
     if (!user || daysCount === 0) return
     setError(null)
 
+    const minDate = new Date('2026-05-01')
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+
+    if (start < minDate) {
+      setError('Start date must be May 2026 or later.')
+      return
+    }
+
+    if (end < start) {
+      setError('End date must be greater than or equal to start date.')
+      return
+    }
+
     try {
       await submitLeave({
         requestedById: user.id,
@@ -209,6 +223,7 @@ export function NewLeaveRequestPage() {
                     <input 
                       required
                       type="date"
+                      min="2026-05-01"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
                       className="w-full bg-surface-container-high border-0 rounded-lg py-4 px-5 text-on-surface font-medium focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all"
@@ -221,7 +236,7 @@ export function NewLeaveRequestPage() {
                     <input 
                       required
                       type="date"
-                      min={startDate}
+                      min={startDate || "2026-05-01"}
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
                       className="w-full bg-surface-container-high border-0 rounded-lg py-4 px-5 text-on-surface font-medium focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all"
