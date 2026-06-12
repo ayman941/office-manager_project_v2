@@ -32,14 +32,23 @@ export function LoginPage() {
     setError('')
     setEmailError('')
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address.')
-      return
+    const trimmedInput = email.trim()
+
+    if (trimmedInput.includes('@')) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(trimmedInput)) {
+        setEmailError('Please enter a valid email address.')
+        return
+      }
+    } else {
+      if (trimmedInput.length < 3) {
+        setEmailError('Username must be at least 3 characters.')
+        return
+      }
     }
 
     try {
-      const role = await login(email, password) ?? 'employee'
+      const role = await login(trimmedInput, password) ?? 'employee'
       navigate(ROLE_HOME[role] ?? '/', { replace: true })
     } catch {
       setError('Invalid username or password.')
