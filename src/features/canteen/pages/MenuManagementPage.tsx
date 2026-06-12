@@ -5,6 +5,33 @@ export function MenuManagementPage() {
   const [activeCategory, setActiveCategory] = useState<MenuCategory>('Breakfast')
   const [activeView, setActiveView] = useState<'Daily' | 'Weekly' | 'Monthly'>('Daily')
 
+  // Calendar Navigation date state
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const handlePrevDay = () => {
+    setSelectedDate(prev => {
+      const d = new Date(prev)
+      d.setDate(d.getDate() - 1)
+      return d
+    })
+  }
+
+  const handleNextDay = () => {
+    setSelectedDate(prev => {
+      const d = new Date(prev)
+      d.setDate(d.getDate() + 1)
+      return d
+    })
+  }
+
+  const formatDateLabel = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long'
+    })
+  }
+
   // Modal states for creating a new dish
   const [showAddModal, setShowAddModal] = useState(false)
   const [newName, setNewName] = useState('')
@@ -121,11 +148,17 @@ export function MenuManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors">
+          <button 
+            onClick={handlePrevDay}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors"
+          >
             <span className="material-symbols-outlined">chevron_left</span>
           </button>
-          <h3 className="font-headline font-bold text-lg px-4">Thursday, 24 October</h3>
-          <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors">
+          <h3 className="font-headline font-bold text-lg px-4">{formatDateLabel(selectedDate)}</h3>
+          <button 
+            onClick={handleNextDay}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors"
+          >
             <span className="material-symbols-outlined">chevron_right</span>
           </button>
         </div>
