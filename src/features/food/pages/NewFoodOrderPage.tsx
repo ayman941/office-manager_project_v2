@@ -180,8 +180,8 @@ export function NewFoodOrderPage() {
         </header>
 
         {renderSection('Breakfast', '08:00 - 10:30 AM', items.filter(m => m.category === 'Breakfast') as MenuItem[])}
-        {renderSection('Lunch Specials', '12:00 - 02:30 PM', items.filter(m => m.category === 'Lunch Specials') as MenuItem[])}
-        {renderSmallItems('Snacks & Drinks', items.filter(m => m.category === 'Snacks & Drinks') as MenuItem[])}
+        {renderSection('Lunch Specials', '12:00 - 02:30 PM', items.filter(m => m.category === 'Lunch' || m.category === 'Lunch Specials') as MenuItem[])}
+        {renderSmallItems('Snacks & Drinks', items.filter(m => m.category === 'Snacks' || m.category === 'Drinks' || m.category === 'Snacks & Drinks') as MenuItem[])}
       </div>
 
       {cartItemCount > 0 && (
