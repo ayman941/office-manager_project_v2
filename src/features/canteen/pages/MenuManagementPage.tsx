@@ -1,9 +1,54 @@
 import { useState, useEffect } from 'react'
 import { useMenuStore, MenuCategory } from '@/features/canteen/stores/useMenuStore'
 export function MenuManagementPage() {
-  const { items, toggleStock, deleteItem, fetchMenuItems } = useMenuStore()
+  const { items, toggleStock, deleteItem, fetchMenuItems, addMenuItem } = useMenuStore()
   const [activeCategory, setActiveCategory] = useState<MenuCategory>('Breakfast')
   const [activeView, setActiveView] = useState<'Daily' | 'Weekly' | 'Monthly'>('Daily')
+
+  // Modal states for creating a new dish
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [newName, setNewName] = useState('')
+  const [newPrice, setNewPrice] = useState('')
+  const [newDesc, setNewDesc] = useState('')
+  const [newCategory, setNewCategory] = useState<string>('Breakfast')
+  const [newImgUrl, setNewImgUrl] = useState('')
+  const [addError, setAddError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleAddSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newName || !newPrice || !newDesc) {
+      setAddError('Please fill in all required fields.')
+      return
+    }
+    const priceNum = parseFloat(newPrice)
+    if (isNaN(priceNum) || priceNum <= 0) {
+      setAddError('Please enter a valid price.')
+      return
+    }
+    setAddError(null)
+    setIsSubmitting(true)
+    try {
+      await addMenuItem({
+        name: newName,
+        price: Math.round(priceNum * 100), // convert to cents
+        description: newDesc,
+        category: newCategory,
+        imageUrl: newImgUrl || undefined
+      })
+      // Reset form fields
+      setNewName('')
+      setNewPrice('')
+      setNewDesc('')
+      setNewCategory('Breakfast')
+      setNewImgUrl('')
+      setShowAddModal(false)
+    } catch (err: any) {
+      setAddError(err.message || 'Failed to add menu item')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   useEffect(() => {
     fetchMenuItems()
@@ -90,7 +135,10 @@ export function MenuManagementPage() {
             <span className="material-symbols-outlined">filter_list</span>
             <span>Filter</span>
           </button>
-          <button className="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-on-primary font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-on-primary font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+          >
             <span className="material-symbols-outlined">add</span>
             <span>Add Item</span>
           </button>
@@ -196,8 +244,10 @@ export function MenuManagementPage() {
             </div>
           ))}
 
-          {/* Placeholder/Add New Card */}
-          <button className="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-2xl p-5 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-high hover:border-primary transition-all duration-300 min-h-[300px]">
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-2xl p-5 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-high hover:border-primary transition-all duration-300 min-h-[300px]"
+          >
             <div className="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all shadow-sm">
               <span className="material-symbols-outlined text-3xl">add_circle</span>
             </div>
@@ -209,6 +259,111 @@ export function MenuManagementPage() {
 
         </div>
       </section>
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-surface w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-outline-variant/10 animate-in zoom-in-95 duration-200">
+            <div className="p-6 border-b border-outline-variant/20 flex items-center justify-between">
+              <h3 className="text-xl font-bold font-headline text-on-surface flex items-center gap-2">
+                Add New Dish
+              </h3>
+              <button 
+                onClick={() => setShowAddModal(false)} 
+                className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-container-highest"
+              >
+                <span className="material-symbols-outlined text-xl">close</span>
+              </button>
+            </div>
+            
+            <form onSubmit={handleAddSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
+              {addError && (
+                <div className="bg-critical/10 border border-critical/30 text-critical p-4 rounded-xl text-sm font-semibold">
+                  {addError}
+                </div>
+              )}
+              
+              <div className="space-y-2 text-left">
+                <label className="block text-xs font-bold uppercase tracking-widest text-primary">Dish Name *</label>
+                <input 
+                  type="text" 
+                  value={newName} 
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="e.g. Organic Avocado Sourdough"
+                  className="w-full px-4 py-3 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-left">
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-primary">Price (USD) *</label>
+                  <input 
+                    type="number" 
+                    step="0.01" 
+                    value={newPrice} 
+                    onChange={(e) => setNewPrice(e.target.value)}
+                    placeholder="e.g. 8.50"
+                    className="w-full px-4 py-3 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-primary">Category *</label>
+                  <select 
+                    value={newCategory} 
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    className="w-full px-4 py-3 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
+                  >
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Drinks">Drinks</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-left">
+                <label className="block text-xs font-bold uppercase tracking-widest text-primary">Description *</label>
+                <textarea 
+                  value={newDesc} 
+                  onChange={(e) => setNewDesc(e.target.value)}
+                  placeholder="e.g. Fresh organic avocado sourdough toast with olive oil..."
+                  rows={3}
+                  className="w-full px-4 py-3 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 text-left">
+                <label className="block text-xs font-bold uppercase tracking-widest text-primary">Image URL (Optional)</label>
+                <input 
+                  type="url" 
+                  value={newImgUrl} 
+                  onChange={(e) => setNewImgUrl(e.target.value)}
+                  placeholder="https://images.unsplash.com/..."
+                  className="w-full px-4 py-3 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
+                />
+              </div>
+
+              <div className="pt-4 border-t border-outline-variant/20 flex gap-4">
+                <button 
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="flex-1 py-3 bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold rounded-xl active:scale-95 transition-all text-sm"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 py-3 bg-primary hover:bg-primary/90 text-surface font-bold rounded-xl active:scale-95 transition-all text-sm disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Creating...' : 'Create Dish'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
