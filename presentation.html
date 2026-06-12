@@ -878,7 +878,7 @@ export interface User {
     // Double-Tier Leave Audit Actions
     let auditCount = 3;
     function auditAction(id, action) {
-      const item = document.getElementById(\`audit-item-\${id}\`);
+      const item = document.getElementById(`audit-item-${id}`);
       item.classList.add('opacity-40', 'scale-95');
       setTimeout(() => {
         item.remove();
@@ -907,7 +907,7 @@ export interface User {
     function advanceOrderFlow() {
       if (flowIndex < 3) {
         // remove old status from current step
-        const oldStep = document.getElementById(\`step-\${flowIndex}\`);
+        const oldStep = document.getElementById(`step-${flowIndex}`);
         oldStep.classList.remove('border-2', 'border-primary', 'bg-primary/5');
         oldStep.classList.add('border', 'border-outline-variant/30', 'bg-surface-container', 'opacity-50');
         oldStep.querySelector('div').classList.remove('bg-primary', 'text-white');
@@ -916,7 +916,7 @@ export interface User {
         flowIndex++;
 
         // set new status to the next step
-        const newStep = document.getElementById(\`step-\${flowIndex}\`);
+        const newStep = document.getElementById(`step-${flowIndex}`);
         newStep.classList.remove('border', 'border-outline-variant/30', 'bg-surface-container', 'opacity-50');
         if (flowIndex === 3) {
           // Delivered green success state
@@ -938,7 +938,7 @@ export interface User {
     function resetOrderFlow() {
       // Clean classes from all steps
       for (let i = 0; i < 4; i++) {
-        const step = document.getElementById(\`step-\${i}\`);
+        const step = document.getElementById(`step-${i}`);
         step.className = "p-4 rounded-2xl border border-outline-variant/30 bg-surface-container opacity-50 text-center flex flex-col items-center justify-center transition-all duration-300";
         const iconDiv = step.querySelector('div');
         iconDiv.className = "w-10 h-10 rounded-full bg-outline-variant/50 text-outline flex items-center justify-center mb-2";
