@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '@/features/auth/useAuth'
+import { useAuth } from '@/features/auth/AuthContext'
 import { useLeaveStore } from '@/stores/useLeaveStore'
-import { Plus, Filter, Umbrella, Stethoscope, AlertTriangle, CalendarOff, MoreVertical, Calendar } from 'lucide-react'
-import { useEffect } from 'react'
+import { Plus, Umbrella, Stethoscope, AlertTriangle, CalendarOff, MoreVertical, Calendar } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import apiClient from '@/lib/apiClient'
 
 export function LeaveRequestListPage() {
   const { user } = useAuth()
   const { leaves, fetchLeaves, myBalance, fetchMyBalance } = useLeaveStore()
+  const [statusFilter, setStatusFilter] = useState<'All' | 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'>('All')
+  const [sortBy, setSortBy] = useState<'date' | 'days'>('date')
+  const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null)
   
   useEffect(() => {
     fetchLeaves()
@@ -15,14 +19,37 @@ export function LeaveRequestListPage() {
 
   const userLeaves = leaves.filter(l => l.requestedById === user?.id)
 
+  const filteredLeaves = userLeaves
+    .filter(l => statusFilter === 'All' || l.status === statusFilter)
+    .sort((a, b) => {
+      if (sortBy === 'date') {
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+      } else {
+        return b.daysCount - a.daysCount
+      }
+    })
+
+  const handleCancelRequest = async (leaveId: string) => {
+    if (!confirm('Are you sure you want to cancel this leave request?')) return
+    try {
+      await apiClient.patch(`/leave-requests/${leaveId}/`, { status: 'Cancelled' })
+      alert('Request cancelled successfully.')
+      fetchLeaves()
+    } catch (err: any) {
+      alert('Failed to cancel request: ' + err.message)
+    }
+  }
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'Approved':
-        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-success/10 text-success uppercase tracking-wide">Approved</span>
+        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#005c4d] text-white uppercase tracking-wide">Approved</span>
       case 'Rejected':
-        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-critical/10 text-critical uppercase tracking-wide">Rejected</span>
+        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#8a1a08] text-white uppercase tracking-wide">Rejected</span>
+      case 'Cancelled':
+        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#475569] text-white uppercase tracking-wide">Cancelled</span>
       default:
-        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-outline-variant/30 text-on-surface-variant uppercase tracking-wide">Pending</span>
+        return <span className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#1e293b] text-white uppercase tracking-wide">Pending</span>
     }
   }
 
@@ -137,24 +164,46 @@ export function LeaveRequestListPage() {
 
       {/* Request List Container */}
       <section>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
           <h3 className="text-2xl font-bold font-headline text-on-surface">Recent Requests</h3>
-          <div className="flex gap-2">
-            <button className="bg-surface p-2 rounded-lg text-primary hover:bg-background transition-colors shadow-sm">
-              <Filter size={20} />
-            </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Status:</span>
+              <select 
+                className="bg-transparent border-none text-xs font-semibold focus:ring-0 cursor-pointer text-primary p-0 py-0.5"
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value as any)}
+              >
+                <option value="All">All Requests</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Sort:</span>
+              <select 
+                className="bg-transparent border-none text-xs font-semibold focus:ring-0 cursor-pointer text-primary p-0 py-0.5"
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value as any)}
+              >
+                <option value="date">Newest Date</option>
+                <option value="days">Duration Days</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        {userLeaves.length === 0 ? (
-          <div className="bg-surface p-12 rounded-2xl shadow-card text-center">
+        {filteredLeaves.length === 0 ? (
+          <div className="bg-surface p-12 rounded-2xl shadow-card text-center border border-outline-variant/10">
             <Calendar className="mx-auto text-outline-variant mb-4" size={48} />
-            <p className="text-on-surface font-bold">No leave requests yet.</p>
-            <p className="text-on-surface-variant text-sm mt-1">When you request time off, it will appear here.</p>
+            <p className="text-on-surface font-bold">No leave requests match the criteria.</p>
+            <p className="text-on-surface-variant text-sm mt-1">Adjust filters or submit a new request.</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {userLeaves.map(leave => (
+            {filteredLeaves.map(leave => (
               <div key={leave.id} className="bg-surface p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition-transform hover:-translate-y-1 hover:shadow-card duration-300 border border-outline-variant/10">
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${getTypeColors(leave.type)}`}>
@@ -166,15 +215,39 @@ export function LeaveRequestListPage() {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between md:justify-end gap-6">
+                <div className="flex items-center justify-between md:justify-end gap-6 relative">
                   <div className="text-right hidden sm:block">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Type</p>
                     <p className="text-sm font-semibold text-on-surface">{leave.type}</p>
                   </div>
                   {getStatusBadge(leave.status)}
-                  <button className="text-slate-400 hover:text-primary transition-colors p-2">
-                    <MoreVertical size={20} />
-                  </button>
+                  
+                  <div className="relative">
+                    <button 
+                      onClick={() => setActiveDropdownId(activeDropdownId === leave.id ? null : leave.id)}
+                      className="text-slate-400 hover:text-primary transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
+                    >
+                      <MoreVertical size={20} />
+                    </button>
+                    {activeDropdownId === leave.id && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-outline-variant/10 z-50 p-2 space-y-1 text-left">
+                        <button 
+                          onClick={() => { alert(`Reason for leave request:\n"${leave.reason || 'No reason provided'}"`); setActiveDropdownId(null); }}
+                          className="w-full text-left px-3 py-2 text-xs font-semibold text-on-surface hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                        >
+                          View Reason
+                        </button>
+                        {leave.status === 'Pending' && (
+                          <button 
+                            onClick={() => { handleCancelRequest(leave.id); setActiveDropdownId(null); }}
+                            className="w-full text-left px-3 py-2 text-xs font-semibold text-error hover:bg-error-container/20 rounded-lg transition-colors"
+                          >
+                            Cancel Request
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

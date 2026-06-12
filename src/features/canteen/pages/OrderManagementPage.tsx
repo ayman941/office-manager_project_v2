@@ -1,15 +1,18 @@
 import { Card, Button, Badge, EmptyState } from '@/shared/ui'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
+import { useEmployeeStore } from '@/stores/useEmployeeStore'
 import { formatTime } from '@/utils/dateUtils'
 import { FoodOrderStatus } from '@/types'
 import { useEffect } from 'react'
 
 export function OrderManagementPage() {
   const { orders, updateStatus, cancelOrder, fetchOrders } = useOrderStore()
+  const { employees, fetchEmployees } = useEmployeeStore()
 
   useEffect(() => {
     fetchOrders()
-  }, [fetchOrders])
+    fetchEmployees()
+  }, [fetchOrders, fetchEmployees])
 
   // We primarily want to see active orders in the queue
   const activeOrders = orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled')
@@ -35,6 +38,11 @@ export function OrderManagementPage() {
     }
   }
 
+  const getEmployeeName = (employeeId: string) => {
+    const emp = employees.find(e => e.id === employeeId)
+    return emp ? emp.name : `Employee #${employeeId}`
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -56,7 +64,7 @@ export function OrderManagementPage() {
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="font-semibold text-gray-900">Order #{order.id.split('-')[1]}</h3>
+                    <h3 className="font-semibold text-gray-900">Order #{order.id.split('-')[1]} • {getEmployeeName(order.orderedById)}</h3>
                     <p className="text-xs text-gray-500 mt-0.5">{formatTime(order.createdAt)} • {order.deliveryLocation}</p>
                   </div>
                   <Badge status={order.status} />
@@ -88,7 +96,11 @@ export function OrderManagementPage() {
                 {order.status === 'Pending' && (
                   <Button 
                     variant="danger" 
-                    onClick={() => cancelOrder(order.id)}
+                    onClick={() => {
+                      if (confirm('Are you sure you want to cancel this order?')) {
+                        cancelOrder(order.id)
+                      }
+                    }}
                     title="Cancel Order"
                   >
                     Cancel

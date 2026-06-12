@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useInventoryStore, InventoryCategory, StockStatus } from '@/features/canteen/stores/useInventoryStore'
 export function InventoryManagementPage() {
-  const { items } = useInventoryStore()
+  const { items, updateStock } = useInventoryStore()
   const [activeFilter, setActiveFilter] = useState<InventoryCategory>('All Categories')
 
   const categories: InventoryCategory[] = ['All Categories', 'Vegetables', 'Dairy & Eggs', 'Dry Goods', 'Beverages']
@@ -131,45 +131,71 @@ export function InventoryManagementPage() {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {filteredItems.map(item => (
-                <tr key={item.id} className="bg-surface hover:bg-surface-container-low transition-colors group">
-                  <td className="px-4 py-4 rounded-l-xl">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
-                        {item.imageUrl ? (
-                          <img alt={item.name} className="w-full h-full object-cover" src={item.imageUrl} />
-                        ) : (
-                          <div className={`w-full h-full flex items-center justify-center ${item.category === 'Dry Goods' ? 'bg-tertiary/10 text-tertiary' : 'bg-secondary/10 text-secondary'}`}>
-                            <span className="material-symbols-outlined">{item.icon}</span>
-                          </div>
-                        )}
-                      </div>
-                      <span className="font-semibold text-on-surface">{item.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-on-surface-variant">{item.category}</td>
-                  <td className="px-4 py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                        <div className={`h-full ${getStatusColor(item.status)}`} style={{ width: `${item.stockPercentage}%` }}></div>
-                      </div>
-                      <span className={`${getStatusTextColor(item.status)} font-bold text-xs uppercase`}>{item.status}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-on-surface-variant">{item.unit}</td>
-                  <td className="px-4 py-4 text-on-surface-variant">{item.lastUpdated}</td>
-                  <td className="px-4 py-4 rounded-r-xl">
-                    <button className="material-symbols-outlined text-outline hover:text-primary transition-colors">edit_note</button>
+              {filteredItems.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-8 text-center text-on-surface-variant font-medium bg-surface rounded-xl">
+                    No items found matching the selected category.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredItems.map(item => (
+                  <tr key={item.id} className="bg-surface hover:bg-surface-container-low transition-colors group">
+                    <td className="px-4 py-4 rounded-l-xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
+                          {item.imageUrl ? (
+                            <img alt={item.name} className="w-full h-full object-cover" src={item.imageUrl} />
+                          ) : (
+                            <div className={`w-full h-full flex items-center justify-center ${item.category === 'Dry Goods' ? 'bg-tertiary/10 text-tertiary' : 'bg-secondary/10 text-secondary'}`}>
+                              <span className="material-symbols-outlined">{item.icon}</span>
+                            </div>
+                          )}
+                        </div>
+                        <span className="font-semibold text-on-surface">{item.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-on-surface-variant">{item.category}</td>
+                    <td className="px-4 py-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+                          <div className={`h-full ${getStatusColor(item.status)}`} style={{ width: `${item.stockPercentage}%` }}></div>
+                        </div>
+                        <span className={`${getStatusTextColor(item.status)} font-bold text-xs uppercase`}>{item.status}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-on-surface-variant">{item.unit}</td>
+                    <td className="px-4 py-4 text-on-surface-variant">{item.lastUpdated}</td>
+                    <td className="px-4 py-4 rounded-r-xl">
+                      <button 
+                        onClick={() => {
+                          const val = prompt(`Enter new stock percentage for ${item.name} (0-100):`, String(item.stockPercentage))
+                          if (val !== null) {
+                            const percentage = Number(val)
+                            if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
+                              updateStock(item.id, percentage)
+                            } else {
+                              alert('Please enter a valid percentage between 0 and 100.')
+                            }
+                          }
+                        }}
+                        className="material-symbols-outlined text-outline hover:text-primary transition-colors cursor-pointer"
+                        title="Edit Stock"
+                      >
+                        edit_note
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
 
         {/* Pagination */}
         <div className="mt-8 flex items-center justify-between">
-          <p className="text-sm text-on-surface-variant font-medium">Showing 1 to {filteredItems.length} of 1,248 items</p>
+          <p className="text-sm text-on-surface-variant font-medium">
+            Showing {filteredItems.length > 0 ? 1 : 0} to {filteredItems.length} of {items.length} items
+          </p>
           <div className="flex items-center gap-2">
             <button className="p-2 text-outline-variant hover:text-primary transition-colors" disabled>
               <span className="material-symbols-outlined">chevron_left</span>

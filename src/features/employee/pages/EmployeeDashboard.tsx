@@ -3,24 +3,27 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useAttendanceStore } from '@/stores/useAttendanceStore'
 import { useOrderStore } from '@/features/food/stores/useOrderStore'
+import { useLeaveStore } from '@/stores/useLeaveStore'
 import { LogOut, LogIn, Utensils, ArrowRight, Calendar, ShieldCheck } from 'lucide-react'
 
 export function EmployeeDashboard() {
   const { user } = useAuth()
   const { todayStatus, fetchTodayStatus, checkIn, checkOut } = useAttendanceStore()
   const { orders } = useOrderStore()
+  const { myBalance, fetchMyBalance } = useLeaveStore()
   
-  const today = new Date().toISOString().split('T')[0]
+  const today = new Date().toLocaleDateString('en-CA')
 
   useEffect(() => {
     fetchTodayStatus()
-  }, [fetchTodayStatus])
+    fetchMyBalance()
+  }, [fetchTodayStatus, fetchMyBalance])
   
   const todayLog = todayStatus
   const isCheckedIn = !!todayLog && !todayLog.checkOut
 
-  const leaveBalance = 12 // Mocked annual leave balance
-  const sickBalance = 4 // Mocked sick leave balance
+  const leaveBalance = myBalance ? myBalance.annualBalance : 12
+  const sickBalance = myBalance ? myBalance.sickBalance : 4
 
   const activeOrder = orders.find(o => o.orderedById === user?.id && o.status !== 'Delivered' && o.status !== 'Cancelled')
 
@@ -60,12 +63,19 @@ export function EmployeeDashboard() {
     return () => clearInterval(timer)
   }, [isCheckedIn, todayLog?.checkIn])
 
+  const getGreeting = () => {
+    const hours = time.getHours()
+    if (hours < 12) return 'Good Morning'
+    if (hours < 18) return 'Good Afternoon'
+    return 'Good Evening'
+  }
+
   return (
     <main className="pt-8 pb-32 px-6 max-w-7xl mx-auto">
       {/* Hero Personal Greeting */}
       <section className="mb-10 grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 flex flex-col justify-center">
-          <div className="mb-2 text-primary font-bold tracking-wider uppercase text-xs font-label">Good Morning, {user?.name.split(' ')[0]}</div>
+          <div className="mb-2 text-primary font-bold tracking-wider uppercase text-xs font-label">{getGreeting()}, {user?.name.split(' ')[0]}</div>
           <h1 className="text-4xl lg:text-5xl font-headline font-extrabold tracking-tight text-on-surface leading-tight">
             Welcome to your <br/>
             <span className="text-surface-tint">Architectural Flow.</span>
@@ -109,8 +119,7 @@ export function EmployeeDashboard() {
           </div>
           <button 
             onClick={handleAttendance}
-            disabled={!!todayLog && !isCheckedIn}
-            className={`relative z-10 mt-8 w-full bg-surface-container-lowest py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg ${!!todayLog && !isCheckedIn ? 'text-outline bg-surface-container-high opacity-70 cursor-not-allowed' : 'text-primary hover:bg-white'}`}
+            className="relative z-10 mt-8 w-full bg-surface-container-lowest py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg text-primary hover:bg-white"
           >
             {isCheckedIn ? <LogOut size={24} /> : <LogIn size={24} />}
             {isCheckedIn ? 'Check Out' : 'Check In'}

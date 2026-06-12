@@ -1,12 +1,19 @@
+import { useState } from 'react'
 import { Outlet, NavLink, Link } from 'react-router-dom'
 import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
 import { useAuth } from '@/features/auth/AuthContext'
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { LayoutDashboard, IdCard, CalendarOff, BarChart2, Settings, Plus, Search, Bell, HelpCircle, Coffee } from 'lucide-react'
+import { LayoutDashboard, IdCard, CalendarOff, BarChart2, Settings, Plus, Search, Bell, HelpCircle, Coffee, X } from 'lucide-react'
 
 export function HRLayout() {
   const { user } = useAuth()
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notifications = [
+    { id: 1, text: 'Alex Johnson submitted a sick leave request.', time: '10 mins ago' },
+    { id: 2, text: 'System Update: End-of-month attendance logs synced.', time: '2 hours ago' },
+    { id: 3, text: 'New employee record generated for #U12.', time: '4 hours ago' }
+  ]
 
   return (
     <div className="bg-surface text-on-background min-h-screen font-body selection:bg-secondary-container">
@@ -33,14 +40,14 @@ export function HRLayout() {
             <Coffee size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Consumption</span>
           </NavLink>
-          <a className="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" href="#">
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/org-stats">
             <BarChart2 size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Org Stats</span>
-          </a>
-          <a className="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" href="#">
+          </NavLink>
+          <NavLink className={({ isActive }) => cn("flex items-center gap-3 px-4 py-3 shadow-sm rounded-lg font-bold transition-all duration-200", isActive ? "bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-400 translate-x-1" : "text-slate-500 dark:text-slate-400 hover:text-cyan-900 hover:bg-slate-100 dark:hover:bg-slate-800")} to="/hr/settings">
             <Settings size={20} />
             <span className="font-manrope uppercase tracking-widest text-[10px] font-semibold">Settings</span>
-          </a>
+          </NavLink>
         </nav>
         <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
           <Link to="/hr/directory/new" className="w-full py-3 bg-primary text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
@@ -59,16 +66,41 @@ export function HRLayout() {
               <input className="w-full pl-10 pr-4 py-2 bg-surface-container-high border-none rounded-full text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search employees, departments, files..." type="text"/>
             </div>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 relative">
             <PortalSwitcher activePortal="hr" />
             <div className="flex items-center gap-2">
-              <button className="p-2 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-colors">
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="p-2 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-colors relative"
+              >
                 <Bell size={24} />
+                <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full border border-white"></span>
               </button>
               <button className="p-2 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-colors hidden sm:block">
                 <HelpCircle size={24} />
               </button>
             </div>
+
+            {/* Notifications Dropdown Panel */}
+            {showNotifications && (
+              <div className="absolute right-0 mt-12 top-4 w-80 bg-surface shadow-2xl rounded-2xl border border-outline-variant/10 p-4 z-50 animate-in fade-in slide-in-from-top-5 duration-200 text-left">
+                <div className="flex justify-between items-center pb-2 border-b border-outline-variant/20 mb-3">
+                  <h4 className="font-bold text-sm text-on-surface">Notifications</h4>
+                  <button onClick={() => setShowNotifications(false)} className="text-outline hover:text-on-surface">
+                    <X size={16} />
+                  </button>
+                </div>
+                <ul className="space-y-3">
+                  {notifications.map(n => (
+                    <li key={n.id} className="text-xs p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors">
+                      <p className="font-medium text-on-surface">{n.text}</p>
+                      <span className="text-[10px] text-slate-400 mt-1 block font-semibold">{n.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">

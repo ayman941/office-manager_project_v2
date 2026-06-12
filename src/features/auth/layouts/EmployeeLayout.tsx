@@ -1,11 +1,18 @@
+import { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import { cn } from '@/utils/cn'
 import { PortalSwitcher } from '@/components/navigation/PortalSwitcher'
-
 import { UserMenu } from '@/shared/ui/UserMenu'
-import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings, Clock, Coffee } from 'lucide-react'
+import { Bell, LayoutGrid, Utensils, ReceiptText, Calendar, Zap, Shield, Settings, Clock, Coffee, X } from 'lucide-react'
 
 export function EmployeeLayout() {
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notifications = [
+    { id: 1, text: 'Your Annual Leave request is approved.', time: '2 hours ago' },
+    { id: 2, text: 'Buffet order #245 is now preparing.', time: '30 mins ago' },
+    { id: 3, text: 'Reminder: Remember to check out before EOD.', time: '1 hour ago' }
+  ]
+
   return (
     <div className="bg-surface font-body text-on-surface min-h-screen selection:bg-secondary-container">
       <main className="flex-1 md:ml-20 pb-20 md:pb-0 min-h-screen flex flex-col">
@@ -14,12 +21,36 @@ export function EmployeeLayout() {
           <div className="flex items-center gap-3">
             <span className="text-xl font-black tracking-tighter text-primary font-headline">SmartOffice</span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 relative">
             <PortalSwitcher activePortal="employee" />
-            <button className="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 text-primary">
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2 rounded-full hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 text-primary relative"
+            >
               <Bell size={24} />
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-error rounded-full border border-white"></span>
             </button>
             <UserMenu />
+
+            {/* Notifications Dropdown Panel */}
+            {showNotifications && (
+              <div className="absolute right-0 mt-12 top-4 w-80 bg-surface shadow-2xl rounded-2xl border border-outline-variant/10 p-4 z-50 animate-in fade-in slide-in-from-top-5 duration-200">
+                <div className="flex justify-between items-center pb-2 border-b border-outline-variant/20 mb-3">
+                  <h4 className="font-bold text-sm text-on-surface">Notifications</h4>
+                  <button onClick={() => setShowNotifications(false)} className="text-outline hover:text-on-surface">
+                    <X size={16} />
+                  </button>
+                </div>
+                <ul className="space-y-3">
+                  {notifications.map(n => (
+                    <li key={n.id} className="text-xs p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors">
+                      <p className="font-medium text-on-surface">{n.text}</p>
+                      <span className="text-[10px] text-slate-400 mt-1 block font-semibold">{n.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </header>
 
@@ -60,28 +91,32 @@ export function EmployeeLayout() {
           <Zap size={24} />
         </div>
         <div className="flex flex-col gap-8">
-          <NavLink to="/employee/dashboard" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+          <NavLink to="/employee/dashboard" title="Dashboard" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <LayoutGrid size={24} />
           </NavLink>
-          <NavLink to="/employee/attendance" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+          <NavLink to="/employee/attendance" title="Attendance" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <Clock size={24} />
           </NavLink>
-          <NavLink to="/employee/food" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+          <NavLink to="/employee/food" title="Food Menu" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <Utensils size={24} />
           </NavLink>
-          <NavLink to="/employee/orders" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+          <NavLink to="/employee/orders" title="My Orders" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <ReceiptText size={24} />
           </NavLink>
-          <NavLink to="/employee/leave" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+          <NavLink to="/employee/leave" title="Leave Requests" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <Calendar size={24} />
           </NavLink>
-          <NavLink to="/employee/consumption" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+          <NavLink to="/employee/consumption" title="Consumption Costs" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
             <Coffee size={24} />
           </NavLink>
-          <Shield className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
+          <NavLink to="#" title="Security Policy" className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" onClick={(e) => { e.preventDefault(); alert('Security Policy is currently mapped to mock settings operations.') }}>
+            <Shield size={24} />
+          </NavLink>
         </div>
         <div className="mt-auto">
-          <Settings className="text-on-surface-variant hover:text-primary cursor-pointer transition-colors" size={24} />
+          <NavLink to="/employee/settings" title="Settings" className={({ isActive }) => cn("transition-colors", isActive ? "text-primary animate-pulse" : "text-on-surface-variant hover:text-primary cursor-pointer")}>
+            <Settings size={24} />
+          </NavLink>
         </div>
       </aside>
     </div>

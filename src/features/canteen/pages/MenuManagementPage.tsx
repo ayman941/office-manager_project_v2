@@ -3,6 +3,7 @@ import { useMenuStore, MenuCategory } from '@/features/canteen/stores/useMenuSto
 export function MenuManagementPage() {
   const { items, toggleStock, deleteItem, fetchMenuItems } = useMenuStore()
   const [activeCategory, setActiveCategory] = useState<MenuCategory>('Breakfast')
+  const [activeView, setActiveView] = useState<'Daily' | 'Weekly' | 'Monthly'>('Daily')
 
   useEffect(() => {
     fetchMenuItems()
@@ -63,9 +64,15 @@ export function MenuManagementPage() {
       {/* Calendar Navigation */}
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="flex items-center gap-1 bg-surface-container-low p-1.5 rounded-xl shadow-sm">
-          <button className="px-6 py-2 rounded-lg bg-surface-container-lowest text-primary font-bold shadow-sm transition-all duration-300">Daily</button>
-          <button className="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">Weekly</button>
-          <button className="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">Monthly</button>
+          {(['Daily', 'Weekly', 'Monthly'] as const).map(view => (
+            <button 
+              key={view}
+              onClick={() => setActiveView(view)}
+              className={`px-6 py-2 rounded-lg font-bold transition-all duration-300 ${activeView === view ? 'bg-surface-container-lowest text-primary shadow-sm' : 'text-on-surface-variant hover:bg-surface-container-high'}`}
+            >
+              {view}
+            </button>
+          ))}
         </div>
 
         <div className="flex items-center gap-3">

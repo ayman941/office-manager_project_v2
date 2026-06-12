@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Office Manager — Project Presentation</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            headline: ['Instrument Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            primary: "#0E5E6F",       // Deep Teal
+            secondary: "#FFD1BB",     // Soft Coral
+            success: "#00C1A3",       // Success Green
+            critical: "#B43219",      // Rust Red
+            background: "#F2F5F8",
+            surface: "#FFFFFF",
+            "on-surface": "#181C20",
+            "on-surface-variant": "#3F484C",
+            outline: "#6F787D",
+            "outline-variant": "#BFC8CD",
+            "surface-container-highest": "#E5E8EE",
+            "surface-container-high": "#EBEEF4",
+            "surface-container": "#F2F5F8",
+            "surface-container-low": "#F7F9FF",
+            "surface-container-lowest": "#FFFFFF",
+          },
+          boxShadow: {
+            card: '0 4px 20px rgba(0,0,0,0.05)',
+            'card-hover': '0 8px 30px rgba(0,0,0,0.08)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F2F5F8;
+      font-family: 'Inter', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .active-dot {
+      background-color: #0E5E6F;
+      width: 1.5rem;
+    }
+    .slide {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+    .slide.active {
+      display: block;
+      opacity: 1;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    /* Simple custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F2F5F8;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #BFC8CD;
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #6F787D;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-secondary selection:text-primary">
+
+  <!-- Header Section -->
+  <header class="glass-effect sticky top-0 z-50 border-b border-outline-variant/30 px-6 py-4 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-md shadow-primary/20">
+        <span class="material-symbols-outlined text-xl">smart_toy</span>
+      </div>
+      <div>
+        <h1 class="font-headline font-bold text-lg text-primary tracking-tight">Smart Office Manager</h1>
+        <p class="text-[10px] text-outline font-bold uppercase tracking-widest">Interactive Briefing Deck</p>
+      </div>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="hidden md:flex items-center gap-2">
+      <button onclick="goToSlide(0)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Cover"></button>
+      <button onclick="goToSlide(1)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Core Idea"></button>
+      <button onclick="goToSlide(2)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Waterfall Strategy"></button>
+      <button onclick="goToSlide(3)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Architecture"></button>
+      <button onclick="goToSlide(4)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Management Functions"></button>
+      <button onclick="goToSlide(5)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Ordering Flow"></button>
+      <button onclick="goToSlide(6)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Trade-offs"></button>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <span class="text-xs font-mono font-bold text-primary px-3 py-1.5 bg-primary/10 rounded-full" id="slide-number-badge">Slide 1/7</span>
+    </div>
+  </header>
+
+  <!-- Main Presentation Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-8 flex flex-col justify-center">
+
+    <!-- SLIDE 1: Cover Page -->
+    <section id="slide-0" class="slide active">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-6">
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-primary text-xs font-bold shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Waterfall SDLC Framework
+          </span>
+          <h2 class="text-5xl lg:text-6xl font-headline font-black text-on-surface leading-tight tracking-tight font-extrabold">
+            Smart Office <br><span class="text-primary bg-clip-text">Manager Portal</span>
+          </h2>
+          <p class="text-lg text-on-surface-variant max-w-xl leading-relaxed">
+            A premium, high-fidelity React workspace that consolidates attendance tracking, leave request auditing, and food catalog operations under a strict compliance design system.
+          </p>
+          <div class="pt-4 flex flex-wrap gap-4">
+            <button onclick="nextSlide()" class="px-6 py-3.5 bg-primary text-white font-bold rounded-2xl hover:scale-105 transition-all shadow-md shadow-primary/20 flex items-center gap-2">
+              Start Presentation
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+            <a href="#slide-1" onclick="goToSlide(1); return false;" class="px-6 py-3.5 bg-surface text-primary border border-outline-variant/50 font-bold rounded-2xl hover:bg-surface-container-low transition-all">
+              Explore Concept
+            </a>
+          </div>
+        </div>
+        <div class="lg:col-span-5 relative">
+          <!-- Glassmorphic Dashboard Preview Mockup -->
+          <div class="bg-gradient-to-tr from-primary/30 to-secondary/30 p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div>
+            <!-- Mock Card -->
+            <div class="bg-surface rounded-2xl p-6 shadow-card space-y-4 border border-white/50 relative z-10">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-outline uppercase">Active Session</span>
+                <span class="w-3 h-3 rounded-full bg-success animate-ping"></span>
+              </div>
+              <h4 class="font-headline font-bold text-on-surface text-lg">Employee Portal</h4>
+              <!-- Fake stats bento style -->
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-background p-3 rounded-xl">
+                  <p class="text-[10px] text-outline font-semibold">Today's Attendance</p>
+                  <p class="text-md font-bold text-primary">On Time</p>
+                </div>
+                <div class="bg-background p-3 rounded-xl">
+                  <p class="text-[10px] text-outline font-semibold">Pending Orders</p>
+                  <p class="text-md font-bold text-primary">02</p>
+                </div>
+              </div>
+              <div class="h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+                <div class="h-full bg-success w-[94%]" style="transition: width 1s ease-in-out;"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-outline font-bold">
+                <span>94% Attendance Target</span>
+                <span>Goal Met</span>
+              </div>
+            </div>
+            <!-- Mock Floating Circle -->
+            <div class="absolute -bottom-4 -left-4 bg-primary text-white p-4 rounded-2xl shadow-lg flex items-center gap-3">
+              <span class="material-symbols-outlined text-secondary">verified_user</span>
+              <div class="text-left">
+                <p class="text-[10px] text-white/75 font-semibold">Audit Status</p>
+                <p class="text-xs font-bold">Confirmed by HR</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Core Concept (Bento) -->
+    <section id="slide-1" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">One Platform. Four Specialized Roles.</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          We constructed separate user contexts that communicate through uniform state machines to satisfy security policies and operational demands.
+        </p>
+
+        <!-- Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
+          <!-- Card 1: Employee -->
+          <div class="bg-surface hover:shadow-card-hover border border-outline-variant/30 p-6 rounded-[2rem] transition-all hover:-translate-y-1 flex flex-col justify-between text-left h-72">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6">
+                <span class="material-symbols-outlined text-2xl">badge</span>
+              </div>
+              <h4 class="font-headline font-bold text-lg text-on-surface mb-2">Employee Portal</h4>
+              <p class="text-sm text-on-surface-variant">Self-service dashboard featuring one-click check-ins, bento menus, real-time meal dispatch tracking, and personal cost logs.</p>
+            </div>
+            <span class="text-xs font-bold text-primary flex items-center gap-1">Role: employee <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
+          </div>
+
+          <!-- Card 2: Manager -->
+          <div class="bg-surface hover:shadow-card-hover border border-outline-variant/30 p-6 rounded-[2rem] transition-all hover:-translate-y-1 flex flex-col justify-between text-left h-72">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-secondary/30 flex items-center justify-center text-primary mb-6">
+                <span class="material-symbols-outlined text-2xl">supervisor_account</span>
+              </div>
+              <h4 class="font-headline font-bold text-lg text-on-surface mb-2">Manager Portal</h4>
+              <p class="text-sm text-on-surface-variant">Department dashboards giving managers instant approval/rejection oversight of team leave balances and scheduling overlaps.</p>
+            </div>
+            <span class="text-xs font-bold text-primary flex items-center gap-1">Role: manager <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
+          </div>
+
+          <!-- Card 3: Canteen Staff -->
+          <div class="bg-surface hover:shadow-card-hover border border-outline-variant/30 p-6 rounded-[2rem] transition-all hover:-translate-y-1 flex flex-col justify-between text-left h-72">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center text-success mb-6">
+                <span class="material-symbols-outlined text-2xl">restaurant_menu</span>
+              </div>
+              <h4 class="font-headline font-bold text-lg text-on-surface mb-2">Canteen Portal</h4>
+              <p class="text-sm text-on-surface-variant">Interactive buffet dispatch monitors, menu item stock levels, and supply threshold indicators that light up critical at 25%.</p>
+            </div>
+            <span class="text-xs font-bold text-primary flex items-center gap-1">Role: canteen <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
+          </div>
+
+          <!-- Card 4: HR Manager -->
+          <div class="bg-surface hover:shadow-card-hover border border-outline-variant/30 p-6 rounded-[2rem] transition-all hover:-translate-y-1 flex flex-col justify-between text-left h-72">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-critical/10 flex items-center justify-center text-critical mb-6">
+                <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
+              </div>
+              <h4 class="font-headline font-bold text-lg text-on-surface mb-2">HR Authority</h4>
+              <p class="text-sm text-on-surface-variant">Irreversible attendance overrides, company employee directories with leave balance initializations, and parallel leave audits.</p>
+            </div>
+            <span class="text-xs font-bold text-primary flex items-center gap-1">Role: hr_manager <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Waterfall Strategy -->
+    <section id="slide-2" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">The Waterfall Strategy Flow</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          Our team used a structured Waterfall model to lock down security definitions and system schemas before beginning development.
+        </p>
+
+        <!-- Vertical/Horizontal Pipeline -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 pt-8 relative">
+          <!-- Connector line for desktop -->
+          <div class="hidden md:block absolute top-[2.25rem] left-[10%] right-[10%] h-0.5 bg-outline-variant/40 -z-10"></div>
+          
+          <!-- Step 1 -->
+          <div class="bg-surface p-6 rounded-2xl border border-outline-variant/30 shadow-sm relative group hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">1</div>
+            <h5 class="font-bold text-on-surface text-sm mb-2">Requirements</h5>
+            <p class="text-xs text-on-surface-variant">Defining user roles, schemas, inventory alerts, and compliance structures.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="bg-surface p-6 rounded-2xl border border-outline-variant/30 shadow-sm relative group hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">2</div>
+            <h5 class="font-bold text-on-surface text-sm mb-2">System Design</h5>
+            <p class="text-xs text-on-surface-variant">Drafting visual blueprints, portal routes, and Stitch color palettes.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="bg-surface p-6 rounded-2xl border border-outline-variant/30 shadow-sm relative group hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">3</div>
+            <h5 class="font-bold text-on-surface text-sm mb-2">Coding</h5>
+            <p class="text-xs text-on-surface-variant">Building React features mapped to Django endpoint stores.</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="bg-surface p-6 rounded-2xl border border-outline-variant/30 shadow-sm relative group hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">4</div>
+            <h5 class="font-bold text-on-surface text-sm mb-2">Verification</h5>
+            <p class="text-xs text-on-surface-variant">Rigorous manual checks on state transition rules and mobile layouts.</p>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="bg-surface p-6 rounded-2xl border border-outline-variant/30 shadow-sm relative group hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-full bg-success text-white font-bold flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">5</div>
+            <h5 class="font-bold text-on-surface text-sm mb-2">Deployment</h5>
+            <p class="text-xs text-on-surface-variant">Deploying modular features connected to static REST assets.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Architecture Explorer -->
+    <section id="slide-3" class="slide">
+      <div class="space-y-4 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Clean Modular Code Structure</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
+          The project separates concerns by domain features. Click the folders below to view the files and live code patterns.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6">
+          <!-- Directory Explorer Left Column -->
+          <div class="lg:col-span-5 bg-surface rounded-[2rem] p-6 border border-outline-variant/30 shadow-sm text-left space-y-4 max-h-[350px] overflow-y-auto">
+            <h5 class="font-headline font-bold text-xs uppercase text-outline tracking-wider">Project Workspace</h5>
+            
+            <div class="space-y-2">
+              <div onclick="selectCodeTab('features')" class="flex items-center justify-between p-3 bg-primary/10 border border-primary/20 rounded-xl cursor-pointer hover:bg-primary/25 transition-all text-primary font-bold text-sm">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined">folder</span>
+                  src/features/
+                </span>
+                <span class="text-xs bg-primary text-white px-2 py-0.5 rounded">Core Domains</span>
+              </div>
+              <div onclick="selectCodeTab('shared')" class="flex items-center justify-between p-3 bg-background hover:bg-surface-container-high rounded-xl cursor-pointer transition-all text-on-surface font-semibold text-sm">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-outline">folder</span>
+                  src/shared/ui/
+                </span>
+                <span class="text-[10px] text-outline font-bold">Stitch UI Primitives</span>
+              </div>
+              <div onclick="selectCodeTab('stores')" class="flex items-center justify-between p-3 bg-background hover:bg-surface-container-high rounded-xl cursor-pointer transition-all text-on-surface font-semibold text-sm">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-outline">folder</span>
+                  src/stores/
+                </span>
+                <span class="text-[10px] text-outline font-bold">Zustand & API Client</span>
+              </div>
+              <div onclick="selectCodeTab('types')" class="flex items-center justify-between p-3 bg-background hover:bg-surface-container-high rounded-xl cursor-pointer transition-all text-on-surface font-semibold text-sm">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-outline">description</span>
+                  src/types/index.ts
+                </span>
+                <span class="text-[10px] text-outline font-bold">Contracts & Enums</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Display Right Column -->
+          <div class="lg:col-span-7 bg-on-surface rounded-[2rem] p-6 text-left relative overflow-hidden flex flex-col justify-between max-h-[350px] min-h-[350px] shadow-lg shadow-slate-900/30">
+            <div class="flex justify-between items-center pb-4 border-b border-outline-variant/10">
+              <span id="code-tab-title" class="text-xs font-mono font-bold text-secondary">src/features/ (Folder Contents)</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-critical"></span>
+            </div>
+
+            <!-- Code display block -->
+            <pre class="flex-grow overflow-auto pt-4 text-xs font-mono text-slate-300 leading-relaxed text-left whitespace-pre select-all" id="code-snippet-box">
+Loading snippet...
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Interactive Management Simulators -->
+    <section id="slide-4" class="slide">
+      <div class="space-y-4 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Interactive System Simulators</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
+          Test the state updates and logging logic that govern the application.
+        </p>
+
+        <!-- Tab Controls inside slide -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+          <button id="sim-btn-att" onclick="switchSim('att')" class="px-5 py-2.5 bg-primary text-white font-bold rounded-xl shadow-md text-xs md:text-sm transition-all">Attendance Clock-In</button>
+          <button id="sim-btn-over" onclick="switchSim('over')" class="px-5 py-2.5 bg-surface text-primary border border-outline-variant/40 font-bold rounded-xl text-xs md:text-sm transition-all hover:bg-surface-container-low">HR Override Entry</button>
+          <button id="sim-btn-audit" onclick="switchSim('audit')" class="px-5 py-2.5 bg-surface text-primary border border-outline-variant/40 font-bold rounded-xl text-xs md:text-sm transition-all hover:bg-surface-container-low">Leave compliance audit</button>
+        </div>
+
+        <div class="bg-surface border border-outline-variant/30 rounded-[2rem] p-6 md:p-8 mt-6 text-left min-h-[320px] shadow-sm flex flex-col justify-between">
+          <!-- Sim Content 1: Attendance -->
+          <div id="sim-att" class="space-y-6">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-headline font-extrabold text-xl text-on-surface">Employee Self-Service Clocking</h4>
+                <p class="text-sm text-on-surface-variant">Simulate a daily system check-in. The timer increments while you are checked-in.</p>
+              </div>
+              <span id="att-badge" class="px-3 py-1 bg-critical/10 text-critical text-xs font-bold rounded-full">Absent</span>
+            </div>
+
+            <div class="bg-background rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-outline-variant/20">
+              <div class="text-left">
+                <span class="text-xs font-bold text-outline uppercase">Active Counter</span>
+                <p class="text-4xl font-mono font-bold text-primary mt-1" id="att-timer">00:00:00</p>
+                <p class="text-xs text-on-surface-variant mt-1" id="att-status-msg">Click Check In to generate a daily clock log.</p>
+              </div>
+              <button id="clock-btn" onclick="toggleClock()" class="w-full md:w-auto px-8 py-4 bg-primary text-white font-headline font-bold text-md rounded-2xl shadow-md hover:scale-105 active:scale-95 transition-all">
+                Check In
+              </button>
+            </div>
+          </div>
+
+          <!-- Sim Content 2: Override -->
+          <div id="sim-over" class="hidden space-y-6">
+            <div>
+              <h4 class="font-headline font-extrabold text-xl text-on-surface">HR Clock Override (Write-Once Audit Trail)</h4>
+              <p class="text-sm text-on-surface-variant">IRREVERSIBLE action. HR overwrites a log with mandatory justification.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+              <!-- Form -->
+              <div class="md:col-span-5 space-y-4 bg-background p-5 rounded-2xl border border-outline-variant/20">
+                <div>
+                  <label class="block text-xs font-bold text-outline uppercase mb-1">Check-in Override Time</label>
+                  <input type="text" id="over-in" value="09:00 AM" class="w-full px-3 py-2 rounded-lg border border-outline-variant bg-white text-sm focus:outline-primary">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-outline uppercase mb-1">Reason for override</label>
+                  <input type="text" id="over-reason" placeholder="Missed check-in due to office network down" class="w-full px-3 py-2 rounded-lg border border-outline-variant bg-white text-sm focus:outline-primary">
+                </div>
+                <button onclick="applyOverride()" class="w-full py-2.5 bg-critical text-white font-bold rounded-xl text-xs shadow-md active:scale-98 transition-all hover:bg-critical/90">
+                  Submit Override
+                </button>
+              </div>
+
+              <!-- List Log -->
+              <div class="md:col-span-7 overflow-x-auto max-h-[170px] border border-outline-variant/30 rounded-2xl bg-white p-4">
+                <table class="w-full text-xs text-left">
+                  <thead>
+                    <tr class="text-outline uppercase font-bold border-b border-outline-variant/20 pb-2">
+                      <th class="py-1">Type</th>
+                      <th class="py-1">Check-In</th>
+                      <th class="py-1">Source</th>
+                      <th class="py-1">Justification</th>
+                    </tr>
+                  </thead>
+                  <tbody id="override-table-body">
+                    <tr class="border-b border-outline-variant/10 text-on-surface-variant">
+                      <td class="py-2 font-bold">Attendance Log</td>
+                      <td>09:12 AM</td>
+                      <td><span class="px-2 py-0.5 bg-primary/10 text-primary rounded-full text-[10px] font-bold">System</span></td>
+                      <td>Regular Daily Log</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sim Content 3: Audit -->
+          <div id="sim-audit" class="hidden space-y-6">
+            <div class="flex justify-between items-center">
+              <div>
+                <h4 class="font-headline font-extrabold text-xl text-on-surface">Double-Tier Leave Compliance Review</h4>
+                <p class="text-sm text-on-surface-variant">Manager approves or rejects. HR reviews (Confirm/Flag) separately for payroll.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-outline font-semibold">Unreviewed Audits:</span>
+                <span id="audit-badge-count" class="px-2.5 py-1 bg-critical text-white text-xs font-bold rounded-full">3</span>
+              </div>
+            </div>
+
+            <!-- Leave Audit Queue Items -->
+            <div class="space-y-3 max-h-[180px] overflow-y-auto">
+              <!-- Item 1 -->
+              <div id="audit-item-1" class="bg-background rounded-xl p-4 flex items-center justify-between border border-outline-variant/20 hover:border-primary/20 transition-all">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-on-surface text-sm">Abdelrahman Ayman</span>
+                    <span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded">Annual Leave</span>
+                  </div>
+                  <p class="text-xs text-on-surface-variant mt-1">Approved by: Manager Sara • Note: "Team support secured"</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="auditAction(1, 'Confirm')" class="px-3 py-1.5 bg-success text-white text-xs font-bold rounded-lg hover:scale-105 active:scale-95 transition-all">Confirm</button>
+                  <button onclick="auditAction(1, 'Flag')" class="px-3 py-1.5 bg-critical text-white text-xs font-bold rounded-lg hover:scale-105 active:scale-95 transition-all">Flag</button>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div id="audit-item-2" class="bg-background rounded-xl p-4 flex items-center justify-between border border-outline-variant/20 hover:border-primary/20 transition-all">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-on-surface text-sm">Marcus Vance</span>
+                    <span class="px-2 py-0.5 bg-secondary text-primary text-[10px] font-bold rounded">Sick Leave</span>
+                  </div>
+                  <p class="text-xs text-on-surface-variant mt-1">Approved by: Manager Sara • Note: "Medical certificate attached"</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="auditAction(2, 'Confirm')" class="px-3 py-1.5 bg-success text-white text-xs font-bold rounded-lg hover:scale-105 active:scale-95 transition-all">Confirm</button>
+                  <button onclick="auditAction(2, 'Flag')" class="px-3 py-1.5 bg-critical text-white text-xs font-bold rounded-lg hover:scale-105 active:scale-95 transition-all">Flag</button>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div id="audit-item-3" class="bg-background rounded-xl p-4 flex items-center justify-between border border-outline-variant/20 hover:border-primary/20 transition-all">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-on-surface text-sm">Lena Rose</span>
+                    <span class="px-2 py-0.5 bg-critical/10 text-critical text-[10px] font-bold rounded">Unpaid Leave</span>
+                  </div>
+                  <p class="text-xs text-on-surface-variant mt-1">Approved by: Manager Mark • Note: "Exceeds standard allocation"</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="auditAction(3, 'Confirm')" class="px-3 py-1.5 bg-success text-white text-xs font-bold rounded-lg hover:scale-105 active:scale-95 transition-all">Confirm</button>
+                  <button onclick="auditAction(3, 'Flag')" class="px-3 py-1.5 bg-critical text-white text-xs font-bold rounded-lg hover:scale-105 active:scale-95 transition-all">Flag</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Ordering Flow Simulator -->
+    <section id="slide-5" class="slide">
+      <div class="space-y-4 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Real-Time Food Ordering Flow</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
+          Synchronized state tracking handles food stages. Click the controls below to push status transitions.
+        </p>
+
+        <!-- State tracker widget mockup -->
+        <div class="bg-surface border border-outline-variant/30 rounded-[2rem] p-8 mt-6 shadow-sm max-w-4xl mx-auto space-y-8">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-outline-variant/20 pb-4">
+            <h4 class="font-headline font-bold text-lg text-on-surface">Meal Order Tracking Dashboard</h4>
+            <div class="flex items-center gap-3">
+              <span class="text-xs uppercase text-outline font-semibold">Active Order:</span>
+              <span class="font-mono font-bold text-primary">#OM-941A</span>
+            </div>
+          </div>
+
+          <!-- Step Progression Map -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="order-tracker-steps">
+            <!-- Step 1 -->
+            <div id="step-0" class="p-4 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center justify-center transition-all duration-300">
+              <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center mb-2">
+                <span class="material-symbols-outlined text-sm">receipt_long</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface">Pending</p>
+              <p class="text-[10px] text-outline mt-0.5">Order Received</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div id="step-1" class="p-4 rounded-2xl border border-outline-variant/30 bg-surface-container opacity-50 text-center flex flex-col items-center justify-center transition-all duration-300">
+              <div class="w-10 h-10 rounded-full bg-outline-variant/50 text-outline flex items-center justify-center mb-2">
+                <span class="material-symbols-outlined text-sm">restaurant</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface">Preparing</p>
+              <p class="text-[10px] text-outline mt-0.5">Kitchen Prep</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div id="step-2" class="p-4 rounded-2xl border border-outline-variant/30 bg-surface-container opacity-50 text-center flex flex-col items-center justify-center transition-all duration-300">
+              <div class="w-10 h-10 rounded-full bg-outline-variant/50 text-outline flex items-center justify-center mb-2">
+                <span class="material-symbols-outlined text-sm">moped</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface">Out for Delivery</p>
+              <p class="text-[10px] text-outline mt-0.5">In Transit</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div id="step-3" class="p-4 rounded-2xl border border-outline-variant/30 bg-surface-container opacity-50 text-center flex flex-col items-center justify-center transition-all duration-300">
+              <div class="w-10 h-10 rounded-full bg-outline-variant/50 text-outline flex items-center justify-center mb-2">
+                <span class="material-symbols-outlined text-sm">task_alt</span>
+              </div>
+              <p class="font-bold text-sm text-on-surface">Delivered</p>
+              <p class="text-[10px] text-outline mt-0.5">Arrived at desk</p>
+            </div>
+          </div>
+
+          <!-- Controls to drive the state machine -->
+          <div class="bg-background rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-sm font-semibold text-on-surface-variant text-left" id="order-flow-msg">Order status is currently: <b>Pending</b>. Let's move it along.</span>
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <button onclick="resetOrderFlow()" class="px-4 py-2 bg-surface hover:bg-surface-container-high border border-outline-variant/40 rounded-xl text-xs font-bold text-on-surface transition-all">Reset</button>
+              <button onclick="advanceOrderFlow()" id="next-flow-btn" class="flex-grow sm:flex-grow-0 px-6 py-2.5 bg-primary text-white hover:scale-105 active:scale-95 transition-all text-xs font-bold rounded-xl shadow-md">Advance Order Status</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Trade-offs -->
+    <section id="slide-6" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Design Architecture Trade-offs</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
+          Balanced decisions that shaped the production model of the portal.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+          <!-- Tradeoff 1 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">timeline</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-base">Waterfall vs. Agile</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Choosing Waterfall guaranteed exact requirements gathering, deterministic leave calculation rules, and strict audit log specifications before any codebase edits. The drawback was deferred user testing and validation loops.
+            </p>
+          </div>
+
+          <!-- Tradeoff 2 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center text-success">
+              <span class="material-symbols-outlined">database</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-base">Store-Driven API Architecture</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              All views sync via state stores rather than local component states. For example, the status of a food order is maintained in `useOrderStore` and mapped immediately to employee and canteen lists. This introduces boilerplate, but prevents divergent state bugs.
+            </p>
+          </div>
+
+          <!-- Tradeoff 3 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-critical/10 flex items-center justify-center text-critical">
+              <span class="material-symbols-outlined">credit_card_off</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-base">Internal Tracking vs. Billing</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              The order catalog and consumption dashboards operate purely for audit inventory management and cost calculations. Excluding direct billing Gateways reduces payroll complexity and legal constraints, focusing strictly on asset allocations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide Footer Control Bar -->
+  <footer class="glass-effect border-t border-outline-variant/30 px-6 py-5 flex items-center justify-between shadow-inner">
+    <button onclick="prevSlide()" class="px-5 py-2.5 bg-surface-container-high hover:bg-surface-container-highest font-bold text-xs rounded-xl transition-all text-on-surface flex items-center gap-2">
+      <span class="material-symbols-outlined text-xs">arrow_back_ios</span>
+      Previous
+    </button>
+    <div class="text-xs font-semibold text-outline text-center hidden sm:block">
+      Use Left/Right arrow keys or click slide indicators to navigate.
+    </div>
+    <button onclick="nextSlide()" class="px-5 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-2 shadow-sm">
+      Next
+      <span class="material-symbols-outlined text-xs">arrow_forward_ios</span>
+    </button>
+  </footer>
+
+  <script>
+    // Slide Navigation Core
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.nav-dot');
+    const totalSlides = slides.length;
+
+    function updateSlideUI() {
+      // Toggle slide active class
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Toggle indicator dots active state
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlide) {
+          dot.classList.add('active-dot');
+          dot.classList.remove('bg-outline-variant/60');
+          dot.classList.add('bg-primary');
+        } else {
+          dot.classList.remove('active-dot');
+          dot.classList.add('bg-outline-variant/60');
+          dot.classList.remove('bg-primary');
+        }
+      });
+
+      // Slide number indicator text
+      document.getElementById('slide-number-badge').innerText = `Slide ${currentSlide + 1}/${totalSlides}`;
+    }
+
+    function goToSlide(index) {
+      if (index >= 0 && index < totalSlides) {
+        currentSlide = index;
+        updateSlideUI();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+      } else {
+        currentSlide = 0; // wrap around
+      }
+      updateSlideUI();
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+      } else {
+        currentSlide = totalSlides - 1; // wrap around
+      }
+      updateSlideUI();
+    }
+
+    // Keyboard controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Initialize UI dots
+    updateSlideUI();
+
+    // Code snippets explorer logic
+    const CODE_SNIPPETS = {
+      features: `// Directory layout representing Feature Domains
+src/features/
+├── auth/          # Context API session & login controls
+├── employee/      # Attendance self-service & consumption sheets
+├── leave/         # Leave submissions and status histories
+├── manager/       # Approval queue dashboard & action links
+├── canteen/       # Menu management tables & supply indicators
+├── food/          # Bento catalog layouts & stage trackers
+└── hr/            # Access control directory & manual log forms`,
+      shared: `// src/shared/ui/Badge.tsx
+interface BadgeProps {
+  variant: 'default' | 'success' | 'warning' | 'critical';
+  children: React.ReactNode;
+}
+
+export function Badge({ variant, children }: BadgeProps) {
+  const styles = {
+    default: 'bg-primary/10 text-primary',
+    success: 'bg-success/15 text-success',
+    warning: 'bg-secondary text-primary',
+    critical: 'bg-critical/10 text-critical',
+  };
+  
+  return (
+    <span className={\`px-2.5 py-1 rounded-full text-xs font-bold font-sans \${styles[variant]}\`}>
+      {children}
+    </span>
+  );
+}`,
+      stores: `// src/stores/useAttendanceStore.ts
+import { create } from 'zustand';
+import apiClient from '@/lib/apiClient';
+
+export const useAttendanceStore = create((set, get) => ({
+  logs: [],
+  isLoading: false,
+  checkIn: async () => {
+    const { data } = await apiClient.post('/attendance/checkin/', {});
+    set((state) => ({ logs: [data, ...state.logs] }));
+  },
+  checkOut: async () => {
+    const { data } = await apiClient.post('/attendance/checkout/', {});
+    set((state) => ({ logs: state.logs.map(l => l.id === data.id ? data : l) }));
+  }
+}));`,
+      types: `// src/types/index.ts
+export type UserRole = 'employee' | 'manager' | 'canteen' | 'hr_manager';
+export type FoodOrderStatus = 'Pending' | 'Preparing' | 'OutForDelivery' | 'Delivered' | 'Cancelled';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  departmentId: string;
+}`
+    };
+
+    function selectCodeTab(tab) {
+      document.getElementById('code-tab-title').innerText = `src/` + (tab === 'types' ? 'types/index.ts' : (tab === 'shared' ? 'shared/ui/Badge.tsx' : (tab === 'stores' ? 'stores/useAttendanceStore.ts' : 'features/')));
+      document.getElementById('code-snippet-box').innerText = CODE_SNIPPETS[tab];
+      
+      // Update explorer button selection styles
+      event.currentTarget.parentElement.querySelectorAll('div').forEach(el => {
+        el.classList.remove('bg-primary/10', 'border-primary/20', 'text-primary');
+        el.classList.add('bg-background', 'text-on-surface');
+      });
+      event.currentTarget.classList.add('bg-primary/10', 'border-primary/20', 'text-primary');
+    }
+
+    // Load initial code tab
+    document.getElementById('code-snippet-box').innerText = CODE_SNIPPETS['features'];
+
+    // Interactive Simulators logic
+    function switchSim(sim) {
+      document.getElementById('sim-att').classList.add('hidden');
+      document.getElementById('sim-over').classList.add('hidden');
+      document.getElementById('sim-audit').classList.add('hidden');
+      
+      document.getElementById(`sim-${sim}`).classList.remove('hidden');
+
+      // Toggles styles for button headers
+      ['att', 'over', 'audit'].forEach(id => {
+        const btn = document.getElementById(`sim-btn-${id}`);
+        btn.classList.remove('bg-primary', 'text-white', 'shadow-md');
+        btn.classList.add('bg-surface', 'text-primary', 'border', 'border-outline-variant/40', 'hover:bg-surface-container-low');
+      });
+      const activeBtn = document.getElementById(`sim-btn-${sim}`);
+      activeBtn.classList.add('bg-primary', 'text-white', 'shadow-md');
+      activeBtn.classList.remove('bg-surface', 'text-primary', 'border', 'border-outline-variant/40', 'hover:bg-surface-container-low');
+    }
+
+    // Timer simulator variables
+    let clockTimer = null;
+    let secondsElapsed = 0;
+
+    function formatTime(s) {
+      const hrs = String(Math.floor(s / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      const secs = String(s % 60).padStart(2, '0');
+      return `${hrs}:${mins}:${secs}`;
+    }
+
+    function toggleClock() {
+      const btn = document.getElementById('clock-btn');
+      const badge = document.getElementById('att-badge');
+      const msg = document.getElementById('att-status-msg');
+
+      if (!clockTimer) {
+        // Clock in
+        clockTimer = setInterval(() => {
+          secondsElapsed++;
+          document.getElementById('att-timer').innerText = formatTime(secondsElapsed);
+        }, 1000);
+        btn.innerText = "Check Out";
+        btn.classList.remove('bg-primary');
+        btn.classList.add('bg-critical');
+        badge.innerText = "On Time";
+        badge.classList.remove('bg-critical/10', 'text-critical');
+        badge.classList.add('bg-success/10', 'text-success');
+        msg.innerHTML = "Currently <b>Checked In</b>. System logs are locked in UTC time.";
+      } else {
+        // Clock out
+        clearInterval(clockTimer);
+        clockTimer = null;
+        btn.innerText = "Check In";
+        btn.classList.remove('bg-critical');
+        btn.classList.add('bg-primary');
+        badge.innerText = "Incomplete";
+        badge.classList.remove('bg-success/10', 'text-success');
+        badge.classList.add('bg-secondary', 'text-primary');
+        msg.innerHTML = `Checked out. Shift duration: <b>${formatTime(secondsElapsed)}</b>.`;
+      }
+    }
+
+    // HR Override simulation list updates
+    function applyOverride() {
+      const timeVal = document.getElementById('over-in').value;
+      const reasonVal = document.getElementById('over-reason').value;
+
+      if (!reasonVal) {
+        alert("HR audit overrides require a mandatory justification.");
+        return;
+      }
+
+      const tbody = document.getElementById('override-table-body');
+      const tr = document.createElement('tr');
+      tr.className = "border-b border-outline-variant/10 text-on-surface-variant";
+      tr.innerHTML = `
+        <td class="py-2 font-bold">Override Entry</td>
+        <td>${timeVal}</td>
+        <td><span class="px-2 py-0.5 bg-critical/10 text-critical rounded-full text-[10px] font-bold">Override</span></td>
+        <td>${reasonVal}</td>
+      `;
+      tbody.prepend(tr);
+      document.getElementById('over-reason').value = "";
+    }
+
+    // Double-Tier Leave Audit Actions
+    let auditCount = 3;
+    function auditAction(id, action) {
+      const item = document.getElementById(`audit-item-${id}`);
+      item.classList.add('opacity-40', 'scale-95');
+      setTimeout(() => {
+        item.remove();
+        auditCount--;
+        document.getElementById('audit-badge-count').innerText = auditCount;
+        if (auditCount === 0) {
+          document.getElementById('sim-audit').querySelector('.space-y-3').innerHTML = `
+            <div class="text-center py-6 text-xs text-outline font-semibold">
+              All approved leave compliance reviews completed.
+            </div>
+          `;
+        }
+      }, 300);
+    }
+
+    // Order state machine simulator variables
+    let flowIndex = 0;
+    const stages = ['Pending', 'Preparing', 'OutForDelivery', 'Delivered'];
+    const descriptions = [
+      'Order status is currently: <b>Pending</b>. Let\'s move it along.',
+      'Kitchen received: <b>Preparing</b> meal items.',
+      'In transit: Order is <b>On the Way</b> to the East Wing.',
+      'Arrived! Food successfully <b>Delivered</b> to employee desk.'
+    ];
+
+    function advanceOrderFlow() {
+      if (flowIndex < 3) {
+        // remove old status from current step
+        const oldStep = document.getElementById(`step-${flowIndex}`);
+        oldStep.classList.remove('border-2', 'border-primary', 'bg-primary/5');
+        oldStep.classList.add('border', 'border-outline-variant/30', 'bg-surface-container', 'opacity-50');
+        oldStep.querySelector('div').classList.remove('bg-primary', 'text-white');
+        oldStep.querySelector('div').classList.add('bg-outline-variant/50', 'text-outline');
+
+        flowIndex++;
+
+        // set new status to the next step
+        const newStep = document.getElementById(`step-${flowIndex}`);
+        newStep.classList.remove('border', 'border-outline-variant/30', 'bg-surface-container', 'opacity-50');
+        if (flowIndex === 3) {
+          // Delivered green success state
+          newStep.classList.add('border-2', 'border-success', 'bg-success/5');
+          newStep.querySelector('div').classList.remove('bg-outline-variant/50', 'text-outline');
+          newStep.querySelector('div').classList.add('bg-success', 'text-white');
+          document.getElementById('next-flow-btn').disabled = true;
+          document.getElementById('next-flow-btn').classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+          newStep.classList.add('border-2', 'border-primary', 'bg-primary/5');
+          newStep.querySelector('div').classList.remove('bg-outline-variant/50', 'text-outline');
+          newStep.querySelector('div').classList.add('bg-primary', 'text-white');
+        }
+
+        document.getElementById('order-flow-msg').innerHTML = descriptions[flowIndex];
+      }
+    }
+
+    function resetOrderFlow() {
+      // Clean classes from all steps
+      for (let i = 0; i < 4; i++) {
+        const step = document.getElementById(`step-${i}`);
+        step.className = "p-4 rounded-2xl border border-outline-variant/30 bg-surface-container opacity-50 text-center flex flex-col items-center justify-center transition-all duration-300";
+        const iconDiv = step.querySelector('div');
+        iconDiv.className = "w-10 h-10 rounded-full bg-outline-variant/50 text-outline flex items-center justify-center mb-2";
+      }
+
+      // Reset step 0
+      const step0 = document.getElementById('step-0');
+      step0.className = "p-4 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center justify-center transition-all duration-300";
+      step0.querySelector('div').className = "w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center mb-2";
+
+      flowIndex = 0;
+      document.getElementById('order-flow-msg').innerHTML = descriptions[0];
+      
+      const btn = document.getElementById('next-flow-btn');
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  </script>
+</body>
+</html>
