@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { Button, Card, EmptyState, Badge } from '@/shared/ui'
 import { useAuth } from '@/features/auth/useAuth'
@@ -62,6 +62,7 @@ function OrderStepper({ currentStatus }: { currentStatus: FoodOrderStatus }) {
 export function FoodOrderList() {
   const { user } = useAuth()
   const { orders, fetchOrders } = useOrderStore()
+  const navigate = useNavigate()
   
   useEffect(() => {
     fetchOrders()
@@ -73,7 +74,7 @@ export function FoodOrderList() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">My Orders</h2>
-        <Link to="/employee/food/new">
+        <Link to="/employee/food">
           <Button size="sm">New Order</Button>
         </Link>
       </div>
@@ -82,7 +83,7 @@ export function FoodOrderList() {
         <EmptyState 
           title="No food orders yet"
           description="You haven't placed any food orders today."
-          action={{ label: 'Order Food', onClick: () => window.location.href = '/employee/food/new' }}
+          action={{ label: 'Order Food', onClick: () => navigate('/employee/food') }}
         />
       ) : (
         <div className="space-y-4">
