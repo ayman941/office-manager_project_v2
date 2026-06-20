@@ -104,10 +104,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      const { data: tokens } = await axios.post(
-        '/api/token/',
-        { username: email, password }
-      )
+      let tokens
+      try {
+        const { data } = await axios.post(
+          '/api/token/',
+          { username: email, password }
+        )
+        tokens = data
+      } catch (err) {
+        if (email.includes('@')) {
+          const prefix = email.split('@')[0]
+          const { data } = await axios.post(
+            '/api/token/',
+            { username: prefix, password }
+          )
+          tokens = data
+        } else {
+          throw err
+        }
+      }
       localStorage.setItem('access_token', tokens.access)
       localStorage.setItem('refresh_token', tokens.refresh)
 

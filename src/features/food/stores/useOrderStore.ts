@@ -74,7 +74,7 @@ export const useOrderStore = create<OrderStore>((set) => ({
     set({ isLoading: true })
     try {
       // Map location text to null or number
-      const locationId = isNaN(Number(draft.deliveryLocation)) ? null : Number(draft.deliveryLocation)
+      const locationId = draft.deliveryLocation && draft.deliveryLocation.trim() !== '' ? Number(draft.deliveryLocation) : null
       
       const payload = {
         delivery_location: locationId,

@@ -105,18 +105,23 @@
     </div>
 
     <!-- Slide Indicators -->
-    <div class="hidden md:flex items-center gap-2">
-      <button onclick="goToSlide(0)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Cover"></button>
-      <button onclick="goToSlide(1)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Core Idea"></button>
-      <button onclick="goToSlide(2)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Waterfall Strategy"></button>
-      <button onclick="goToSlide(3)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Architecture"></button>
-      <button onclick="goToSlide(4)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Management Functions"></button>
-      <button onclick="goToSlide(5)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Ordering Flow"></button>
-      <button onclick="goToSlide(6)" class="nav-dot w-3 h-3 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Trade-offs"></button>
+    <div class="hidden lg:flex items-center gap-1.5">
+      <button onclick="goToSlide(0)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Cover"></button>
+      <button onclick="goToSlide(1)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Business Challenges"></button>
+      <button onclick="goToSlide(2)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Core Idea"></button>
+      <button onclick="goToSlide(3)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Functional Scope"></button>
+      <button onclick="goToSlide(4)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Waterfall SDLC"></button>
+      <button onclick="goToSlide(5)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Deliverables"></button>
+      <button onclick="goToSlide(6)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Interactive Simulators"></button>
+      <button onclick="goToSlide(7)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Meal Order tracking"></button>
+      <button onclick="goToSlide(8)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="QA & Verification"></button>
+      <button onclick="goToSlide(9)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Project Trade-offs"></button>
+      <button onclick="goToSlide(10)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Roadmap & Future"></button>
+      <button onclick="goToSlide(11)" class="nav-dot w-2.5 h-2.5 rounded-full bg-outline-variant/60 hover:bg-primary transition-all duration-300" title="Q&A & Summary"></button>
     </div>
 
     <div class="flex items-center gap-3">
-      <span class="text-xs font-mono font-bold text-primary px-3 py-1.5 bg-primary/10 rounded-full" id="slide-number-badge">Slide 1/7</span>
+      <span class="text-xs font-mono font-bold text-primary px-3 py-1.5 bg-primary/10 rounded-full" id="slide-number-badge">Slide 1/12</span>
     </div>
   </header>
 
@@ -137,13 +142,26 @@
           <p class="text-lg text-on-surface-variant max-w-xl leading-relaxed">
             A premium, high-fidelity React workspace that consolidates attendance tracking, leave request auditing, and food catalog operations under a strict compliance design system.
           </p>
-          <div class="pt-4 flex flex-wrap gap-4">
+          
+          <!-- Team Members Block -->
+          <div class="space-y-2 pt-2">
+            <span class="text-[10px] font-bold text-outline uppercase tracking-widest block">Project Team</span>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 bg-surface border border-outline-variant/30 text-on-surface-variant text-xs font-semibold rounded-xl shadow-sm">Nouran Mohamed</span>
+              <span class="px-3 py-1.5 bg-surface border border-outline-variant/30 text-on-surface-variant text-xs font-semibold rounded-xl shadow-sm">Rana Elsayed</span>
+              <span class="px-3 py-1.5 bg-surface border border-outline-variant/30 text-on-surface-variant text-xs font-semibold rounded-xl shadow-sm">Nagham Mamdouh</span>
+              <span class="px-3 py-1.5 bg-surface border border-outline-variant/30 text-on-surface-variant text-xs font-semibold rounded-xl shadow-sm">Abdelrahman Kholif</span>
+              <span class="px-3 py-1.5 bg-primary/10 border border-primary/20 text-primary text-xs font-semibold rounded-xl shadow-sm">Abdelrahman Ayman</span>
+            </div>
+          </div>
+
+          <div class="pt-2 flex flex-wrap gap-4">
             <button onclick="nextSlide()" class="px-6 py-3.5 bg-primary text-white font-bold rounded-2xl hover:scale-105 transition-all shadow-md shadow-primary/20 flex items-center gap-2">
               Start Presentation
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
             <a href="#slide-1" onclick="goToSlide(1); return false;" class="px-6 py-3.5 bg-surface text-primary border border-outline-variant/50 font-bold rounded-2xl hover:bg-surface-container-low transition-all">
-              Explore Concept
+              Explore Objectives
             </a>
           </div>
         </div>
@@ -190,8 +208,53 @@
       </div>
     </section>
 
-    <!-- SLIDE 2: Core Concept (Bento) -->
+    <!-- SLIDE 2: Problem Statement & Challenges -->
     <section id="slide-1" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">The Business Challenge</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          Legacy office administration creates operational bottlenecks, leading to administrative overhead and high operational friction.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 max-w-5xl mx-auto">
+          <!-- Challenge 1 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-3 shadow-sm hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-critical/10 flex items-center justify-center text-critical">
+              <span class="material-symbols-outlined">running_with_errors</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-base">Attendance Discrepancies</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Without synchronized check-ins, employees suffer from misrecorded shift calculations. Resolving attendance disputes demands hours of manual auditing from HR professionals.
+            </p>
+          </div>
+
+          <!-- Challenge 2 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-3 shadow-sm hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-critical/10 flex items-center justify-center text-critical">
+              <span class="material-symbols-outlined">food_bank</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-base">Canteen Food Waste</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Canteens operate without accurate daily meal reservations. Chefs prepare excess food due to lack of visibility, resulting in substantial supply chain waste and financial loss.
+            </p>
+          </div>
+
+          <!-- Challenge 3 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-3 shadow-sm hover:border-primary transition-all duration-300">
+            <div class="w-10 h-10 rounded-xl bg-critical/10 flex items-center justify-center text-critical">
+              <span class="material-symbols-outlined">lock_reset</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-base">Security & Compliance Gaps</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Manual spreadsheets lack transparent access control. Critical modifications, such as changing attendance hours or leave approvals, lack a persistent, tamper-evident audit log.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Core Concept (Bento) -->
+    <section id="slide-2" class="slide">
       <div class="space-y-6 text-center py-4">
         <h3 class="text-3xl font-headline font-extrabold text-on-surface">One Platform. Four Specialized Roles.</h3>
         <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
@@ -207,7 +270,7 @@
                 <span class="material-symbols-outlined text-2xl">badge</span>
               </div>
               <h4 class="font-headline font-bold text-lg text-on-surface mb-2">Employee Portal</h4>
-              <p class="text-sm text-on-surface-variant">Self-service dashboard featuring one-click check-ins, bento menus, real-time meal dispatch tracking, and personal cost logs.</p>
+              <p class="text-xs text-on-surface-variant">Self-service dashboard featuring one-click check-ins, bento menus, real-time meal dispatch tracking, and personal cost logs.</p>
             </div>
             <span class="text-xs font-bold text-primary flex items-center gap-1">Role: employee <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
           </div>
@@ -219,7 +282,7 @@
                 <span class="material-symbols-outlined text-2xl">supervisor_account</span>
               </div>
               <h4 class="font-headline font-bold text-lg text-on-surface mb-2">Manager Portal</h4>
-              <p class="text-sm text-on-surface-variant">Department dashboards giving managers instant approval/rejection oversight of team leave balances and scheduling overlaps.</p>
+              <p class="text-xs text-on-surface-variant">Department dashboards giving managers instant approval/rejection oversight of team leave balances and scheduling overlaps.</p>
             </div>
             <span class="text-xs font-bold text-primary flex items-center gap-1">Role: manager <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
           </div>
@@ -231,7 +294,7 @@
                 <span class="material-symbols-outlined text-2xl">restaurant_menu</span>
               </div>
               <h4 class="font-headline font-bold text-lg text-on-surface mb-2">Canteen Portal</h4>
-              <p class="text-sm text-on-surface-variant">Interactive buffet dispatch monitors, menu item stock levels, and supply threshold indicators that light up critical at 25%.</p>
+              <p class="text-xs text-on-surface-variant">Interactive buffet dispatch monitors, menu item stock levels, and supply threshold indicators that light up critical at 25%.</p>
             </div>
             <span class="text-xs font-bold text-primary flex items-center gap-1">Role: canteen <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
           </div>
@@ -243,7 +306,7 @@
                 <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
               </div>
               <h4 class="font-headline font-bold text-lg text-on-surface mb-2">HR Authority</h4>
-              <p class="text-sm text-on-surface-variant">Irreversible attendance overrides, company employee directories with leave balance initializations, and parallel leave audits.</p>
+              <p class="text-xs text-on-surface-variant">Irreversible attendance overrides, company employee directories with leave balance initializations, and parallel leave audits.</p>
             </div>
             <span class="text-xs font-bold text-primary flex items-center gap-1">Role: hr_manager <span class="material-symbols-outlined text-xs">arrow_forward</span></span>
           </div>
@@ -251,8 +314,64 @@
       </div>
     </section>
 
-    <!-- SLIDE 3: Waterfall Strategy -->
-    <section id="slide-2" class="slide">
+    <!-- SLIDE 4: System Requirements -->
+    <section id="slide-3" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Functional & Operational Requirements</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          Core system specifications established during the requirements elicitation phase to ensure operational efficiency.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 max-w-4xl mx-auto text-left">
+          <!-- Requirement block 1 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-2 hover:border-primary transition-all duration-300">
+            <h4 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">check_circle</span>
+              Double-Tier Leave Approvals
+            </h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Managers retain primary approval authority over team schedules. HR acts as the secondary validation tier, verifying remaining holiday allocation balances before finalizing items for monthly payroll schedules.
+            </p>
+          </div>
+
+          <!-- Requirement block 2 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-2 hover:border-primary transition-all duration-300">
+            <h4 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">history</span>
+              Immutable HR Override Trails
+            </h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              If an employee forgets to clock in, HR Managers can force log insertions. To comply with transparency regulations, every override requires mandatory text reasons, logged permanently.
+            </p>
+          </div>
+
+          <!-- Requirement block 3 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-2 hover:border-primary transition-all duration-300">
+            <h4 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">restaurant</span>
+              Real-Time Food Queue Tracking
+            </h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Meal preparation orders must update live to synchronize expectations. Employees can track lunch statuses while canteen chefs see exact prep counts to avoid stock overruns.
+            </p>
+          </div>
+
+          <!-- Requirement block 4 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-2 hover:border-primary transition-all duration-300">
+            <h4 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">inventory_2</span>
+              Supply Threshold Alerts
+            </h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Canteen ingredients require stock safeguards. The dashboard must issue visual alerts immediately when stock of any buffet item declines to 25% or below.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Waterfall Strategy -->
+    <section id="slide-4" class="slide">
       <div class="space-y-6 text-center py-4">
         <h3 class="text-3xl font-headline font-extrabold text-on-surface">The Waterfall Strategy Flow</h3>
         <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
@@ -302,69 +421,56 @@
       </div>
     </section>
 
-    <!-- SLIDE 4: Architecture Explorer -->
-    <section id="slide-3" class="slide">
-      <div class="space-y-4 text-center py-4">
-        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Clean Modular Code Structure</h3>
-        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
-          The project separates concerns by domain features. Click the folders below to view the files and live code patterns.
+    <!-- SLIDE 6: Project Deliverables by Phase -->
+    <section id="slide-5" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Waterfall Phase Deliverables</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          Milestones achieved at each sign-off gate, serving as structural checkpoints for quality audits.
         </p>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6">
-          <!-- Directory Explorer Left Column -->
-          <div class="lg:col-span-5 bg-surface rounded-[2rem] p-6 border border-outline-variant/30 shadow-sm text-left space-y-4 max-h-[350px] overflow-y-auto">
-            <h5 class="font-headline font-bold text-xs uppercase text-outline tracking-wider">Project Workspace</h5>
-            
-            <div class="space-y-2">
-              <div onclick="selectCodeTab('features')" class="flex items-center justify-between p-3 bg-primary/10 border border-primary/20 rounded-xl cursor-pointer hover:bg-primary/25 transition-all text-primary font-bold text-sm">
-                <span class="flex items-center gap-2">
-                  <span class="material-symbols-outlined">folder</span>
-                  src/features/
-                </span>
-                <span class="text-xs bg-primary text-white px-2 py-0.5 rounded">Core Domains</span>
-              </div>
-              <div onclick="selectCodeTab('shared')" class="flex items-center justify-between p-3 bg-background hover:bg-surface-container-high rounded-xl cursor-pointer transition-all text-on-surface font-semibold text-sm">
-                <span class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-outline">folder</span>
-                  src/shared/ui/
-                </span>
-                <span class="text-[10px] text-outline font-bold">Stitch UI Primitives</span>
-              </div>
-              <div onclick="selectCodeTab('stores')" class="flex items-center justify-between p-3 bg-background hover:bg-surface-container-high rounded-xl cursor-pointer transition-all text-on-surface font-semibold text-sm">
-                <span class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-outline">folder</span>
-                  src/stores/
-                </span>
-                <span class="text-[10px] text-outline font-bold">Zustand & API Client</span>
-              </div>
-              <div onclick="selectCodeTab('types')" class="flex items-center justify-between p-3 bg-background hover:bg-surface-container-high rounded-xl cursor-pointer transition-all text-on-surface font-semibold text-sm">
-                <span class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-outline">description</span>
-                  src/types/index.ts
-                </span>
-                <span class="text-[10px] text-outline font-bold">Contracts & Enums</span>
-              </div>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
+          <!-- Deliverable 1 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-2 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="text-xs font-bold text-primary uppercase font-mono tracking-wider">Phase 1: SRS Doc</div>
+            <h5 class="font-headline font-bold text-on-surface text-sm">Requirements Specifications</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Consolidated user story matrices, detailed UML case blueprints, database field specifications, and compliance audit frameworks.
+            </p>
           </div>
 
-          <!-- Code Display Right Column -->
-          <div class="lg:col-span-7 bg-on-surface rounded-[2rem] p-6 text-left relative overflow-hidden flex flex-col justify-between max-h-[350px] min-h-[350px] shadow-lg shadow-slate-900/30">
-            <div class="flex justify-between items-center pb-4 border-b border-outline-variant/10">
-              <span id="code-tab-title" class="text-xs font-mono font-bold text-secondary">src/features/ (Folder Contents)</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-critical"></span>
-            </div>
+          <!-- Deliverable 2 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-2 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="text-xs font-bold text-primary uppercase font-mono tracking-wider">Phase 2: UI Blueprints</div>
+            <h5 class="font-headline font-bold text-on-surface text-sm">High-Fidelity Mockups</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Detailed interactive mockups outlining the grid configurations, bento widgets, color systems, and interactive flow transitions.
+            </p>
+          </div>
 
-            <!-- Code display block -->
-            <pre class="flex-grow overflow-auto pt-4 text-xs font-mono text-slate-300 leading-relaxed text-left whitespace-pre select-all" id="code-snippet-box">
-Loading snippet...
-            </pre>
+          <!-- Deliverable 3 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-2 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="text-xs font-bold text-primary uppercase font-mono tracking-wider">Phase 3: React Build</div>
+            <h5 class="font-headline font-bold text-on-surface text-sm">System Implementation</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Modular components, state stores (Zustand), styling integrations, and REST communication modules connected to remote databases.
+            </p>
+          </div>
+
+          <!-- Deliverable 4 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-2 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="text-xs font-bold text-success uppercase font-mono tracking-wider">Phase 4 & 5: QA Sign-off</div>
+            <h5 class="font-headline font-bold text-on-surface text-sm">Verification Report</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Verified manual testing logs, UI compliance checklists, cross-device layout assertions, and production deployment scripts.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 5: Interactive Management Simulators -->
-    <section id="slide-4" class="slide">
+    <!-- SLIDE 7: Interactive Management Simulators -->
+    <section id="slide-6" class="slide">
       <div class="space-y-4 text-center py-4">
         <h3 class="text-3xl font-headline font-extrabold text-on-surface">Interactive System Simulators</h3>
         <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
@@ -513,8 +619,8 @@ Loading snippet...
       </div>
     </section>
 
-    <!-- SLIDE 6: Ordering Flow Simulator -->
-    <section id="slide-5" class="slide">
+    <!-- SLIDE 8: Ordering Flow Simulator -->
+    <section id="slide-7" class="slide">
       <div class="space-y-4 text-center py-4">
         <h3 class="text-3xl font-headline font-extrabold text-on-surface">Real-Time Food Ordering Flow</h3>
         <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
@@ -582,17 +688,62 @@ Loading snippet...
       </div>
     </section>
 
-    <!-- SLIDE 7: Trade-offs -->
-    <section id="slide-6" class="slide">
+    <!-- SLIDE 9: System Verification & QA Plan -->
+    <section id="slide-8" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Verification & Quality Assurance</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          A robust framework of tests and manual verification scenarios checks edge conditions.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 text-left">
+          <!-- Test Area 1 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-3 hover:border-primary transition-all duration-300">
+            <h5 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary font-bold">verified_user</span>
+              Role Access Boundary Tests
+            </h5>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Verifying that employees cannot view manager directories, canteen coordinators cannot view HR overrides, and unauthenticated sessions redirect immediately to login.
+            </p>
+          </div>
+
+          <!-- Test Area 2 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-3 hover:border-primary transition-all duration-300">
+            <h5 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-success font-bold">query_stats</span>
+              State Transition Rules
+            </h5>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Validating food orders can only move in order: Pending $\rightarrow$ Preparing $\rightarrow$ In Transit $\rightarrow$ Delivered. We assert that Cancelled requests immediately stop further processing.
+            </p>
+          </div>
+
+          <!-- Test Area 3 -->
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl space-y-3 hover:border-primary transition-all duration-300">
+            <h5 class="font-headline font-bold text-on-surface text-base flex items-center gap-2">
+              <span class="material-symbols-outlined text-critical font-bold">playlist_add_check</span>
+              HR Override Mandates
+            </h5>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Verifying that the UI throws explicit visual warnings when HR tries to submit clock logs without text justification. We audit that text logs successfully populate the database schema.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Trade-offs -->
+    <section id="slide-9" class="slide">
       <div class="space-y-6 text-center py-4">
         <h3 class="text-3xl font-headline font-extrabold text-on-surface">Design Architecture Trade-offs</h3>
-        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm">
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
           Balanced decisions that shaped the production model of the portal.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
           <!-- Tradeoff 1 -->
-          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm">
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm hover:border-primary transition-all duration-300">
             <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
               <span class="material-symbols-outlined">timeline</span>
             </div>
@@ -603,7 +754,7 @@ Loading snippet...
           </div>
 
           <!-- Tradeoff 2 -->
-          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm">
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm hover:border-primary transition-all duration-300">
             <div class="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center text-success">
               <span class="material-symbols-outlined">database</span>
             </div>
@@ -614,7 +765,7 @@ Loading snippet...
           </div>
 
           <!-- Tradeoff 3 -->
-          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm">
+          <div class="bg-surface border border-outline-variant/30 p-6 rounded-3xl text-left space-y-4 shadow-sm hover:border-primary transition-all duration-300">
             <div class="w-10 h-10 rounded-xl bg-critical/10 flex items-center justify-center text-critical">
               <span class="material-symbols-outlined">credit_card_off</span>
             </div>
@@ -622,6 +773,124 @@ Loading snippet...
             <p class="text-xs text-on-surface-variant leading-relaxed">
               The order catalog and consumption dashboards operate purely for audit inventory management and cost calculations. Excluding direct billing Gateways reduces payroll complexity and legal constraints, focusing strictly on asset allocations.
             </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: Future Enhancements & Scalability -->
+    <section id="slide-10" class="slide">
+      <div class="space-y-6 text-center py-4">
+        <h3 class="text-3xl font-headline font-extrabold text-on-surface">Future Enhancements & Scalability</h3>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">
+          Next milestones intended to transition this application to enterprise capacity.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
+          <!-- Goal 1 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-3 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">sms</span>
+            </div>
+            <h5 class="font-headline font-bold text-sm text-on-surface">Push Notifications</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Implement WebPush standard on mobile devices to issue managers urgent leave reminder lists and notify employees of meal delivery alerts immediately.
+            </p>
+          </div>
+
+          <!-- Goal 2 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-3 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center text-success">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <h5 class="font-headline font-bold text-sm text-on-surface">Stripe Billing Link</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Integrate automated credit card deposits or department cost-center billing to streamline payments for premium lunch options directly.
+            </p>
+          </div>
+
+          <!-- Goal 3 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-3 hover:border-primary transition-all duration-300 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-critical/10 flex items-center justify-center text-critical">
+              <span class="material-symbols-outlined">share_location</span>
+            </div>
+            <h5 class="font-headline font-bold text-sm text-on-surface">GPS Live Dispatch</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Incorporate map rendering using WebSockets to provide dynamic live delivery tracking for canteen delivery staff in the facility.
+            </p>
+          </div>
+
+          <!-- Goal 4 -->
+          <div class="bg-surface border border-outline-variant/30 p-5 rounded-3xl text-left space-y-3 hover:border-primary transition-all duration-300 shadow-sm bg-surface">
+            <div class="w-10 h-10 rounded-xl bg-secondary/30 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">psychology</span>
+            </div>
+            <h5 class="font-headline font-bold text-sm text-on-surface">AI Lunch Planning</h5>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Analyze historical consumption statistics using localized AI parameters to dynamically estimate food supplies, reducing canteen waste by up to 30%.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Demonstration Conclusion & Q&A -->
+    <section id="slide-11" class="slide">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-6">
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-success/10 text-success text-xs font-bold shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-success"></span>
+            Operational Ready State
+          </span>
+          <h2 class="text-5xl lg:text-6xl font-headline font-black text-on-surface leading-tight tracking-tight font-extrabold">
+            Thank you! <br><span class="text-primary bg-clip-text">Questions & Answers</span>
+          </h2>
+          <p class="text-lg text-on-surface-variant max-w-xl leading-relaxed">
+            The Smart Office Manager workspace is verified ready for deployment. We are happy to walk you through live operations or discuss specific components.
+          </p>
+          
+          <!-- Quick summary tags -->
+          <div class="flex flex-wrap gap-3 pt-2">
+            <div class="flex items-center gap-1.5 bg-background rounded-full border border-outline-variant/20 text-xs font-semibold text-on-surface-variant">
+              <span class="material-symbols-outlined text-sm text-primary">verified</span> Robust Compliance
+            </div>
+            <div class="flex items-center gap-1.5 px-3 py-1.5 bg-background rounded-full border border-outline-variant/20 text-xs font-semibold text-on-surface-variant">
+              <span class="material-symbols-outlined text-sm text-success">speed</span> Fast Response
+            </div>
+            <div class="flex items-center gap-1.5 px-3 py-1.5 bg-background rounded-full border border-outline-variant/20 text-xs font-semibold text-on-surface-variant">
+              <span class="material-symbols-outlined text-sm text-critical">lock</span> Secure Sessions
+            </div>
+          </div>
+
+          <div class="pt-4 flex flex-wrap gap-4">
+            <button onclick="goToSlide(0)" class="px-6 py-3.5 bg-primary text-white font-bold rounded-2xl hover:scale-105 transition-all shadow-md shadow-primary/20 flex items-center gap-2">
+              Back to Start
+              <span class="material-symbols-outlined text-sm">home</span>
+            </button>
+            <button onclick="goToSlide(6)" class="px-6 py-3.5 bg-surface text-primary border border-outline-variant/50 font-bold rounded-2xl hover:bg-surface-container-low transition-all flex items-center gap-2">
+              Re-run Simulators
+              <span class="material-symbols-outlined text-sm">play_arrow</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Visually striking thank you card -->
+        <div class="lg:col-span-5">
+          <div class="bg-gradient-to-tr from-primary to-secondary/40 p-8 rounded-[2rem] shadow-xl text-left relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 w-48 h-48 bg-white/10 rounded-full blur-xl"></div>
+            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 space-y-4 relative z-10 text-on-surface">
+              <h4 class="font-headline font-bold text-lg text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined">waving_hand</span> Contact & Feedback
+              </h4>
+              <p class="text-xs text-on-surface-variant leading-relaxed">
+                For architectural feedback, API integrations, or reviews, please visit the internal developer portal.
+              </p>
+              <div class="space-y-2 border-t border-outline-variant/30 pt-3 text-[11px] text-on-surface-variant font-mono">
+                <p>• <b>Environment:</b> Production Ready</p>
+                <p>• <b>Version:</b> 0.1.0 (Waterfall phase-5)</p>
+                <p>• <b>Portals:</b> Employee, Manager, Canteen, HR</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -705,6 +974,10 @@ Loading snippet...
 
     // Keyboard controls
     window.addEventListener('keydown', (e) => {
+      // Ignore key events if the user is typing in an input or textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
       if (e.key === 'ArrowRight' || e.key === ' ') {
         nextSlide();
       } else if (e.key === 'ArrowLeft') {
@@ -714,81 +987,6 @@ Loading snippet...
 
     // Initialize UI dots
     updateSlideUI();
-
-    // Code snippets explorer logic
-    const CODE_SNIPPETS = {
-      features: `// Directory layout representing Feature Domains
-src/features/
-├── auth/          # Context API session & login controls
-├── employee/      # Attendance self-service & consumption sheets
-├── leave/         # Leave submissions and status histories
-├── manager/       # Approval queue dashboard & action links
-├── canteen/       # Menu management tables & supply indicators
-├── food/          # Bento catalog layouts & stage trackers
-└── hr/            # Access control directory & manual log forms`,
-      shared: `// src/shared/ui/Badge.tsx
-interface BadgeProps {
-  variant: 'default' | 'success' | 'warning' | 'critical';
-  children: React.ReactNode;
-}
-
-export function Badge({ variant, children }: BadgeProps) {
-  const styles = {
-    default: 'bg-primary/10 text-primary',
-    success: 'bg-success/15 text-success',
-    warning: 'bg-secondary text-primary',
-    critical: 'bg-critical/10 text-critical',
-  };
-  
-  return (
-    <span className={\`px-2.5 py-1 rounded-full text-xs font-bold font-sans \${styles[variant]}\`}>
-      {children}
-    </span>
-  );
-}`,
-      stores: `// src/stores/useAttendanceStore.ts
-import { create } from 'zustand';
-import apiClient from '@/lib/apiClient';
-
-export const useAttendanceStore = create((set, get) => ({
-  logs: [],
-  isLoading: false,
-  checkIn: async () => {
-    const { data } = await apiClient.post('/attendance/checkin/', {});
-    set((state) => ({ logs: [data, ...state.logs] }));
-  },
-  checkOut: async () => {
-    const { data } = await apiClient.post('/attendance/checkout/', {});
-    set((state) => ({ logs: state.logs.map(l => l.id === data.id ? data : l) }));
-  }
-}));`,
-      types: `// src/types/index.ts
-export type UserRole = 'employee' | 'manager' | 'canteen' | 'hr_manager';
-export type FoodOrderStatus = 'Pending' | 'Preparing' | 'OutForDelivery' | 'Delivered' | 'Cancelled';
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  departmentId: string;
-}`
-    };
-
-    function selectCodeTab(tab) {
-      document.getElementById('code-tab-title').innerText = `src/` + (tab === 'types' ? 'types/index.ts' : (tab === 'shared' ? 'shared/ui/Badge.tsx' : (tab === 'stores' ? 'stores/useAttendanceStore.ts' : 'features/')));
-      document.getElementById('code-snippet-box').innerText = CODE_SNIPPETS[tab];
-      
-      // Update explorer button selection styles
-      event.currentTarget.parentElement.querySelectorAll('div').forEach(el => {
-        el.classList.remove('bg-primary/10', 'border-primary/20', 'text-primary');
-        el.classList.add('bg-background', 'text-on-surface');
-      });
-      event.currentTarget.classList.add('bg-primary/10', 'border-primary/20', 'text-primary');
-    }
-
-    // Load initial code tab
-    document.getElementById('code-snippet-box').innerText = CODE_SNIPPETS['features'];
 
     // Interactive Simulators logic
     function switchSim(sim) {

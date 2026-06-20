@@ -92,7 +92,7 @@ export function HREmployeeFormPage() {
         email: formData.email,
         role: role as any,
         departmentId: formData.department,
-        managerId: formData.manager || undefined
+        managerId: formData.manager
       }
 
       if (isEditing && id) {

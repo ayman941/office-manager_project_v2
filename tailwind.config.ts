@@ -27,6 +27,18 @@ const config: Config = {
         "surface-container": "#F2F5F8",
         "surface-container-low": "#F7F9FF",
         "surface-container-lowest": "#FFFFFF",
+        brand: {
+          50: '#F0F9FA',
+          100: '#E0F2F5',
+          200: '#BFE3EC',
+          300: '#8FCEE0',
+          400: '#5FB6CF',
+          500: '#0E5E6F',
+          600: '#0C505E',
+          700: '#0A424F',
+          800: '#08343E',
+          900: '#06262F',
+        },
       },
       borderRadius: {
         "DEFAULT": "0.25rem",
