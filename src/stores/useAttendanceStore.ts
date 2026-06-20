@@ -86,39 +86,57 @@ export const useAttendanceStore = create<AttendanceStore>((set) => ({
       const { data } = await apiClient.get('/attendance/today_status/')
       set({ todayStatus: data ? mapBackendAttendanceToLog(data) : null })
     } catch {
-      set({ todayStatus: null })
+      // Fallback for regular employees who cannot access today_status
+      try {
+        const today = new Date().toLocaleDateString('en-CA')
+        const { data: logs } = await apiClient.get('/attendance/')
+        const todayLog = logs.find((l: any) => l.date === today)
+        set({ todayStatus: todayLog ? mapBackendAttendanceToLog(todayLog) : null })
+      } catch {
+        set({ todayStatus: null })
+      }
     }
   },
 
   async checkIn(employeeId, date) {
-    const payload = {
-      date,
-      employee: Number(employeeId),
-      method: 'WiFi',
-      is_auto_closed: false,
-      actual_wifi_mac: '00:11:22:33:44:55'
+    try {
+      const payload = {
+        date,
+        employee: Number(employeeId),
+        method: 'WiFi',
+        is_auto_closed: false,
+        actual_wifi_mac: '00:11:22:33:44:55'
+      }
+      const { data } = await apiClient.post('/attendance/checkin/', payload)
+      const log = mapBackendAttendanceToLog(data)
+      set((s) => ({
+        todayStatus: log,
+        logs: [log, ...s.logs]
+      }))
+      return log
+    } catch (err: any) {
+      const msg = err.response?.data?.error || err.response?.data?.detail || err.message
+      throw new Error(msg)
     }
-    const { data } = await apiClient.post('/attendance/checkin/', payload)
-    const log = mapBackendAttendanceToLog(data)
-    set((s) => ({
-      todayStatus: log,
-      logs: [log, ...s.logs]
-    }))
-    return log
   },
 
   async checkOut(employeeId) {
-    const date = new Date().toISOString().split('T')[0]
-    const payload = {
-      date,
-      employee: Number(employeeId)
+    try {
+      const date = new Date().toISOString().split('T')[0]
+      const payload = {
+        date,
+        employee: Number(employeeId)
+      }
+      const { data } = await apiClient.post('/attendance/checkout/', payload)
+      const log = mapBackendAttendanceToLog(data)
+      set((s) => ({
+        todayStatus: log,
+        logs: s.logs.map((o) => (o.id === log.id ? log : o))
+      }))
+    } catch (err: any) {
+      const msg = err.response?.data?.error || err.response?.data?.detail || err.message
+      throw new Error(msg)
     }
-    const { data } = await apiClient.post('/attendance/checkout/', payload)
-    const log = mapBackendAttendanceToLog(data)
-    set((s) => ({
-      todayStatus: log,
-      logs: s.logs.map((o) => (o.id === log.id ? log : o))
-    }))
   },
 
   async overrideLog(logId, patch, _reason, _performedById) {

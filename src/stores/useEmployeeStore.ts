@@ -93,9 +93,24 @@ export const useEmployeeStore = create<EmployeeStore>((set) => ({
   async fetchLocations() {
     try {
       const { data } = await apiClient.get('/locations/')
-      set({ locations: data })
+      if (Array.isArray(data) && data.length > 0) {
+        set({ locations: data })
+      } else {
+        throw new Error('Empty locations from backend')
+      }
     } catch (err: any) {
-      console.error('Failed to fetch locations:', err)
+      console.error('Failed to fetch locations, using fallback:', err)
+      set({
+        locations: [
+          {
+            id: 1,
+            floor: 4,
+            room_number: "A201",
+            desk_description: "Floor 4 - Room A201",
+            company_wifi_mac: ""
+          }
+        ]
+      })
     }
   },
 
